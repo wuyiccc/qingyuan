@@ -21,6 +21,8 @@ function App() {
       <h1>welcome to my app</h1>
       <MyButton></MyButton>
       <AboutPage></AboutPage>
+
+      <img src='http://wuyiccc.com/imgs/avatar2.jpg' className='avatar' />
     </div>
   )
 }
