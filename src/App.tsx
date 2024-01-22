@@ -1,30 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const style = { color: 'red' }
 
+  const name = <span style={style}>你好</span>
+  // const h1 = <h1> 欢迎学习react后台开发 </h1>
+
+  const p = <p>欢迎学习React通用后台开发</p>
+
+  const isAdmin = false
   return (
-    <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-    </>
+    <div className='App'>
+      <p> {name} </p>
+      {p}
+
+      {isAdmin ? <span>您好: 管理员</span> : <span>普通访客</span>}
+
+      <p>{isAdmin ? '您好: 管理员' : <span>普通访客</span>}</p>
+    </div>
   )
 }
 
