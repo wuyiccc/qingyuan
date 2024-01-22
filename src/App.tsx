@@ -1,94 +1,48 @@
 import './App.css'
 import { useState } from 'react'
 
-function MyButton() {
-  return <button>I'm a button</button>
-}
+function UseStateLearn() {
+  const [name, setName] = useState('wuyiccc')
 
-function AboutPage() {
-  return (
-    <>
-      <h1>About</h1>
-      <p>
-        Hello there. <br /> How do you do ?
-      </p>
-    </>
-  )
-}
-
-const user = {
-  name: 'wuyiccc',
-  imageUrl: 'http://wuyiccc.com/imgs/avatar2.jpg',
-  imageSize: 90
-}
-
-function UsernameDiv() {
-  return <h1>{user.name}</h1>
-}
-
-function ConditionalRendering() {
-  let content
-  const isLoggedIn = true
-
-  if (isLoggedIn) {
-    content = <h1>Logging</h1>
-  } else {
-    content = <h1>no logging</h1>
-  }
-  return content
-}
-
-function RenderList() {
-  const products = [
-    { title: 'Cabbage', isFruit: false, id: 1 },
-    { title: 'Garlic', isFruit: false, id: 2 },
-    { title: 'Apple', isFruit: true, id: 3 }
-  ]
-
-  const listItems = products.map(product => (
-    <li key={product.id} style={{ color: product.isFruit ? 'magenta' : 'darkgreen' }}>
-      {product.title}
-    </li>
-  ))
-
-  return <ul>{listItems}</ul>
-}
-
-function handleClick() {
-  alert('You clicked me')
-}
-
-function RespondingToEvent() {
-  return <button onClick={handleClick}>Click me</button>
-}
-
-function UpdatingScreen() {
-  const [count, setCount] = useState(0)
-
-  function handleClick() {
-    setCount(count + 1)
+  function handleUpdate() {
+    setName('new name')
   }
 
-  return <button onClick={handleClick}>Clicked {count} times</button>
-}
+  const [user, setUser] = useState({ name: 'wuyiccc', age: 25 })
 
-function SharedData() {
-  const [count, setCount] = useState(0)
+  const [list, setList] = useState(['Tom', 'Jack'])
 
-  function handleClick() {
-    setCount(count + 1)
+  function hanldeUpdateUser() {
+    setUser({ name: user.name, age: 26 })
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  function MyButton({ count, onClick }) {
-    return <button onClick={onClick}>add count {count}</button>
+  function handleUpdateList() {
+    // list.push('wuyiccc')
+    // 元素地址必须要发生变化才会触发更新
+    setList([...list, 'wuyiccc'])
   }
 
   return (
     <div>
-      <MyButton count={count} onClick={handleClick}></MyButton>
-      <MyButton count={count} onClick={handleClick}></MyButton>
+      <p>{name}</p>
+      <p>
+        <button onClick={handleUpdate}>修改名称</button>
+      </p>
+      <p>
+        用户名称: {user.name}, 用户年龄: {user.age}
+      </p>
+      <p>
+        <button onClick={hanldeUpdateUser}>修改用户信息</button>
+      </p>
+
+      <ul>
+        {list.map(e => {
+          return <li key={e}>{e}</li>
+        })}
+      </ul>
+      <p>
+        <button onClick={handleUpdateList}>修改列表</button>
+      </p>
     </div>
   )
 }
@@ -96,25 +50,7 @@ function SharedData() {
 function App() {
   return (
     <div>
-      <h1>welcome to my app</h1>
-      <MyButton></MyButton>
-      <AboutPage></AboutPage>
-
-      <img
-        src={user.imageUrl}
-        className='avatar'
-        alt={'Photo of ' + user.name}
-        style={{
-          width: user.imageSize,
-          height: user.imageSize
-        }}
-      />
-      <UsernameDiv></UsernameDiv>
-      <ConditionalRendering></ConditionalRendering>
-      <RenderList></RenderList>
-      <RespondingToEvent></RespondingToEvent>
-      <UpdatingScreen></UpdatingScreen>
-      <SharedData></SharedData>
+      <UseStateLearn></UseStateLearn>
     </div>
   )
 }
