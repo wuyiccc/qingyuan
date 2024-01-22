@@ -15,6 +15,16 @@ function AboutPage() {
   )
 }
 
+const user = {
+  name: 'wuyiccc',
+  imageUrl: 'http://wuyiccc.com/imgs/avatar2.jpg',
+  imageSize: 90
+}
+
+function UsernameDiv() {
+  return <h1>{user.name}</h1>
+}
+
 function App() {
   return (
     <div>
@@ -22,7 +32,16 @@ function App() {
       <MyButton></MyButton>
       <AboutPage></AboutPage>
 
-      <img src='http://wuyiccc.com/imgs/avatar2.jpg' className='avatar' />
+      <img
+        src={user.imageUrl}
+        className='avatar'
+        alt={'Photo of ' + user.name}
+        style={{
+          width: user.imageSize,
+          height: user.imageSize
+        }}
+      />
+      <UsernameDiv></UsernameDiv>
     </div>
   )
 }
