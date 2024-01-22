@@ -25,6 +25,18 @@ function UsernameDiv() {
   return <h1>{user.name}</h1>
 }
 
+function ConditionalRendering() {
+  let content
+  const isLoggedIn = true
+
+  if (isLoggedIn) {
+    content = <h1>Logging</h1>
+  } else {
+    content = <h1>no logging</h1>
+  }
+  return content
+}
+
 function App() {
   return (
     <div>
@@ -42,6 +54,7 @@ function App() {
         }}
       />
       <UsernameDiv></UsernameDiv>
+      <ConditionalRendering></ConditionalRendering>
     </div>
   )
 }
