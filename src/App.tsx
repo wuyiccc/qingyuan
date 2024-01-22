@@ -53,6 +53,14 @@ function RenderList() {
   return <ul>{listItems}</ul>
 }
 
+function handleClick() {
+  alert('You clicked me')
+}
+
+function RespondingToEvent() {
+  return <button onClick={handleClick}>Click me</button>
+}
+
 function App() {
   return (
     <div>
@@ -72,6 +80,7 @@ function App() {
       <UsernameDiv></UsernameDiv>
       <ConditionalRendering></ConditionalRendering>
       <RenderList></RenderList>
+      <RespondingToEvent></RespondingToEvent>
     </div>
   )
 }
