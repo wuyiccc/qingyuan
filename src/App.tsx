@@ -72,6 +72,27 @@ function UpdatingScreen() {
   return <button onClick={handleClick}>Clicked {count} times</button>
 }
 
+function SharedData() {
+  const [count, setCount] = useState(0)
+
+  function handleClick() {
+    setCount(count + 1)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  function MyButton({ count, onClick }) {
+    return <button onClick={onClick}>add count {count}</button>
+  }
+
+  return (
+    <div>
+      <MyButton count={count} onClick={handleClick}></MyButton>
+      <MyButton count={count} onClick={handleClick}></MyButton>
+    </div>
+  )
+}
+
 function App() {
   return (
     <div>
@@ -93,6 +114,7 @@ function App() {
       <RenderList></RenderList>
       <RespondingToEvent></RespondingToEvent>
       <UpdatingScreen></UpdatingScreen>
+      <SharedData></SharedData>
     </div>
   )
 }
