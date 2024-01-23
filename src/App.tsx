@@ -1,46 +1,33 @@
 import './App.css'
-import { useEffect, useState } from 'react'
-import { useWindowSize } from './useWindowSize.tsx'
-function UseEffectLearn() {
-  useEffect(() => {
-    document.title = 'React课程学习'
-  })
+import { useMemo, useState } from 'react'
 
+function UseMemoLearn() {
   const [count, setCount] = useState(0)
 
-  // useEffect必须加依赖项进行状态比较, 否则就会发生死循环
-  useEffect(() => {
-    setCount(count + 1)
+  function handleSetCount() {
+    setCount(count => count + 1)
+  }
+
+  // when page refreshed the total1's function will execute again
+  const total1 = () => {
+    console.log('total1 execute')
+    const list = [1, 2, 3, 4, 5]
+    return list.reduce((pre, cur) => pre + cur)
+  }
+
+  // useMemo has memory function, if page refreshed, and dependency has not changed, the total2's function cannot execute again
+  const total2 = useMemo(() => {
+    console.log('total2 execute')
+    const list = [1, 2, 3, 4, 5]
+    return list.reduce((pre, cur) => pre + cur)
   }, [])
-
-  const [total, setTotal] = useState(0)
-
-  // 当count发生变化的时候, 更新total的值
-  useEffect(() => {
-    setTotal(count * 5)
-  }, [count])
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setCount(count => count + 1)
-    }, 1000)
-
-    // 页面关闭/跳转的时候清除定时器
-    return () => {
-      clearInterval(t)
-    }
-  }, [])
-
-  const [size] = useWindowSize()
 
   return (
     <div>
-      <p>
-        Count: {count}, Total: {total}
-      </p>
-      <p>
-        width: {size.width}, height: {size.height}
-      </p>
+      <p>total1: {total1()}</p>
+      <p>total2: {total2}</p>
+      <p>{count}</p>
+      <button onClick={handleSetCount}>add count</button>
     </div>
   )
 }
@@ -49,7 +36,7 @@ function App() {
   return (
     <div className='App'>
       <p>欢迎学习React</p>
-      <UseEffectLearn></UseEffectLearn>
+      <UseMemoLearn></UseMemoLearn>
     </div>
   )
 }
