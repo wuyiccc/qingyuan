@@ -1,70 +1,45 @@
 import './App.css'
-import { useState } from 'react'
-import { flushSync } from 'react-dom'
-
-function UseStateLearn() {
-  const [name, setName] = useState('wuyiccc')
-
-  function handleUpdate() {
-    setName('new name')
-  }
-
-  const [user, setUser] = useState({ name: 'wuyiccc', age: 25 })
-
-  const [list, setList] = useState(['Tom', 'Jack'])
-
-  function hanldeUpdateUser() {
-    setUser({ name: user.name, age: 26 })
-  }
-
-  function handleUpdateList() {
-    // list.push('wuyiccc')
-    // 元素地址必须要发生变化才会触发更新
-    setList([...list, 'wuyiccc'])
-  }
-
-  console.log('render')
+import { useEffect, useState } from 'react'
+import { useWindowSize } from './useWindowSize.tsx'
+function UseEffectLearn() {
+  useEffect(() => {
+    document.title = 'React课程学习'
+  })
 
   const [count, setCount] = useState(0)
 
-  function handleCount() {
-    setTimeout(() => {
-      // setCount(count => count + 1)
-      // setCount(count => count + 1)
-      // setCount(count => count + 1)
-      // setCount(count => count + 1)
-    })
-    // 该函数是强制刷新, 会强制打印1次render, 不会与外部setCount合并
-    flushSync(() => {
+  // useEffect必须加依赖项进行状态比较, 否则就会发生死循环
+  useEffect(() => {
+    setCount(count + 1)
+  }, [])
+
+  const [total, setTotal] = useState(0)
+
+  // 当count发生变化的时候, 更新total的值
+  useEffect(() => {
+    setTotal(count * 5)
+  }, [count])
+
+  useEffect(() => {
+    const t = setInterval(() => {
       setCount(count => count + 1)
-      setCount(count => count + 1)
-    })
-  }
+    }, 1000)
+
+    // 页面关闭/跳转的时候清除定时器
+    return () => {
+      clearInterval(t)
+    }
+  }, [])
+
+  const [size] = useWindowSize()
 
   return (
     <div>
-      <p>{name}</p>
       <p>
-        <button onClick={handleUpdate}>修改名称</button>
+        Count: {count}, Total: {total}
       </p>
       <p>
-        用户名称: {user.name}, 用户年龄: {user.age}
-      </p>
-      <p>
-        <button onClick={hanldeUpdateUser}>修改用户信息</button>
-      </p>
-
-      <ul>
-        {list.map(e => {
-          return <li key={e}>{e}</li>
-        })}
-      </ul>
-      <p>
-        <button onClick={handleUpdateList}>修改列表</button>
-      </p>
-      <p>{count}</p>
-      <p>
-        <button onClick={handleCount}>计数</button>
+        width: {size.width}, height: {size.height}
       </p>
     </div>
   )
@@ -72,8 +47,9 @@ function UseStateLearn() {
 
 function App() {
   return (
-    <div>
-      <UseStateLearn></UseStateLearn>
+    <div className='App'>
+      <p>欢迎学习React</p>
+      <UseEffectLearn></UseEffectLearn>
     </div>
   )
 }
