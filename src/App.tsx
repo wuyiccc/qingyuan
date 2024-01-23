@@ -1,5 +1,6 @@
 import './App.css'
 import { useState } from 'react'
+import { flushSync } from 'react-dom'
 
 function UseStateLearn() {
   const [name, setName] = useState('wuyiccc')
@@ -22,6 +23,24 @@ function UseStateLearn() {
     setList([...list, 'wuyiccc'])
   }
 
+  console.log('render')
+
+  const [count, setCount] = useState(0)
+
+  function handleCount() {
+    setTimeout(() => {
+      // setCount(count => count + 1)
+      // setCount(count => count + 1)
+      // setCount(count => count + 1)
+      // setCount(count => count + 1)
+    })
+    // 该函数是强制刷新, 会强制打印1次render, 不会与外部setCount合并
+    flushSync(() => {
+      setCount(count => count + 1)
+      setCount(count => count + 1)
+    })
+  }
+
   return (
     <div>
       <p>{name}</p>
@@ -42,6 +61,10 @@ function UseStateLearn() {
       </ul>
       <p>
         <button onClick={handleUpdateList}>修改列表</button>
+      </p>
+      <p>{count}</p>
+      <p>
+        <button onClick={handleCount}>计数</button>
       </p>
     </div>
   )
