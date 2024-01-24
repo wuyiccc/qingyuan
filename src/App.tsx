@@ -1,34 +1,21 @@
 import './App.css'
-import React, { useContext } from 'react'
+import { useRef, useState } from 'react'
 
-const UserContext = React.createContext({ name: '' })
-function UserContextLearn() {
-  return (
-    <UserContext.Provider value={{ name: 'tom' }}>
-      <div>
-        <Child1></Child1>
-      </div>
-    </UserContext.Provider>
-  )
-}
+function UserRefLearn() {
+  const userRef = useRef<HTMLInputElement>(null)
+  const [val, setVal] = useState('')
 
-function Child1() {
-  return (
-    <div>
-      <p>
-        <span>Child1</span>
-      </p>
-      <Child2></Child2>
-    </div>
-  )
-}
-
-function Child2() {
-  const { name } = useContext(UserContext)
+  function handleClick() {
+    // userRef.current?.focus()
+    setVal(userRef.current?.value || '')
+    console.log(userRef.current?.className)
+  }
 
   return (
     <div>
-      <p>Child2: {name}</p>
+      <input type='text' ref={userRef} className='red' id='user' />
+      <button onClick={handleClick}>按钮</button>
+      <p>{val}</p>
     </div>
   )
 }
@@ -37,7 +24,7 @@ function App() {
   return (
     <div className='App'>
       <p>欢迎学习React</p>
-      <UserContextLearn></UserContextLearn>
+      <UserRefLearn></UserRefLearn>
     </div>
   )
 }
