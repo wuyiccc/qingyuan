@@ -1,21 +1,35 @@
 import './App.css'
-import { useRef, useState } from 'react'
+import { useState, useTransition } from 'react'
 
-function UserRefLearn() {
-  const userRef = useRef<HTMLInputElement>(null)
-  const [val, setVal] = useState('')
+function UseTransitionLearn() {
+  const [query, setQuery] = useState('')
+  const [list, setList] = useState<any>([])
+  const [isPendding, startTransition] = useTransition()
 
-  function handleClick() {
-    // userRef.current?.focus()
-    setVal(userRef.current?.value || '')
-    console.log(userRef.current?.className)
+  const handleChange = (e: any) => {
+    // setQuery会同步执行
+    setQuery(e.target.value)
+
+    // transition包裹的代码会异步执行
+    startTransition(() => {
+      const arr = Array.from({ length: 5000 }).fill(1)
+      setList([...list, ...arr])
+    })
   }
 
   return (
     <div>
-      <input type='text' ref={userRef} className='red' id='user' />
-      <button onClick={handleClick}>按钮</button>
-      <p>{val}</p>
+      <input type='text' onChange={handleChange} value={query}></input>
+
+      <div>
+        {isPendding ? (
+          <div> Loading... </div>
+        ) : (
+          list.map((item: number, index: number) => {
+            return <p key={index}>{query}</p>
+          })
+        )}
+      </div>
     </div>
   )
 }
@@ -24,7 +38,7 @@ function App() {
   return (
     <div className='App'>
       <p>欢迎学习React</p>
-      <UserRefLearn></UserRefLearn>
+      <UseTransitionLearn></UseTransitionLearn>
     </div>
   )
 }
