@@ -69,4 +69,20 @@ const add5: (a: number, b: number) => number = (a, b) => {
 
 add5(1, 2)
 
+// 元组
+const listTuple: [number, string, boolean] = [1, '2', true]
+
+// 交叉类型
+type AgeType = { age: number }
+type UserType = { id: number; name: string }
+
+const userAge: AgeType = { age: 30 }
+const userInfo: UserType = { id: 1, name: 'jack' }
+const user: AgeType & UserType = { id: 1, name: 'jack', age: 20 }
+
+console.log(listTuple)
+console.log(userAge)
+console.log(userInfo)
+console.log(user)
+
 export default {}
