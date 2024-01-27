@@ -1,4 +1,4 @@
-import { createBrowserRouter, useParams } from 'react-router-dom'
+import { createBrowserRouter, Outlet, useParams } from 'react-router-dom'
 import App from './App.tsx'
 
 function ViteDemo() {
@@ -45,6 +45,15 @@ function Goods() {
   )
 }
 
+function NestedRouter() {
+  return (
+    <div>
+      <h1>商品主页</h1>
+      <Outlet />
+    </div>
+  )
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -65,6 +74,20 @@ const router = createBrowserRouter([
   {
     path: '/goods/:goodsId/order/:orderId',
     element: <Goods />
+  },
+  {
+    path: 'nested',
+    element: <NestedRouter />,
+    children: [
+      {
+        path: 'cart1',
+        element: <div>cart1</div>
+      },
+      {
+        path: 'cart2',
+        element: <div>cart2</div>
+      }
+    ]
   },
   {
     path: '*',
