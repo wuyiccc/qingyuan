@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, useParams } from 'react-router-dom'
+import { createBrowserRouter, Outlet, useLoaderData, useParams } from 'react-router-dom'
 import App from './App.tsx'
 
 function ViteDemo() {
@@ -26,6 +26,9 @@ function NotFound() {
 }
 
 function Order() {
+  // get load function return value
+  const data = useLoaderData()
+  console.log('order...', data)
   const params = useParams()
   return (
     <div>
@@ -54,6 +57,11 @@ function NestedRouter() {
   )
 }
 
+function orderLoader({ params }: any) {
+  console.log('load init...', params.id)
+  return params.id
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -69,7 +77,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/order/:id',
-    element: <Order />
+    element: <Order />,
+    loader: orderLoader
   },
   {
     path: '/goods/:goodsId/order/:orderId',
