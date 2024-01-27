@@ -26,6 +26,14 @@ function Test() {
   )
 }
 
+function NotFound() {
+  return (
+    <div>
+      <h2>current page 404</h2>
+    </div>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <HashRouter>
     <Routes>
@@ -33,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='/react' element={<ReactDemo />}></Route>
       <Route path='/vite' element={<ViteDemo />}></Route>
       <Route path='/test' element={<Test />}></Route>
+      <Route path='*' element={<NotFound />}></Route>
     </Routes>
   </HashRouter>
 )
