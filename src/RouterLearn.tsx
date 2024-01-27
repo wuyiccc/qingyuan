@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, useParams } from 'react-router-dom'
 import App from './App.tsx'
 
 function ViteDemo() {
@@ -25,6 +25,26 @@ function NotFound() {
   )
 }
 
+function Order() {
+  const params = useParams()
+  return (
+    <div>
+      <h2>Order: {params.id}</h2>
+    </div>
+  )
+}
+
+function Goods() {
+  const params = useParams()
+  return (
+    <div>
+      <h2>Goods Info</h2>
+      <p>{params.goodsId}</p>
+      <p>{params.orderId}</p>
+    </div>
+  )
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -37,6 +57,14 @@ const router = createBrowserRouter([
   {
     path: '/react',
     element: <ReactDemo />
+  },
+  {
+    path: '/order/:id',
+    element: <Order />
+  },
+  {
+    path: '/goods/:goodsId/order/:orderId',
+    element: <Goods />
   },
   {
     path: '*',
