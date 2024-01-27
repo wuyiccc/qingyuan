@@ -2,10 +2,16 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Link, Route, Routes } from 'react-router-dom'
 
 function ReactDemo() {
-  return <h2>React</h2>
+  return (
+    <div>
+      <h2>
+        // back to page React <Link to='..'>Back</Link>
+      </h2>
+    </div>
+  )
 }
 
 function ViteDemo() {
