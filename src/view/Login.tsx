@@ -3,17 +3,11 @@ import request from '@/util/request.ts'
 
 export default function Login() {
   useEffect(() => {
-    request
-      .get('/users', {
-        id: 12345
-      })
-      .catch(res => {
-        console.log('res ', res)
-      })
-      .catch(error => {
-        console.log('error ', error)
-      })
-  })
+    request.post('/user/login', {
+      username: 'admin',
+      password: '123'
+    })
+  }, [])
 
   return <div className='welcome'>Login</div>
 }
