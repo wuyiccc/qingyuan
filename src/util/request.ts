@@ -10,9 +10,9 @@ const instance = axios.create({
 
 export default {
   get(url: string, params: any) {
-    return axios.get(url, { params })
+    return instance.get(url, { params })
   },
   post(url: string, params: any) {
-    return axios.post(url, params)
+    return instance.post(url, params)
   }
 }
