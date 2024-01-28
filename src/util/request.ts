@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { message } from 'antd'
 import ServerBizCode from '@/config/constants/ServerBizCode.ts'
+import { hideLoading, showLoading } from '@/util/loading'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -13,6 +14,8 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
+    showLoading()
+
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.token = token
@@ -26,20 +29,30 @@ instance.interceptors.request.use(
 )
 
 // 响应拦截器
-instance.interceptors.response.use(response => {
-  const data = response.data
-  const code: string = data.code
+instance.interceptors.response.use(
+  response => {
+    const data = response.data
 
-  if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
-    message.error(data.msg)
-    localStorage.removeItem('token')
-    // localStorage.href = '/login'
-  } else if (code != ServerBizCode.OK) {
-    message.error(data.msg)
-    return Promise.reject(data)
+    hideLoading()
+
+    const code: string = data.code
+
+    if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
+      message.error(data.msg)
+      localStorage.removeItem('token')
+      // localStorage.href = '/login'
+    } else if (code != ServerBizCode.OK) {
+      message.error(data.msg)
+      return Promise.reject(data)
+    }
+    return data.data
+  },
+  error => {
+    hideLoading()
+    message.error(error.message)
+    return Promise.reject(error.message)
   }
-  return data.data
-})
+)
 
 export default {
   get(url: string, params: any) {
