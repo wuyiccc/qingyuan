@@ -3,10 +3,14 @@ import request from '@/util/request.ts'
 
 export default function Login() {
   useEffect(() => {
-    request.post('/user/login', {
-      username: 'admin',
-      password: '123'
-    })
+    request
+      .post<string>('/user/login', {
+        username: 'admin',
+        password: '123'
+      })
+      .then(data => {
+        console.log(data)
+      })
   }, [])
 
   return <div className='welcome'>Login</div>
