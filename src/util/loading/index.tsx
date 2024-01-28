@@ -20,6 +20,7 @@ export const hideLoading = () => {
   }
   count--
 
+  // 最后一个请求结束之后才关闭loading
   if (count === 0) {
     document.body.removeChild(document.getElementById('loading') as HTMLDivElement)
   }
