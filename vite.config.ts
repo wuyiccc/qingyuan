@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 8080,
+    // 对于/api的请求, 会代理到后面的地址
     proxy: {
       '/api': 'http://api-driver.marsview.cc'
     }
