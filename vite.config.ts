@@ -6,11 +6,7 @@ import * as path from 'path'
 export default defineConfig({
   server: {
     host: 'localhost',
-    port: 8080,
-    // 对于/api的请求, 会代理到后面的地址
-    proxy: {
-      '/api': { target: 'http://localhost:9000/', changeOrigin: true, rewrite: path => path.replace(/^\/api/, '') }
-    }
+    port: 8080
   },
   resolve: {
     alias: {

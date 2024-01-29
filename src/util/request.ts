@@ -4,11 +4,10 @@ import ServerBizCode from '@/config/constants/ServerBizCode.ts'
 import { hideLoading, showLoading } from '@/util/loading'
 
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_BASE_API,
   // 超时时间设置为8s
   timeout: 8000,
-  timeoutErrorMessage: '请求超时, 请稍后再试',
-  withCredentials: true
+  timeoutErrorMessage: '请求超时, 请稍后再试'
 })
 
 // 请求拦截器
