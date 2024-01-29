@@ -1,6 +1,8 @@
 import request from '@/util/request.ts'
 import { Button } from 'antd'
 import StorageUtils from '@/util/common/StorageUtils.ts'
+import NumberUtils from '@/util/common/NumberUtils.ts'
+import DateUtils from '@/util/common/DateUtils.ts'
 
 function handleClick() {
   request.post('/user/login', {
@@ -11,6 +13,10 @@ function handleClick() {
 
 function handleStorage(type: number) {
   if (type === 1) {
+    const formatNum = NumberUtils.formatNum('12333.5678')
+    console.log(formatNum)
+    const dateStr = DateUtils.formatDate(new Date(), DateUtils.DATETIME_FORMAT)
+    console.log(dateStr)
     StorageUtils.setString('name', 'wuyiccc')
     StorageUtils.setNumber('age', 31)
   } else if (type === 2) {
