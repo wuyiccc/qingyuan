@@ -1,6 +1,6 @@
-import StringUtils from '@/util/common/StringUtils.ts'
+import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 
-class StorageUtils {
+class LocalDB {
   static setString(key: string, value: string) {
     localStorage.setItem(key, value)
   }
@@ -35,4 +35,4 @@ class StorageUtils {
   }
 }
 
-export default StorageUtils
+export default LocalDB

@@ -1,7 +1,10 @@
 import axios, { AxiosError } from 'axios'
 import { message } from 'antd'
-import ServerBizCode from '@/config/constants/ServerBizCode.ts'
-import { hideLoading, showLoading } from '@/util/loading'
+import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
+import { hideLoading, showLoading } from '@/infrastructure/util/loading'
+import R from '@/infrastructure/pojo/R.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
@@ -15,7 +18,7 @@ instance.interceptors.request.use(
   config => {
     showLoading()
 
-    const token = localStorage.getItem('token')
+    const token = LocalDB.get(HttpHeaderConstants.TOKEN)
     if (token) {
       config.headers.token = token
     }
@@ -30,7 +33,7 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    const data = response.data
+    const data: R<any> = response.data
 
     hideLoading()
 
@@ -38,8 +41,7 @@ instance.interceptors.response.use(
 
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
       message.error(data.msg)
-      localStorage.removeItem('token')
-      // localStorage.href = '/login'
+      LocalDB.remove(HttpHeaderConstants.TOKEN)
     } else if (code != ServerBizCode.OK) {
       message.error(data.msg)
       return Promise.reject(data)

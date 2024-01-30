@@ -1,8 +1,8 @@
-import request from '@/util/request.ts'
+import request from '@/infrastructure/util/request.ts'
 import { Button } from 'antd'
-import StorageUtils from '@/util/common/StorageUtils.ts'
-import NumberUtils from '@/util/common/NumberUtils.ts'
-import DateUtils from '@/util/common/DateUtils.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import NumberUtils from '@/infrastructure/util/common/NumberUtils.ts'
+import DateUtils from '@/infrastructure/util/common/DateUtils.ts'
 
 function handleClick() {
   request.post('/user/login', {
@@ -17,15 +17,15 @@ function handleStorage(type: number) {
     console.log(formatNum)
     const dateStr = DateUtils.formatDate(new Date(), DateUtils.DATETIME_FORMAT)
     console.log(dateStr)
-    StorageUtils.setString('name', 'wuyiccc')
-    StorageUtils.setNumber('age', 31)
+    LocalDB.setString('name', 'wuyiccc')
+    LocalDB.setNumber('age', 31)
   } else if (type === 2) {
-    const name = StorageUtils.get('name')
+    const name = LocalDB.get('name')
     console.log('name:', name)
   } else if (type === 3) {
-    StorageUtils.remove('name')
+    LocalDB.remove('name')
   } else if (type === 4) {
-    StorageUtils.clear()
+    LocalDB.clear()
   }
 }
 
