@@ -1,0 +1,30 @@
+
+.login {
+  height: 100vh;
+  // 截取图片的右中间的部分
+  background: url("@/assets/login-bg.jpg") no-repeat right center;
+  //background-size必须放在background配置后面才有效
+  background-size: cover;
+
+
+
+
+}
+
+.loginWrapper {
+  background-color: #282A36;
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  // 基于自身向上偏移50%, 与top:50%结合达到垂直居中的效果
+  transform: translateY(-50%) translateX(50%);
+  width: 500px;
+  padding: 50px;
+}
+
+.title {
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 30px;
+}
