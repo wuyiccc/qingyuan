@@ -1,10 +1,12 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import { hideLoading, showLoading } from '@/infrastructure/util/loading'
 import R from '@/infrastructure/pojo/R.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
+import { configs } from '@typescript-eslint/eslint-plugin'
+import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
@@ -16,7 +18,9 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
-    showLoading()
+    if (config.showLoading) {
+      showLoading()
+    }
 
     const token = LocalDB.get(HttpHeaderConstants.TOKEN)
     if (token) {
@@ -42,9 +46,14 @@ instance.interceptors.response.use(
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
       message.error(data.msg)
       LocalDB.remove(HttpHeaderConstants.TOKEN)
+      RedirectUtils.goHomePage()
     } else if (code != ServerBizCode.OK) {
-      message.error(data.msg)
-      return Promise.reject(data)
+      if (response.config.showError === false) {
+        return Promise.reject(data)
+      } else {
+        message.error(data.msg)
+        return Promise.reject(data)
+      }
     }
     return data.data
   },
@@ -55,11 +64,16 @@ instance.interceptors.response.use(
   }
 )
 
+interface IConfig {
+  showLoading?: boolean
+  showError?: boolean
+}
+
 export default {
-  get<T>(url: string, params?: object): Promise<T> {
-    return instance.get(url, { params })
+  get<T>(url: string, params?: object, options: IConfig = { showLoading: true, showError: true }): Promise<T> {
+    return instance.get(url, { ...params, ...options })
   },
-  post<T>(url: string, params?: object): Promise<T> {
-    return instance.post(url, params)
+  post<T>(url: string, params?: object, options: IConfig = { showLoading: true, showError: true }): Promise<T> {
+    return instance.post(url, params, options)
   }
 }

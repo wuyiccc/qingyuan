@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
@@ -7,14 +7,25 @@ import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
 import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
+import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+import { showLoading } from '@/infrastructure/util/loading'
 
 export default function Login() {
+  const [loading, setLoading] = useState(false)
   const onFinish = async (value: UserLoginBO) => {
-    const token: string = await UserApi.login(value)
+    try {
+      setLoading(true)
 
-    LocalDB.setString(HttpHeaderConstants.TOKEN, token)
-    message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
-    // RedirectUtils.goWelcome()
+      const token: string = await UserApi.login(value)
+
+      setLoading(false)
+
+      LocalDB.setString(HttpHeaderConstants.TOKEN, token)
+      message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
+      RedirectUtils.goHomePage()
+    } catch (error) {
+      setLoading(false)
+    }
   }
 
   return (
@@ -31,7 +42,7 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item>
-            <Button type='primary' block htmlType='submit'>
+            <Button type='primary' block htmlType='submit' loading={loading}>
               登录
             </Button>
           </Form.Item>

@@ -1,5 +1,5 @@
 class RedirectUtils {
-  public static goWelcome() {
+  public static goHomePage() {
     location.href = '/'
   }
 }
