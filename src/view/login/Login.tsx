@@ -1,19 +1,20 @@
 import React from 'react'
-import { Button, Form, Input, message } from 'antd'
+import { Button, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
-import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
 
 export default function Login() {
   const onFinish = async (value: UserLoginBO) => {
     const token: string = await UserApi.login(value)
+
     LocalDB.setString(HttpHeaderConstants.TOKEN, token)
     message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
-    RedirectUtils.goWelcome()
+    // RedirectUtils.goWelcome()
   }
 
   return (

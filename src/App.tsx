@@ -2,11 +2,16 @@ import './App.css'
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { ConfigProvider } from 'antd'
+import { App as AntdApp } from 'antd'
+import AntdGlobal from '@/infrastructure/util/message/AntdGlobal.tsx'
 
 function App() {
   return (
     <ConfigProvider theme={{ token: { colorPrimary: '#282A36' } }}>
-      <RouterProvider router={router} />
+      <AntdApp>
+        <AntdGlobal />
+        <RouterProvider router={router} />
+      </AntdApp>
     </ConfigProvider>
   )
 }

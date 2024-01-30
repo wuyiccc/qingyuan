@@ -1,10 +1,10 @@
 import axios, { AxiosError } from 'axios'
-import { message } from 'antd'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import { hideLoading, showLoading } from '@/infrastructure/util/loading'
 import R from '@/infrastructure/pojo/R.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
+import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
