@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react'
-import request from '@/util/request.ts'
-import './index.less'
-import { Button, Checkbox, Form, Input } from 'antd'
+import React from 'react'
+import { Button, Form, Input } from 'antd'
 import styles from './index.module.less'
 
 export default function Login() {
