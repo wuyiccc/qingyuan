@@ -8,7 +8,6 @@ import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
 import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import { showLoading } from '@/infrastructure/util/loading'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
@@ -22,7 +21,8 @@ export default function Login() {
 
       LocalDB.setString(HttpHeaderConstants.TOKEN, token)
       message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
-      RedirectUtils.goHomePage()
+
+      RedirectUtils.toCallbackUrl()
     } catch (error) {
       setLoading(false)
     }

@@ -46,7 +46,7 @@ instance.interceptors.response.use(
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
       message.error(data.msg)
       LocalDB.remove(HttpHeaderConstants.TOKEN)
-      RedirectUtils.goHomePage()
+      RedirectUtils.toLoginPage()
     } else if (code != ServerBizCode.OK) {
       if (response.config.showError === false) {
         return Promise.reject(data)
