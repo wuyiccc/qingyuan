@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Login from '@/view/login/Login.tsx'
-import Welcome from '@/view/Welcome.tsx'
+import Welcome from '@/view/welcome/Welcome.tsx'
 import Error404 from '@/view/404.tsx'
 import Error403 from '@/view/403.tsx'
 import Layout from '@/layout'

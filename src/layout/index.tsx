@@ -1,10 +1,11 @@
 import React from 'react'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout, Menu, theme, Watermark } from 'antd'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import NavHeader from '@/component/NavHeader'
 import NavFooter from '@/component/NavFooter'
 import SideMenu from '@/component/SideMenu'
+import styles from './index.module.less'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -38,19 +39,12 @@ const App: React.FC = () => {
           <Header style={{ padding: 0, height: 50, background: colorBgContainer }}>
             <NavHeader />
           </Header>
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div
-              style={{
-                padding: 24,
-                minHeight: 360,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG
-              }}
-            >
-              content
+          <Content className={styles.content}>
+            <div className={styles.wrapper}>
+              <Outlet></Outlet>
             </div>
+            <NavFooter />
           </Content>
-          <NavFooter />
         </Layout>
       </Layout>
     </Watermark>
