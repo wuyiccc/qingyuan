@@ -1,4 +1,4 @@
-import request from '@/infrastructure/util/request.ts'
+import request from '@/infrastructure/api/request.ts'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 
 class UserApi {

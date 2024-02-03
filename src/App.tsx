@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { ConfigProvider } from 'antd'
 import { App as AntdApp } from 'antd'
-import AntdGlobal from '@/infrastructure/util/message/AntdGlobal.tsx'
+import AntdGlobal from '@/component/message/AntdGlobal.tsx'
 
 function App() {
   return (

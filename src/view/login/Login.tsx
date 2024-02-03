@@ -6,7 +6,7 @@ import UserApi from '@/infrastructure/api/UserApi.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
-import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
+import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
 export default function Login() {

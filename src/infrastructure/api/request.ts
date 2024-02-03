@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
-import { hideLoading, showLoading } from '@/infrastructure/util/loading'
+import { hideLoading, showLoading } from '@/component/loading'
 import R from '@/infrastructure/pojo/R.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
-import { message } from '@/infrastructure/util/message/AntdGlobal.tsx'
+import { message } from '@/component/message/AntdGlobal.tsx'
 import { configs } from '@typescript-eslint/eslint-plugin'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 

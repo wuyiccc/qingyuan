@@ -1,4 +1,4 @@
-import request from '@/infrastructure/util/request.ts'
+import request from '@/infrastructure/api/request.ts'
 import { Button } from 'antd'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import NumberUtils from '@/infrastructure/util/common/NumberUtils.ts'
