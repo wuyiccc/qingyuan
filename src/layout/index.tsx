@@ -1,6 +1,8 @@
 import React from 'react'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout, Menu, theme, Watermark } from 'antd'
+import { Navigate } from 'react-router-dom'
+import NavHeader from '@/component/NavHeader'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -31,7 +33,9 @@ const App: React.FC = () => {
           侧边栏
         </Sider>
         <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>顶部区域</Header>
+          <Header style={{ padding: 0, height: 50, background: colorBgContainer }}>
+            <NavHeader />
+          </Header>
           <Content style={{ margin: '24px 16px 0' }}>
             <div
               style={{
