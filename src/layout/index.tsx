@@ -3,6 +3,7 @@ import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/i
 import { Layout, Menu, theme, Watermark } from 'antd'
 import { Navigate } from 'react-router-dom'
 import NavHeader from '@/component/NavHeader'
+import NavFooter from '@/component/NavFooter'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -48,7 +49,7 @@ const App: React.FC = () => {
               content
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+          <NavFooter />
         </Layout>
       </Layout>
     </Watermark>
