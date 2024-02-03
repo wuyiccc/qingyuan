@@ -22,7 +22,10 @@ export default function Login() {
       LocalDB.setString(HttpHeaderConstants.TOKEN, token)
       message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
 
-      RedirectUtils.toCallbackUrl()
+      // 延迟跳转, 保证token写入成功
+      setTimeout(() => {
+        RedirectUtils.toCallbackUrl()
+      })
     } catch (error) {
       setLoading(false)
     }

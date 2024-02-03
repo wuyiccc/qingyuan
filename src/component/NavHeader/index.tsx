@@ -2,8 +2,12 @@ import React from 'react'
 import { MenuFoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 
 function NavHeader() {
+  const userEntity: UserEntity = LocalDB.get('userEntity')
+
   const breadList = [
     {
       title: '首页'
@@ -16,7 +20,7 @@ function NavHeader() {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: '邮箱: 3406324191@qq.com'
+      label: userEntity.username
     },
     {
       key: '2',
@@ -33,7 +37,7 @@ function NavHeader() {
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
         <Dropdown menu={{ items }} trigger={['click']}>
-          <span className={styles.nickName}>wuyiccc</span>
+          <span className={styles.nickName}>{userEntity.nickname}</span>
         </Dropdown>
       </div>
     </div>

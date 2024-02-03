@@ -13,7 +13,7 @@ class LocalDB {
     localStorage.setItem(key, JSON.stringify(value))
   }
 
-  static get(key: string): string {
+  static get(key: string): any {
     const value = localStorage.getItem(key)
     if (!value) {
       return StringUtils.EMPTY

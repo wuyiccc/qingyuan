@@ -32,7 +32,7 @@ function SideMenu() {
     <div>
       <div className={styles.logo} onClick={handleClick}>
         <img src='/img/logo.png' alt='' className={styles.img} />
-        <span>Vega</span>
+        <span className={styles.logoText}>Vega</span>
       </div>
       <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={items} />
     </div>
