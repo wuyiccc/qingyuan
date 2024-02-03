@@ -4,6 +4,7 @@ import { Layout, Menu, theme, Watermark } from 'antd'
 import { Navigate } from 'react-router-dom'
 import NavHeader from '@/component/NavHeader'
 import NavFooter from '@/component/NavFooter'
+import SideMenu from '@/component/SideMenu'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -31,7 +32,7 @@ const App: React.FC = () => {
             console.log(collapsed, type)
           }}
         >
-          侧边栏
+          <SideMenu />
         </Sider>
         <Layout>
           <Header style={{ padding: 0, height: 50, background: colorBgContainer }}>
