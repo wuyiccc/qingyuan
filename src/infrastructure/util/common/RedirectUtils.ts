@@ -12,6 +12,7 @@ class RedirectUtils {
     const callbackUrl = encodeURIComponent(location.href)
     if (StringUtils.isNotEmpty(callbackUrl)) {
       location.href = 'login?' + RedirectUtils.CALLBACK_SEARCH_PARAMS_NAME + StringUtils.EQUAL + callbackUrl
+      return
     }
     location.href = '/login'
   }

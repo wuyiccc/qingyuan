@@ -8,6 +8,7 @@ import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
 import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+import RessoDB from '@/infrastructure/db/RessoDB.ts'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)

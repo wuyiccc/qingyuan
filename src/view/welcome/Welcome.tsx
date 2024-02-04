@@ -1,9 +1,3 @@
-import request from '@/infrastructure/api/request.ts'
-import { Button } from 'antd'
-import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import NumberUtils from '@/infrastructure/util/common/NumberUtils.ts'
-import DateUtils from '@/infrastructure/util/common/DateUtils.ts'
-
 import styles from './index.module.less'
 
 export default function Welcome() {

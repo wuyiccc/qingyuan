@@ -4,10 +4,11 @@ import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
+import RessoDB from '@/infrastructure/db/RessoDB.ts'
+import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
+import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
 function NavHeader() {
-  const userEntity: UserEntity = LocalDB.get('userEntity')
-
   const breadList = [
     {
       title: '首页'
@@ -19,14 +20,21 @@ function NavHeader() {
 
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: userEntity.username
+      key: 'username',
+      label: RessoDB.store.userEntity.username
     },
     {
-      key: '2',
+      key: 'logout',
       label: '退出'
     }
   ]
+
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    if (key === 'logout') {
+      LocalDB.remove(HttpHeaderConstants.TOKEN)
+      RedirectUtils.toLoginPage()
+    }
+  }
 
   return (
     <div className={styles.naviHeader}>
@@ -36,8 +44,8 @@ function NavHeader() {
       </div>
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
-        <Dropdown menu={{ items }} trigger={['click']}>
-          <span className={styles.nickName}>{userEntity.nickname}</span>
+        <Dropdown menu={{ items, onClick }} trigger={['click']}>
+          <span className={styles.nickName}>{RessoDB.store.userEntity.nickname}</span>
         </Dropdown>
       </div>
     </div>

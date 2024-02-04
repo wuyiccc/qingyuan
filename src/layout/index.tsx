@@ -9,6 +9,7 @@ import styles from './index.module.less'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import RessoDB from '@/infrastructure/db/RessoDB.ts'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -24,8 +25,8 @@ const App: React.FC = () => {
   }, [])
   const getCurrentUserInfo = async () => {
     const userEntity: UserEntity = await UserApi.getCurrentUserInfo()
-    console.log('userEntity: ', userEntity)
-    LocalDB.set('userEntity', userEntity)
+    RessoDB.store.updateUserEntity(userEntity)
+
     return userEntity
   }
 
