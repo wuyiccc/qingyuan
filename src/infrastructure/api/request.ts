@@ -45,7 +45,6 @@ instance.interceptors.response.use(
     const code: string = data.code
 
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
-      console.log('not login')
       message.error(data.msg)
       LocalDB.remove(HttpHeaderConstants.TOKEN)
       RedirectUtils.toLoginPage()
