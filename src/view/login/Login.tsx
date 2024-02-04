@@ -3,15 +3,16 @@ import { Button, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
-import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
 import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import RessoDB from '@/infrastructure/db/RessoDB.ts'
+import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
+  const state = ZustandDB.db()
   const onFinish = async (value: UserLoginBO) => {
     try {
       setLoading(true)

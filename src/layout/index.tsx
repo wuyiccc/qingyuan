@@ -21,7 +21,7 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].
 }))
 
 const App: React.FC = () => {
-  const state = ZustandDB.useBearStore()
+  const state = ZustandDB.db()
 
   useEffect(() => {
     getCurrentUserInfo()
@@ -29,7 +29,8 @@ const App: React.FC = () => {
   const getCurrentUserInfo = async () => {
     const userEntity: UserEntity = await UserApi.getCurrentUserInfo()
 
-    state.updateUserEntity(userEntity)
+    console.log('userEntity', userEntity)
+    state.setUserEntity(userEntity)
   }
 
   return (

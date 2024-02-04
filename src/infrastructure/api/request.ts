@@ -7,6 +7,7 @@ import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.
 import { message } from '@/component/message/AntdGlobal.tsx'
 import { configs } from '@typescript-eslint/eslint-plugin'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
@@ -44,6 +45,7 @@ instance.interceptors.response.use(
     const code: string = data.code
 
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
+      console.log('not login')
       message.error(data.msg)
       LocalDB.remove(HttpHeaderConstants.TOKEN)
       RedirectUtils.toLoginPage()

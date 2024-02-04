@@ -9,9 +9,10 @@ import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
 import zustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 
 function NavHeader() {
-  const state = ZustandDB.useBearStore()
+  const state = ZustandDB.db()
 
   const breadList = [
     {
@@ -25,7 +26,7 @@ function NavHeader() {
   const items: MenuProps['items'] = [
     {
       key: 'username',
-      label: state.userEntity.username
+      label: StringUtils.isNotEmpty(state.userEntity.username) ? state.userEntity.username : StringUtils.EMPTY
     },
     {
       key: 'logout',

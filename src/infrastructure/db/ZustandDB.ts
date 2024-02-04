@@ -3,16 +3,22 @@ import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 
 class ZustandDB {
-  public static useBearStore = create<{
+  public static db = create<{
     token: string
     userEntity: UserEntity
-    updateUserEntity: (userEntity: UserEntity) => void
+    setUserEntity: (userEntity: UserEntity) => void
+    setToken: (token: string) => void
   }>(set => ({
     token: StringUtils.EMPTY,
     userEntity: new UserEntity(),
-    updateUserEntity(userEntity: UserEntity) {
+    setUserEntity(userEntity: UserEntity) {
       set({
         userEntity
+      })
+    },
+    setToken(token: string) {
+      set({
+        token
       })
     }
   }))
