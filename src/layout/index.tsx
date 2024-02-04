@@ -20,7 +20,7 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].
   label: `nav ${index + 1}`
 }))
 
-const App: React.FC = () => {
+const MyLayout: React.FC = () => {
   const state = StatusDB.db()
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const App: React.FC = () => {
   )
 }
 
-export default App
+export default MyLayout

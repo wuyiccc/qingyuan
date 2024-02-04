@@ -4,6 +4,7 @@ import Welcome from '@/view/welcome/Welcome.tsx'
 import Error404 from '@/view/404.tsx'
 import Error403 from '@/view/403.tsx'
 import Layout from '@/layout'
+import DashBoard from '@/view/dashboard'
 
 const router = [
   {
@@ -22,6 +23,10 @@ const router = [
       {
         path: '/welcome',
         element: <Welcome />
+      },
+      {
+        path: '/dashboard',
+        element: <DashBoard />
       }
     ]
   },
