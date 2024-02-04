@@ -9,6 +9,7 @@ import styles from './index.module.less'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
 // import RessoDB from '@/infrastructure/db/RessoDB.ts'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -20,14 +21,15 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].
 }))
 
 const App: React.FC = () => {
+  const state = ZustandDB.useBearStore()
+
   useEffect(() => {
     getCurrentUserInfo()
   }, [])
   const getCurrentUserInfo = async () => {
     const userEntity: UserEntity = await UserApi.getCurrentUserInfo()
-    // RessoDB.store.updateUserEntity(userEntity)
 
-    return userEntity
+    state.updateUserEntity(userEntity)
   }
 
   return (

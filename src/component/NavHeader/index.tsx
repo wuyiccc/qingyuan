@@ -7,8 +7,12 @@ import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 // import RessoDB from '@/infrastructure/db/RessoDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import zustandDB from '@/infrastructure/db/ZustandDB.ts'
 
 function NavHeader() {
+  const state = ZustandDB.useBearStore()
+
   const breadList = [
     {
       title: '首页'
@@ -21,7 +25,7 @@ function NavHeader() {
   const items: MenuProps['items'] = [
     {
       key: 'username',
-      label: 'username'
+      label: state.userEntity.username
     },
     {
       key: 'logout',
@@ -45,7 +49,7 @@ function NavHeader() {
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
         <Dropdown menu={{ items, onClick }} trigger={['click']}>
-          <span className={styles.nickName}>nickname</span>
+          <span className={styles.nickName}>{state.userEntity.nickname}</span>
         </Dropdown>
       </div>
     </div>

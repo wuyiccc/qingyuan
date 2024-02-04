@@ -1,13 +1,20 @@
 import { create } from 'zustand'
+import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
+import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 
 class ZustandDB {
   public static useBearStore = create<{
-    bears: number
-    increasePopulation: () => void
+    token: string
+    userEntity: UserEntity
+    updateUserEntity: (userEntity: UserEntity) => void
   }>(set => ({
-    bears: 0,
-    increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
-    removeAllBears: () => set({ bears: 0 })
+    token: StringUtils.EMPTY,
+    userEntity: new UserEntity(),
+    updateUserEntity(userEntity: UserEntity) {
+      set({
+        userEntity
+      })
+    }
   }))
 }
 
