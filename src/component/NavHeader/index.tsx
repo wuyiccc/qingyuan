@@ -4,7 +4,7 @@ import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
-import RessoDB from '@/infrastructure/db/RessoDB.ts'
+// import RessoDB from '@/infrastructure/db/RessoDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
@@ -21,7 +21,7 @@ function NavHeader() {
   const items: MenuProps['items'] = [
     {
       key: 'username',
-      label: RessoDB.store.userEntity.username
+      label: 'username'
     },
     {
       key: 'logout',
@@ -45,7 +45,7 @@ function NavHeader() {
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
         <Dropdown menu={{ items, onClick }} trigger={['click']}>
-          <span className={styles.nickName}>{RessoDB.store.userEntity.nickname}</span>
+          <span className={styles.nickName}>nickname</span>
         </Dropdown>
       </div>
     </div>
