@@ -6,13 +6,13 @@ import UserApi from '@/infrastructure/api/UserApi.ts'
 import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
 import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
-  const state = ZustandDB.db()
+  const state = StatusDB.db()
   const onFinish = async (value: UserLoginBO) => {
     try {
       setLoading(true)

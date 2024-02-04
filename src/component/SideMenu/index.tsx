@@ -2,8 +2,11 @@ import { Menu } from 'antd'
 import { DesktopOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons'
 import styles from './index.module.less'
 import { useNavigate } from 'react-router-dom'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
+
 function SideMenu() {
   const navigate = useNavigate()
+  const state = StatusDB.db()
   const items = [
     {
       label: '工作台',
@@ -32,7 +35,7 @@ function SideMenu() {
     <div>
       <div className={styles.logo} onClick={handleClick}>
         <img src='/img/logo.png' alt='' className={styles.img} />
-        <span className={styles.logoText}>Vega</span>
+        {state.collapsed ? '' : <span className={styles.logoText}>Vega</span>}
       </div>
       <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={items} />
     </div>

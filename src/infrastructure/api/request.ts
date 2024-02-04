@@ -7,7 +7,7 @@ import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.
 import { message } from '@/component/message/AntdGlobal.tsx'
 import { configs } from '@typescript-eslint/eslint-plugin'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,

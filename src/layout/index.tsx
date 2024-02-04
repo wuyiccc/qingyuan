@@ -9,7 +9,7 @@ import styles from './index.module.less'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
 // import RessoDB from '@/infrastructure/db/RessoDB.ts'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -21,7 +21,7 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].
 }))
 
 const App: React.FC = () => {
-  const state = ZustandDB.db()
+  const state = StatusDB.db()
 
   useEffect(() => {
     getCurrentUserInfo()
@@ -36,16 +36,7 @@ const App: React.FC = () => {
   return (
     <Watermark content='vega'>
       <Layout>
-        <Sider
-          breakpoint='lg'
-          collapsedWidth='0'
-          onBreakpoint={broken => {
-            console.log(broken)
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type)
-          }}
-        >
+        <Sider collapsed={state.collapsed}>
           <SideMenu />
         </Sider>
         <Layout>

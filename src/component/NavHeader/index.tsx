@@ -1,18 +1,16 @@
 import React from 'react'
-import { MenuFoldOutlined } from '@ant-design/icons'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 // import RessoDB from '@/infrastructure/db/RessoDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
-import zustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 
 function NavHeader() {
-  const state = ZustandDB.db()
+  const state = StatusDB.db()
 
   const breadList = [
     {
@@ -41,10 +39,14 @@ function NavHeader() {
     }
   }
 
+  const reverseCollapsed = () => {
+    state.reversedCollapsed()
+  }
+
   return (
     <div className={styles.naviHeader}>
       <div className={styles.left}>
-        <MenuFoldOutlined />
+        <div onClick={reverseCollapsed}>{state.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</div>
         <Breadcrumb items={breadList} style={{ marginLeft: 10 }} />
       </div>
       <div className='right'>

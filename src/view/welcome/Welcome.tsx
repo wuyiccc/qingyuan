@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import ZustandDB from '@/infrastructure/db/ZustandDB.ts'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import { Button } from 'antd'
 
 export default function Welcome() {
