@@ -43,12 +43,10 @@ const MyLayout: React.FC = () => {
           <Header style={{ padding: 0, height: 50 }}>
             <NavHeader />
           </Header>
-          <Content className={styles.content}>
-            <div className={styles.wrapper}>
-              <Outlet></Outlet>
-            </div>
-            <NavFooter />
-          </Content>
+          <div className={styles.wrapper}>
+            <Outlet></Outlet>
+          </div>
+          <NavFooter />
         </Layout>
       </Layout>
     </Watermark>

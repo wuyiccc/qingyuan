@@ -1,6 +1,49 @@
-import { Descriptions } from 'antd'
+import { Button, Card, Descriptions } from 'antd'
 import styles from './index.module.less'
+import * as echarts from 'echarts'
+import { useEffect } from 'react'
 export default function DashBoard() {
+  useEffect(() => {
+    const lineChartDom = document.getElementById('lineChart')
+    const chartInstance = echarts.init(lineChartDom as HTMLElement)
+
+    chartInstance.setOption({
+      title: {
+        text: '流量监控图',
+        left: '1%'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['服务器1', '服务器2']
+      },
+      grid: {
+        left: 50,
+        right: 50,
+        bottom: 20
+      },
+      xAxis: {
+        data: ['1月', '2月', '3月', '4月', '5月', '6月']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '服务器1',
+          type: 'line',
+          data: [10, 20, 30, 40, 50, 60]
+        },
+        {
+          name: '服务器2',
+          type: 'line',
+          data: [12, 22, 32, 12, 2, 102]
+        }
+      ]
+    })
+  }, [])
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.userInfo}>
@@ -33,6 +76,12 @@ export default function DashBoard() {
           <div className='title'>服务器数量</div>
           <div className={styles.data}>100个</div>
         </div>
+      </div>
+
+      <div className={styles.chart}>
+        <Card title='服务器监控 流量监控' extra={<Button type='primary'>刷新</Button>}>
+          <div id='lineChart' className={styles.itemChart}></div>
+        </Card>
       </div>
     </div>
   )
