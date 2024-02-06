@@ -1,97 +1,101 @@
-import { Button, Form, Input, Space, Table, TableProps, Tag } from 'antd'
-import React from 'react'
+import { Button, Form, Input, Select, Space, Table, TableProps } from 'antd'
+import React, { useEffect, useState } from 'react'
+import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
+import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
+import { ColumnsType } from 'antd/lib/table'
 
 export default function UserManage() {
-  interface DataType {
-    key: string
-    name: string
-    age: number
-    address: string
-    tags: string[]
+  const [userIdList, setUserIdList] = useState<string[]>()
+
+  const doGetUserIdList = async () => {
+    const userIdList: string[] = await UserManageApi.getUserIdList()
+    setUserIdList(userIdList)
   }
 
-  const columns: TableProps<DataType>['columns'] = [
+  useEffect(() => {
+    doGetUserIdList()
+  }, [])
+
+  const columns: ColumnsType<UserEntity> = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: '用户id',
+      dataIndex: 'id',
+      key: 'id',
       render: text => <a>{text}</a>
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age'
+      title: '用户名',
+      dataIndex: 'username',
+      key: 'username'
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address'
+      title: '用户昵称',
+      dataIndex: 'nickname',
+      key: 'nickname'
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green'
-            if (tag === 'loser') {
-              color = 'volcano'
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            )
-          })}
-        </>
-      )
+      title: '用户头像',
+      dataIndex: 'faceUrl',
+      key: 'faceUrl'
     },
     {
-      title: 'Action',
+      title: '创建时间',
+      dataIndex: 'gmtCreate',
+      key: 'gmtCreate'
+    },
+    {
+      title: '用户备注',
+      dataIndex: 'remark',
+      key: 'remark'
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
       key: 'action',
-      render: (_, record) => (
-        <Space size='middle'>
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      )
+      render(record, userEntity) {
+        return (
+          <Space>
+            <Button type='text'>编辑</Button>
+            <Button type='text' danger>
+              删除
+            </Button>
+          </Space>
+        )
+      }
     }
   ]
 
-  const data: DataType[] = [
+  const userList: UserEntity[] = [
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer']
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser']
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher']
+      id: '111',
+      username: '测试用户',
+      nickname: '测试昵称',
+      remark: '备注'
     }
   ]
 
   return (
     <div className='userManage'>
-      <div className='searchForm'>
-        <Form layout='inline'>
-          <Form.Item name='userId' label='用户id'>
-            <Input />
-          </Form.Item>
-        </Form>
-      </div>
+      <Form layout='inline' className='searchForm'>
+        <Form.Item name='userId' label='用户id'>
+          <Select
+            style={{ width: 210 }}
+            options={userIdList?.map(userId => ({ label: userId, value: userId }))}
+          ></Select>
+        </Form.Item>
+        <Form.Item name='username' label='用户名'>
+          <Input placeholder='请输入用户名' />
+        </Form.Item>
+        <Form.Item name='nickname' label='用户昵称'>
+          <Input placeholder='用户昵称' />
+        </Form.Item>
+        <Form.Item>
+          <Space>
+            <Button type='primary'>搜索</Button>
+            <Button type='default'>重置</Button>
+          </Space>
+        </Form.Item>
+      </Form>
       <div className='baseTable'>
         <div className='headerWrapper'>
           <div className='title'>用户列表</div>
@@ -102,7 +106,7 @@ export default function UserManage() {
             </Button>
           </div>
         </div>
-        <Table dataSource={data} columns={columns}></Table>
+        <Table dataSource={userList} columns={columns}></Table>
       </div>
     </div>
   )
