@@ -5,10 +5,15 @@ import { useEffect, useState } from 'react'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import RemoteServerApi from '@/infrastructure/api/RemoteServerApi.ts'
+import { useCharts } from '@/hook/useCharts.ts'
+import { LineChart } from 'echarts/charts'
 export default function DashBoard() {
   const userEntity = StatusDB.db(state => state.userEntity)
 
   const [remoteServerCount, setRemoteServerCount] = useState<number>()
+
+  // 初始化折线图
+  const [lineRef, lineChart] = useCharts()
 
   useEffect(() => {
     getRemoteServerCount()
@@ -20,10 +25,7 @@ export default function DashBoard() {
   }
 
   useEffect(() => {
-    const lineChartDom = document.getElementById('lineChart')
-    const chartInstance = echarts.init(lineChartDom as HTMLElement)
-
-    chartInstance.setOption({
+    lineChart?.setOption({
       title: {
         text: '流量监控图',
         left: '1%'
@@ -58,7 +60,7 @@ export default function DashBoard() {
         }
       ]
     })
-  }, [])
+  }, [lineChart])
 
   return (
     <div className={styles.dashboard}>
@@ -90,7 +92,7 @@ export default function DashBoard() {
 
       <div className={styles.chart}>
         <Card title='服务器监控 流量监控' extra={<Button type='primary'>刷新</Button>}>
-          <div id='lineChart' className={styles.itemChart}></div>
+          <div ref={lineRef} className={styles.itemChart}></div>
         </Card>
       </div>
     </div>
