@@ -1,13 +1,11 @@
-class UserManagePageQueryBO {
+import PageParam from '@/infrastructure/pojo/PageParam.ts'
+
+class UserManagePageQueryBO extends PageParam {
   public userId: string
 
   public username: string
 
   public nickname: string
-
-  public current: number
-
-  public size: number
 }
 
 export default UserManagePageQueryBO

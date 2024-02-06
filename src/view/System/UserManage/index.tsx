@@ -9,25 +9,6 @@ import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
 
 export default function UserManage() {
-  const [userIdList, setUserIdList] = useState<string[]>()
-  const [userEntityList, setUserEntityList] = useState<UserEntity[]>()
-  const [selectedUserIdList, setSelectedUserIdList] = useState<string[]>()
-
-  const doGetUserIdList = async () => {
-    const userIdList: string[] = await UserManageApi.getUserIdList()
-    setUserIdList(userIdList)
-  }
-
-  const doGetUserEntityList = async () => {
-    const pageEntity: PageEntity<UserEntity> = await UserManageApi.pageQueryUser(new UserManagePageQueryBO())
-    setUserEntityList(pageEntity.records)
-  }
-
-  useEffect(() => {
-    doGetUserIdList()
-    doGetUserEntityList()
-  }, [])
-
   const columns: ColumnsType<UserEntity> = [
     {
       title: '用户id',
@@ -78,14 +59,24 @@ export default function UserManage() {
     }
   ]
 
-  const userList: UserEntity[] = [
-    {
-      id: '111',
-      username: '测试用户',
-      nickname: '测试昵称',
-      remark: '备注'
-    }
-  ]
+  const [userIdList, setUserIdList] = useState<string[]>()
+  const [userEntityList, setUserEntityList] = useState<UserEntity[]>()
+  const [selectedUserIdList, setSelectedUserIdList] = useState<string[]>()
+
+  const doGetUserIdList = async () => {
+    const userIdList: string[] = await UserManageApi.getUserIdList()
+    setUserIdList(userIdList)
+  }
+
+  const doGetUserEntityList = async () => {
+    const pageEntity: PageEntity<UserEntity> = await UserManageApi.pageQueryUser(new UserManagePageQueryBO())
+    setUserEntityList(pageEntity.records)
+  }
+
+  useEffect(() => {
+    doGetUserIdList()
+    doGetUserEntityList()
+  }, [])
 
   return (
     <div className='userManage'>
