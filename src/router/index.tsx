@@ -1,10 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import Login from '@/view/login/Login.tsx'
-import Welcome from '@/view/welcome/Welcome.tsx'
+import Login from '@/view/Login/Login.tsx'
+import Welcome from '@/view/Welcome/Welcome.tsx'
 import Error404 from '@/view/404.tsx'
 import Error403 from '@/view/403.tsx'
 import Layout from '@/layout'
-import DashBoard from '@/view/dashboard'
+import DashBoard from '@/view/Dashboard'
+import UserManage from '@/view/System/UserManage'
+import React from 'react'
 
 const router = [
   {
@@ -27,6 +29,10 @@ const router = [
       {
         path: '/dashboard',
         element: <DashBoard />
+      },
+      {
+        path: '/userManage',
+        element: <UserManage />
       }
     ]
   },
