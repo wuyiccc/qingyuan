@@ -1,9 +1,8 @@
-import { Button, Form, Input, Select, Space, Table, TableProps } from 'antd'
+import { Button, Form, Input, Select, Space, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import { ColumnsType } from 'antd/lib/table'
-import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
 import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
@@ -58,29 +57,42 @@ export default function UserManage() {
       }
     }
   ]
+  const [userManagePageQueryForm] = Form.useForm()
 
   const [userIdList, setUserIdList] = useState<string[]>()
   const [userEntityList, setUserEntityList] = useState<UserEntity[]>()
   const [selectedUserIdList, setSelectedUserIdList] = useState<string[]>()
+  const [currentPageNum, setCurrentPageNum] = useState<number>()
+  const [totalRecordNums, setTotalRecordNums] = useState<number>()
 
   const doGetUserIdList = async () => {
     const userIdList: string[] = await UserManageApi.getUserIdList()
     setUserIdList(userIdList)
   }
 
-  const doGetUserEntityList = async () => {
-    const pageEntity: PageEntity<UserEntity> = await UserManageApi.pageQueryUser(new UserManagePageQueryBO())
+  const doPageQueryUser = async (current: number, size: number) => {
+    const values = userManagePageQueryForm.getFieldsValue()
+    const userManagePageQueryBO = new UserManagePageQueryBO()
+    userManagePageQueryBO.userId = values.userId
+    userManagePageQueryBO.username = values.username
+    userManagePageQueryBO.nickname = values.nickname
+    userManagePageQueryBO.current = current
+    userManagePageQueryBO.size = size
+
+    const pageEntity: PageEntity<UserEntity> = await UserManageApi.pageQueryUser(userManagePageQueryBO)
+    setCurrentPageNum(pageEntity.currentPageNum)
+    setTotalRecordNums(pageEntity.totalRecordNums)
     setUserEntityList(pageEntity.records)
   }
 
   useEffect(() => {
     doGetUserIdList()
-    doGetUserEntityList()
+    doPageQueryUser(1, 10)
   }, [])
 
   return (
     <div className='userManage'>
-      <Form layout='inline' className='searchForm'>
+      <Form layout='inline' className='searchForm' form={userManagePageQueryForm}>
         <Form.Item name='userId' label='用户id'>
           <Select
             allowClear={true}
@@ -122,6 +134,10 @@ export default function UserManage() {
           rowKey='id'
           dataSource={userEntityList}
           columns={columns}
+          pagination={{
+            current: currentPageNum,
+            total: totalRecordNums
+          }}
         ></Table>
       </div>
     </div>
