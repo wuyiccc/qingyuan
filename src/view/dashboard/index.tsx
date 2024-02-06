@@ -20,7 +20,7 @@ export default function DashBoard() {
   const [lineRef, lineChart] = useCharts()
 
   useEffect(() => {
-    getRemoteServerFlowMonitorData()
+    renderRemoteServerFlowMonitorData()
   }, [lineChart])
 
   const getRemoteServerCount = async () => {
@@ -28,7 +28,7 @@ export default function DashBoard() {
     setRemoteServerCount(remoteServerCount)
   }
 
-  const getRemoteServerFlowMonitorData = async () => {
+  const renderRemoteServerFlowMonitorData = async () => {
     if (!lineChart) {
       return
     }
@@ -92,7 +92,14 @@ export default function DashBoard() {
       </div>
 
       <div className={styles.chart}>
-        <Card title='服务器监控 流量监控' extra={<Button type='primary'>刷新</Button>}>
+        <Card
+          title='服务器监控 流量监控'
+          extra={
+            <Button type='primary' onClick={renderRemoteServerFlowMonitorData}>
+              刷新
+            </Button>
+          }
+        >
           <div ref={lineRef} className={styles.itemChart}></div>
         </Card>
       </div>
