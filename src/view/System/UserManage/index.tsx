@@ -92,6 +92,7 @@ export default function UserManage() {
       <Form layout='inline' className='searchForm'>
         <Form.Item name='userId' label='用户id'>
           <Select
+            allowClear={true}
             style={{ width: 210 }}
             options={userIdList?.map(userId => ({ label: userId, value: userId }))}
           ></Select>
