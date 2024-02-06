@@ -1,30 +1,42 @@
 import { Button, Card, Descriptions } from 'antd'
 import styles from './index.module.less'
-import * as echarts from 'echarts'
 import { useEffect, useState } from 'react'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
-import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import RemoteServerApi from '@/infrastructure/api/RemoteServerApi.ts'
 import { useCharts } from '@/hook/useCharts.ts'
-import { LineChart } from 'echarts/charts'
+import RemoteServerFlowMonitorEchartsDTO from '@/infrastructure/pojo/dto/RemoteServerFlowMonitorEchartsDTO.ts'
+import MonitorApi from '@/infrastructure/api/MonitorApi.ts'
+import RemoteServerFlowMonitorEntity from '@/infrastructure/pojo/entity/RemoteServerFlowMonitorEntity.ts'
+
 export default function DashBoard() {
   const userEntity = StatusDB.db(state => state.userEntity)
 
   const [remoteServerCount, setRemoteServerCount] = useState<number>()
+  useEffect(() => {
+    getRemoteServerCount()
+  }, [])
 
   // 初始化折线图
   const [lineRef, lineChart] = useCharts()
 
   useEffect(() => {
-    getRemoteServerCount()
-  }, [])
+    getRemoteServerFlowMonitorData()
+  }, [lineChart])
 
   const getRemoteServerCount = async () => {
     const remoteServerCount = await RemoteServerApi.getRemoteServerCount()
     setRemoteServerCount(remoteServerCount)
   }
 
-  useEffect(() => {
+  const getRemoteServerFlowMonitorData = async () => {
+    if (!lineChart) {
+      return
+    }
+    const remoteServerFlowMonitorEntity = await MonitorApi.getRemoteServerFlowMonitorData()
+    console.log('remoteServerFlowMonitorEntity', remoteServerFlowMonitorEntity)
+    const dto = RemoteServerFlowMonitorEchartsDTO.toRemoteServerFlowMonitorEchartsDTO(remoteServerFlowMonitorEntity)
+    console.log('dto', dto)
+
     lineChart?.setOption({
       title: {
         text: '流量监控图',
@@ -34,7 +46,7 @@ export default function DashBoard() {
         trigger: 'axis'
       },
       legend: {
-        data: ['服务器1', '服务器2']
+        data: dto?.serverNameList
       },
       grid: {
         left: 50,
@@ -42,25 +54,14 @@ export default function DashBoard() {
         bottom: 20
       },
       xAxis: {
-        data: ['1月', '2月', '3月', '4月', '5月', '6月']
+        data: dto?.dateList
       },
       yAxis: {
         type: 'value'
       },
-      series: [
-        {
-          name: '服务器1',
-          type: 'line',
-          data: [10, 20, 30, 40, 50, 60]
-        },
-        {
-          name: '服务器2',
-          type: 'line',
-          data: [12, 22, 32, 12, 2, 102]
-        }
-      ]
+      series: dto?.flowDataListWithServerList
     })
-  }, [lineChart])
+  }
 
   return (
     <div className={styles.dashboard}>
