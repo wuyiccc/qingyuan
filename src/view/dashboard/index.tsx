@@ -1,8 +1,24 @@
 import { Button, Card, Descriptions } from 'antd'
 import styles from './index.module.less'
 import * as echarts from 'echarts'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import StatusDB from '@/infrastructure/db/StatusDB.ts'
+import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
+import RemoteServerApi from '@/infrastructure/api/RemoteServerApi.ts'
 export default function DashBoard() {
+  const userEntity = StatusDB.db(state => state.userEntity)
+
+  const [remoteServerCount, setRemoteServerCount] = useState<number>()
+
+  useEffect(() => {
+    getRemoteServerCount()
+  }, [])
+
+  const getRemoteServerCount = async () => {
+    const remoteServerCount = await RemoteServerApi.getRemoteServerCount()
+    setRemoteServerCount(remoteServerCount)
+  }
+
   useEffect(() => {
     const lineChartDom = document.getElementById('lineChart')
     const chartInstance = echarts.init(lineChartDom as HTMLElement)
@@ -47,34 +63,28 @@ export default function DashBoard() {
   return (
     <div className={styles.dashboard}>
       <div className={styles.userInfo}>
-        <img
-          src='http://minio.local.wuyiccc.com:12031/vega/QQ%E5%9B%BE%E7%89%8720210130223341.jpg'
-          alt=''
-          className={styles.userImg}
-        />
+        <img src={userEntity.faceUrl} alt='' className={styles.userImg} />
         <Descriptions title='欢迎使用Vega'>
-          <Descriptions.Item label='用户ID'>awsdad</Descriptions.Item>
-          <Descriptions.Item label='登录名称'>username</Descriptions.Item>
-          <Descriptions.Item label='用户昵称'>nickname</Descriptions.Item>
-          <Descriptions.Item label='备注'>remark</Descriptions.Item>
-          <Descriptions.Item label='创建时间'>
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-          </Descriptions.Item>
+          <Descriptions.Item label='用户ID'>{userEntity.id}</Descriptions.Item>
+          <Descriptions.Item label='登录名称'>{userEntity.username}</Descriptions.Item>
+          <Descriptions.Item label='用户昵称'>{userEntity.nickname}</Descriptions.Item>
+          <Descriptions.Item label='备注'>{userEntity.remark}</Descriptions.Item>
+          <Descriptions.Item label='创建时间'>{userEntity.gmtCreate}</Descriptions.Item>
         </Descriptions>
       </div>
 
       <div className={styles.report}>
         <div className={styles.card}>
           <div className='title'>服务器数量</div>
-          <div className={styles.data}>100个</div>
+          <div className={styles.data}>{remoteServerCount}</div>
         </div>
         <div className={styles.card}>
           <div className='title'>服务器数量</div>
-          <div className={styles.data}>100个</div>
+          <div className={styles.data}>{remoteServerCount}</div>
         </div>
         <div className={styles.card}>
           <div className='title'>服务器数量</div>
-          <div className={styles.data}>100个</div>
+          <div className={styles.data}>{remoteServerCount}</div>
         </div>
       </div>
 

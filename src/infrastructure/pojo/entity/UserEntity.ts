@@ -9,7 +9,7 @@ class UserEntity {
 
   public faceUrl?: string
 
-  public gmtCreate?: Date
+  public gmtCreate?: string
 }
 
 export default UserEntity
