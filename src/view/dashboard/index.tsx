@@ -33,9 +33,7 @@ export default function DashBoard() {
       return
     }
     const remoteServerFlowMonitorEntity = await MonitorApi.getRemoteServerFlowMonitorData()
-    console.log('remoteServerFlowMonitorEntity', remoteServerFlowMonitorEntity)
     const dto = RemoteServerFlowMonitorEchartsDTO.toRemoteServerFlowMonitorEchartsDTO(remoteServerFlowMonitorEntity)
-    console.log('dto', dto)
 
     lineChart?.setOption({
       title: {
