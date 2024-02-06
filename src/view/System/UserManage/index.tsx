@@ -6,6 +6,7 @@ import { ColumnsType } from 'antd/lib/table'
 import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
 import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
+import styles from './index.module.less'
 
 export default function UserManage() {
   const [userIdList, setUserIdList] = useState<string[]>()
@@ -35,6 +36,12 @@ export default function UserManage() {
       render: text => <a>{text}</a>
     },
     {
+      title: '用户头像',
+      dataIndex: 'faceUrl',
+      key: 'faceUrl',
+      render: faceUrl => <img src={faceUrl} alt='' className={styles.userImg} />
+    },
+    {
       title: '用户名',
       dataIndex: 'username',
       key: 'username'
@@ -43,11 +50,6 @@ export default function UserManage() {
       title: '用户昵称',
       dataIndex: 'nickname',
       key: 'nickname'
-    },
-    {
-      title: '用户头像',
-      dataIndex: 'faceUrl',
-      key: 'faceUrl'
     },
     {
       title: '创建时间',
