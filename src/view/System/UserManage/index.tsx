@@ -90,6 +90,10 @@ export default function UserManage() {
     doPageQueryUser(1, 10)
   }, [])
 
+  const onClickPageSearch = () => {
+    doPageQueryUser(1, 10)
+  }
+
   return (
     <div className='userManage'>
       <Form layout='inline' className='searchForm' form={userManagePageQueryForm}>
@@ -101,14 +105,16 @@ export default function UserManage() {
           ></Select>
         </Form.Item>
         <Form.Item name='username' label='用户名'>
-          <Input placeholder='请输入用户名' />
+          <Input placeholder='请输入用户名' allowClear />
         </Form.Item>
         <Form.Item name='nickname' label='用户昵称'>
-          <Input placeholder='用户昵称' />
+          <Input placeholder='用户昵称' allowClear />
         </Form.Item>
         <Form.Item>
           <Space>
-            <Button type='primary'>搜索</Button>
+            <Button type='primary' onClick={onClickPageSearch}>
+              搜索
+            </Button>
             <Button type='default'>重置</Button>
           </Space>
         </Form.Item>

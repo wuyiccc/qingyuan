@@ -11,7 +11,7 @@ class UserManageApi {
   }
 
   public static async pageQueryUser(param: UserManagePageQueryBO): Promise<PageEntity<UserEntity>> {
-    return await request.post(UserManageApi.PREFIX_URL + '/pageQueryUser', param, null)
+    return await request.post(UserManageApi.PREFIX_URL + '/pageQueryUser', param, { showLoading: true })
   }
 }
 
