@@ -3,17 +3,28 @@ import React, { useEffect, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import { ColumnsType } from 'antd/lib/table'
+import userEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
+import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
+import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 
 export default function UserManage() {
   const [userIdList, setUserIdList] = useState<string[]>()
+  const [userEntityList, setUserEntityList] = useState<UserEntity[]>()
+  const [selectedUserIdList, setSelectedUserIdList] = useState<string[]>()
 
   const doGetUserIdList = async () => {
     const userIdList: string[] = await UserManageApi.getUserIdList()
     setUserIdList(userIdList)
   }
 
+  const doGetUserEntityList = async () => {
+    const pageEntity: PageEntity<UserEntity> = await UserManageApi.pageQueryUser(new UserManagePageQueryBO())
+    setUserEntityList(pageEntity.records)
+  }
+
   useEffect(() => {
     doGetUserIdList()
+    doGetUserEntityList()
   }, [])
 
   const columns: ColumnsType<UserEntity> = [
@@ -106,7 +117,18 @@ export default function UserManage() {
             </Button>
           </div>
         </div>
-        <Table dataSource={userList} columns={columns}></Table>
+        <Table
+          rowSelection={{
+            type: 'checkbox',
+            selectedRowKeys: selectedUserIdList,
+            onChange: (selectedRowKeys: React.Key[]) => {
+              setSelectedUserIdList(selectedRowKeys as string[])
+            }
+          }}
+          rowKey='id'
+          dataSource={userEntityList}
+          columns={columns}
+        ></Table>
       </div>
     </div>
   )
