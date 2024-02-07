@@ -22,6 +22,14 @@ class UserApi {
   public static async updateUser(userUpdateBO: UserUpdateBO): Promise<string> {
     return await request.post(UserApi.PREFIX_URL + '/updateUser', userUpdateBO, null)
   }
+
+  public static async removeUser(id: string): Promise<string> {
+    return await request.post(UserApi.PREFIX_URL + '/removeUser?id=' + id, null, null)
+  }
+
+  public static async removeUserList(idList: string[]): Promise<string> {
+    return await request.post(UserApi.PREFIX_URL + '/removeUserList?idList=' + idList, null, null)
+  }
 }
 
 export default UserApi

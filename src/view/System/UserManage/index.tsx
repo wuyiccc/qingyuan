@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Space, Table } from 'antd'
+import { Button, Form, Input, Modal, Select, Space, Table } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
@@ -9,6 +9,9 @@ import styles from './index.module.less'
 import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
 import EditUser from '@/view/System/UserManage/EditUser.tsx'
+import UserApi from '@/infrastructure/api/UserApi.ts'
+import { message } from '@/component/message/AntdGlobal.tsx'
+import ArrayUtils from '@/infrastructure/util/common/ArrayUtils.ts'
 
 export default function UserManage() {
   const createUserRef = useRef<{ open: (data?: UserCreateBO) => void }>()
@@ -62,7 +65,13 @@ export default function UserManage() {
             >
               编辑
             </Button>
-            <Button type='text' danger>
+            <Button
+              type='text'
+              danger
+              onClick={() => {
+                handleUserDel(record)
+              }}
+            >
               删除
             </Button>
           </Space>
@@ -121,7 +130,6 @@ export default function UserManage() {
   }
 
   const handleEditUser = (record: UserEntity) => {
-    console.log('record', record)
     const userEntity = new UserEntity()
     userEntity.id = record.id
     userEntity.username = record.username
@@ -134,6 +142,37 @@ export default function UserManage() {
   }
 
   const modalCallback = () => {
+    onClickPageSearch()
+  }
+
+  const handleUserBatchDel = async () => {
+    if (ArrayUtils.isEmpty(selectedUserIdList)) {
+      message.error('请选择要删除的用户')
+      return
+    }
+
+    Modal.confirm({
+      title: '批量删除确认',
+      content: <span>确认删除选中用户?</span>,
+      onOk: () => {
+        doHandleUserBatchDel()
+      }
+    })
+  }
+
+  const doHandleUserBatchDel = async () => {
+    await UserApi.removeUserList(selectedUserIdList)
+    message.success('批量删除成功')
+    setSelectedUserIdList([])
+    // 重新搜索
+    onClickPageSearch()
+  }
+
+  const handleUserDel = async (record: UserEntity) => {
+    await UserApi.removeUser(record.id)
+    message.success('删除成功')
+    setSelectedUserIdList([])
+    // 重新搜索
     onClickPageSearch()
   }
 
@@ -171,8 +210,8 @@ export default function UserManage() {
             <Button type='primary' onClick={handleCreateUser}>
               新增
             </Button>
-            <Button type='primary' danger>
-              删除
+            <Button type='primary' danger onClick={handleUserBatchDel}>
+              批量删除
             </Button>
           </div>
         </div>
