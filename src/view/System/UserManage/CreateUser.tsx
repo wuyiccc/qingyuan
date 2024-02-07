@@ -126,14 +126,35 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
             )}
           </Upload>
         </Form.Item>
-        <Form.Item label='用户名' name='username' rules={[{ required: true, message: '请输入用户名称' }]}>
+        <Form.Item
+          label='用户名'
+          name='username'
+          rules={[
+            { required: true, message: '请输入用户名称' },
+            { max: 128, message: '不能超过128字符' }
+          ]}
+        >
           <Input placeholder='请输入用户名称' />
         </Form.Item>
-        <Form.Item label='用户昵称' name='nickname' rules={[{ required: true, message: '请输入用户昵称' }]}>
+        <Form.Item
+          label='用户昵称'
+          name='nickname'
+          rules={[
+            { required: true, message: '请输入用户昵称' },
+            { max: 128, message: '不能超过128字符' }
+          ]}
+        >
           <Input placeholder='请输入用户昵称' />
         </Form.Item>
 
-        <Form.Item label='用户密码' name='password' rules={[{ required: true, message: '请输入用户密码' }]}>
+        <Form.Item
+          label='用户密码'
+          name='password'
+          rules={[
+            { required: true, message: '请输入用户密码' },
+            { max: 128, message: '不能超过128字符' }
+          ]}
+        >
           <Input.Password
             placeholder='请输入用户密码'
             visibilityToggle={{ visible: passwordVisible, onVisibleChange: setPasswordVisible }}
@@ -141,7 +162,14 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
           />
         </Form.Item>
 
-        <Form.Item label='备注' name='remark' rules={[{ required: true, message: '请输入用户备注' }]}>
+        <Form.Item
+          label='备注'
+          name='remark'
+          rules={[
+            { required: true, message: '请输入用户备注' },
+            { max: 500, message: '不能超过500字符' }
+          ]}
+        >
           <TextArea rows={4} placeholder='请输入用户备注' />
         </Form.Item>
       </Form>
