@@ -49,10 +49,17 @@ export default function UserManage() {
       title: '操作',
       dataIndex: 'action',
       key: 'action',
-      render(record, userEntity) {
+      render(record) {
         return (
           <Space>
-            <Button type='text'>编辑</Button>
+            <Button
+              type='text'
+              onClick={() => {
+                handleEditUser(record)
+              }}
+            >
+              编辑
+            </Button>
             <Button type='text' danger>
               删除
             </Button>
@@ -108,6 +115,14 @@ export default function UserManage() {
 
   const handleCreateUser = () => {
     createUserRef.current?.open()
+  }
+
+  const handleEditUser = record => {
+    // createUserRef.current?.open(record)
+  }
+
+  const addUserCallback = () => {
+    onClickPageSearch()
   }
 
   return (
@@ -176,7 +191,7 @@ export default function UserManage() {
           }}
         ></Table>
       </div>
-      <CreateUser mRef={createUserRef} callback={userManagePageQueryForm.resetFields} />
+      <CreateUser mRef={createUserRef} callback={addUserCallback} />
     </div>
   )
 }
