@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Space, Table } from 'antd'
+import { Button, Form, Input, Select, Space, Table, Upload } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
@@ -8,9 +8,12 @@ import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
 import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import userApi from '@/infrastructure/api/UserApi.ts'
+import EditUser from '@/view/System/UserManage/EditUser.tsx'
 
 export default function UserManage() {
   const createUserRef = useRef<{ open: (data?: UserCreateBO) => void }>()
+  const editUserRef = useRef<{ open: (data: UserEntity) => void }>()
 
   const columns: ColumnsType<UserEntity> = [
     {
@@ -49,7 +52,7 @@ export default function UserManage() {
       title: '操作',
       dataIndex: 'action',
       key: 'action',
-      render(record) {
+      render(_, record: UserEntity) {
         return (
           <Space>
             <Button
@@ -117,11 +120,20 @@ export default function UserManage() {
     createUserRef.current?.open()
   }
 
-  const handleEditUser = record => {
-    // createUserRef.current?.open(record)
+  const handleEditUser = (record: UserEntity) => {
+    console.log('record', record)
+    const userEntity = new UserEntity()
+    userEntity.id = record.id
+    userEntity.username = record.username
+    userEntity.nickname = record.nickname
+    userEntity.remark = record.remark
+    userEntity.faceUrl = record.faceUrl
+    userEntity.gmtCreate = record.gmtCreate
+
+    editUserRef.current?.open(userEntity)
   }
 
-  const addUserCallback = () => {
+  const modalCallback = () => {
     onClickPageSearch()
   }
 
@@ -191,7 +203,8 @@ export default function UserManage() {
           }}
         ></Table>
       </div>
-      <CreateUser mRef={createUserRef} callback={addUserCallback} />
+      <CreateUser mRef={createUserRef} callback={modalCallback} />
+      <EditUser mRef={editUserRef} callback={modalCallback} />
     </div>
   )
 }

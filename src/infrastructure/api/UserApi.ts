@@ -2,6 +2,7 @@ import request from '@/infrastructure/api/request.ts'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserUpdateBO from '@/infrastructure/pojo/bo/UserUpdateBO.ts'
 
 class UserApi {
   public static PREFIX_URL: string = '/user'
@@ -16,6 +17,10 @@ class UserApi {
 
   public static async addUser(userCreateBO: UserCreateBO): Promise<string> {
     return await request.post(UserApi.PREFIX_URL + '/addUser', userCreateBO, null)
+  }
+
+  public static async updateUser(userUpdateBO: UserUpdateBO): Promise<string> {
+    return await request.post(UserApi.PREFIX_URL + '/updateUser', userUpdateBO, null)
   }
 }
 
