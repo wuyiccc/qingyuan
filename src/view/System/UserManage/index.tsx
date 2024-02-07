@@ -1,5 +1,5 @@
 import { Button, Form, Input, Select, Space, Table } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import { ColumnsType } from 'antd/lib/table'
@@ -7,8 +7,11 @@ import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryB
 import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
 import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
+import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
 
 export default function UserManage() {
+  const createUserRef = useRef<{ open: (data?: UserCreateBO) => void }>()
+
   const columns: ColumnsType<UserEntity> = [
     {
       title: '用户id',
@@ -103,6 +106,10 @@ export default function UserManage() {
     userManagePageQueryForm.resetFields()
   }
 
+  const handleCreateUser = () => {
+    createUserRef.current?.open()
+  }
+
   return (
     <div className='userManage'>
       <Form name='userManagePageQueryForm' layout='inline' className='searchForm' form={userManagePageQueryForm}>
@@ -134,7 +141,9 @@ export default function UserManage() {
         <div className='headerWrapper'>
           <div className='title'>用户列表</div>
           <div className='action'>
-            <Button type='primary'>新增</Button>
+            <Button type='primary' onClick={handleCreateUser}>
+              新增
+            </Button>
             <Button type='primary' danger>
               删除
             </Button>
@@ -167,7 +176,7 @@ export default function UserManage() {
           }}
         ></Table>
       </div>
-      <CreateUser />
+      <CreateUser mRef={createUserRef} callback={userManagePageQueryForm.resetFields} />
     </div>
   )
 }

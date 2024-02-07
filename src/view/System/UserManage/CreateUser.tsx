@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Upload, UploadFile } from 'antd'
-import React, { useState } from 'react'
+import React, { Factory, useImperativeHandle, useState } from 'react'
 import TextArea from 'antd/lib/input/TextArea'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
@@ -10,8 +10,11 @@ import { message } from '@/component/message/AntdGlobal.tsx'
 import R from '@/infrastructure/pojo/R.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
+import CreateUserModalDTO from '@/infrastructure/pojo/dto/CreateUserModalDTO.ts'
+import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserApi from '@/infrastructure/api/UserApi.ts'
 
-export default function CreateUser() {
+export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
   // 基础ui定义
   const [createUserForm] = Form.useForm()
 
@@ -19,14 +22,33 @@ export default function CreateUser() {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [faceUrl, setFaceUrl] = useState<string>(StringUtils.EMPTY)
+  const [visible, setVisible] = useState<boolean>(false)
   const baseURL = import.meta.env.VITE_BASE_API
 
   const handleSubmit = async () => {
-    const valid = await createUserForm.validateFields()
-    // console.log(valid)
+    await createUserForm.validateFields()
+
+    const userCreateBO = new UserCreateBO()
+    userCreateBO.username = createUserForm.getFieldsValue().username // 回调处理
+    userCreateBO.password = createUserForm.getFieldsValue().password
+    userCreateBO.nickname = createUserForm.getFieldsValue().nickname
+    userCreateBO.remark = createUserForm.getFieldsValue().remark
+    userCreateBO.faceUrl = faceUrl
+
+    await UserApi.addUser(userCreateBO)
+
+    message.success('创建成功')
+
+    handleCancel()
   }
 
-  const handleCancel = () => {}
+  const handleCancel = () => {
+    setVisible(false)
+    createUserForm.resetFields()
+    setFaceUrl(StringUtils.EMPTY)
+    // 回调处理
+    props.callback()
+  }
 
   // 上传之前 接口图片处理
   const handleBeforeUpload = (file: RcFile) => {
@@ -51,7 +73,7 @@ export default function CreateUser() {
         console.log(info.file.response.data)
         setFaceUrl(info.file.response.data)
       } else {
-        message.error('上传失败')
+        message.error(info.file.response.msg)
       }
       setLoading(false)
     } else if (info.file.status === 'error') {
@@ -60,18 +82,30 @@ export default function CreateUser() {
     }
   }
 
+  // 暴露mRef的open对象函数
+  useImperativeHandle(props.mRef, () => {
+    return {
+      open
+    }
+  })
+
+  // 定义open函数
+  const open = (data?: UserCreateBO) => {
+    setVisible(true)
+  }
+
   return (
     <Modal
       title='创建用户'
       width={800}
       okText='确定'
       cancelText='取消'
-      open={true}
+      open={visible}
       onOk={handleSubmit}
       onCancel={handleCancel}
     >
       <Form name='createUserForm' form={createUserForm} labelCol={{ span: 4 }} labelAlign='right'>
-        <Form.Item label='用户头像' name='faceUrl' rules={[{ required: true, message: '请输入用户头像' }]}>
+        <Form.Item label='用户头像' rules={[{ required: true, message: '请输入用户头像' }]}>
           <Upload
             listType='picture-card'
             showUploadList={false}
@@ -83,7 +117,7 @@ export default function CreateUser() {
             onChange={handleChange}
           >
             {StringUtils.isNotEmpty(faceUrl) ? (
-              <img src={faceUrl} style={{ width: '100%' }} alt='' />
+              <img src={faceUrl} style={{ width: '100%', borderRadius: 5 }} alt='' />
             ) : (
               <div>
                 {loading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
