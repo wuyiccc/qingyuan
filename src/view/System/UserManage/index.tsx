@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Space, Table, Upload } from 'antd'
+import { Button, Form, Input, Select, Space, Table } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
@@ -8,7 +8,6 @@ import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
 import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
-import userApi from '@/infrastructure/api/UserApi.ts'
 import EditUser from '@/view/System/UserManage/EditUser.tsx'
 
 export default function UserManage() {
