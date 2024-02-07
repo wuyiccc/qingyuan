@@ -142,7 +142,7 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
         </Form.Item>
 
         <Form.Item label='备注' name='remark' rules={[{ required: true, message: '请输入用户备注' }]}>
-          <TextArea rows={4} placeholder='请输入用户备注' maxLength={6} />
+          <TextArea rows={4} placeholder='请输入用户备注' />
         </Form.Item>
       </Form>
     </Modal>
