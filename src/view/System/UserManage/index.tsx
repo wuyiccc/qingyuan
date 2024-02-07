@@ -6,6 +6,7 @@ import { ColumnsType } from 'antd/lib/table'
 import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
 import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
+import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
 
 export default function UserManage() {
   const columns: ColumnsType<UserEntity> = [
@@ -104,7 +105,7 @@ export default function UserManage() {
 
   return (
     <div className='userManage'>
-      <Form layout='inline' className='searchForm' form={userManagePageQueryForm}>
+      <Form name='userManagePageQueryForm' layout='inline' className='searchForm' form={userManagePageQueryForm}>
         <Form.Item name='userId' label='用户id'>
           <Select
             allowClear={true}
@@ -166,6 +167,7 @@ export default function UserManage() {
           }}
         ></Table>
       </div>
+      <CreateUser />
     </div>
   )
 }
