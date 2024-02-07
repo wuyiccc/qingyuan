@@ -62,8 +62,9 @@ export default function UserManage() {
   const [userIdList, setUserIdList] = useState<string[]>()
   const [userEntityList, setUserEntityList] = useState<UserEntity[]>()
   const [selectedUserIdList, setSelectedUserIdList] = useState<string[]>()
-  const [currentPageNum, setCurrentPageNum] = useState<number>()
-  const [totalRecordNums, setTotalRecordNums] = useState<number>()
+  const [currentPageNum, setCurrentPageNum] = useState<number>(1)
+  const [totalRecordNums, setTotalRecordNums] = useState<number>(0)
+  const [pageSize, setPageSize] = useState<number>(10)
 
   const doGetUserIdList = async () => {
     const userIdList: string[] = await UserManageApi.getUserIdList()
@@ -87,11 +88,18 @@ export default function UserManage() {
 
   useEffect(() => {
     doGetUserIdList()
-    doPageQueryUser(1, 10)
   }, [])
 
+  useEffect(() => {
+    doPageQueryUser(currentPageNum, pageSize)
+  }, [currentPageNum, pageSize])
+
   const onClickPageSearch = () => {
-    doPageQueryUser(1, 10)
+    doPageQueryUser(currentPageNum, pageSize)
+  }
+
+  const handleClickReset = () => {
+    userManagePageQueryForm.resetFields()
   }
 
   return (
@@ -115,7 +123,9 @@ export default function UserManage() {
             <Button type='primary' onClick={onClickPageSearch}>
               搜索
             </Button>
-            <Button type='default'>重置</Button>
+            <Button type='default' onClick={handleClickReset}>
+              重置
+            </Button>
           </Space>
         </Form.Item>
       </Form>
@@ -142,7 +152,17 @@ export default function UserManage() {
           columns={columns}
           pagination={{
             current: currentPageNum,
-            total: totalRecordNums
+            pageSize: pageSize,
+            total: totalRecordNums,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            showTotal: function (total) {
+              return `总共 ${total} 条`
+            },
+            onChange: (page, pageSize) => {
+              setPageSize(pageSize)
+              setCurrentPageNum(page)
+            }
           }}
         ></Table>
       </div>
