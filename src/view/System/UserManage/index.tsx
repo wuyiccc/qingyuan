@@ -109,6 +109,7 @@ export default function UserManage() {
 
   const onClickPageSearch = () => {
     doPageQueryUser(currentPageNum, pageSize)
+    setSelectedUserIdList([])
   }
 
   const handleClickReset = () => {
