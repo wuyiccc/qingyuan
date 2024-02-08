@@ -3,7 +3,6 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-// import RessoDB from '@/infrastructure/db/RessoDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
@@ -47,7 +46,7 @@ function NavHeader() {
     <div className={styles.naviHeader}>
       <div className={styles.left}>
         <div onClick={reverseCollapsed}>{state.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</div>
-        <Breadcrumb items={breadList} style={{ marginLeft: 10 }} />
+        <Breadcrumb items={state.breadList} style={{ marginLeft: 10 }} />
       </div>
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />

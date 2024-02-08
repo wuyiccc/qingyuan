@@ -11,6 +11,8 @@ class StatusDB {
     setToken: (token: string) => void
     collapsed: boolean
     reversedCollapsed: () => void
+    breadList: { title: string }[]
+    setBreadList: (breadList: { title: string }[]) => void
   }>(set => ({
     token: StringUtils.EMPTY,
     userEntity: new UserEntity(),
@@ -30,6 +32,12 @@ class StatusDB {
         return {
           collapsed: !state.collapsed
         }
+      })
+    },
+    breadList: [],
+    setBreadList: (breadList: { title: string }[]) => {
+      set({
+        breadList
       })
     }
   }))

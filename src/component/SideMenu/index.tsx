@@ -1,16 +1,18 @@
-import { Menu } from 'antd'
+import { Menu, MenuProps } from 'antd'
 import { DesktopOutlined, SettingOutlined, TeamOutlined, ProfileOutlined } from '@ant-design/icons'
 import styles from './index.module.less'
 import { useLocation, useNavigate } from 'react-router-dom'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
+import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
+import SideMenuDTO from '@/infrastructure/pojo/dto/SideMenuDTO.ts'
 
 function SideMenu() {
   const navigate = useNavigate()
   const state = StatusDB.db()
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['dashboard'])
 
-  const items = [
+  const items: SideMenuDTO[] = [
     {
       label: '工作台',
       key: '/dashboard',
@@ -35,19 +37,46 @@ function SideMenu() {
     }
   ]
 
+  const getParentLabelsByKey = (key: string): { title: string }[] => {
+    const parentLabels: { title: string }[] = []
+
+    const findParentLabels = (items: SideMenuDTO[], currentKey: string) => {
+      for (const item of items) {
+        if (item.key === currentKey) {
+          parentLabels.push({ title: item.label })
+          break
+        }
+
+        if (item.children) {
+          findParentLabels(item.children, currentKey)
+          if (parentLabels.length > 0) {
+            parentLabels.push({ title: item.label })
+            break
+          }
+        }
+      }
+    }
+
+    findParentLabels(items, key)
+    return parentLabels.reverse()
+  }
+
   const handleClickLog = () => {
     setSelectedKeys([])
     navigate('/welcome')
+    state.setBreadList([])
   }
 
   const handleClickMenu = ({ key }: { key: string }) => {
     setSelectedKeys([key])
+    state.setBreadList(getParentLabelsByKey(key))
     navigate(key)
   }
 
   const { pathname } = useLocation()
   useEffect(() => {
     setSelectedKeys([pathname])
+    state.setBreadList(getParentLabelsByKey(pathname))
   }, [])
 
   return (
