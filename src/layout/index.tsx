@@ -10,6 +10,7 @@ import UserApi from '@/infrastructure/api/UserApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
+import MyTabs from '@/component/MyTabs/MyTabs.tsx'
 // import RessoDB from '@/infrastructure/db/RessoDB.ts'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -43,6 +44,7 @@ const MyLayout: React.FC = () => {
           <Header style={{ padding: 0, height: 50 }}>
             <NavHeader />
           </Header>
+          <MyTabs />
           <div className={styles.wrapper}>
             <Outlet></Outlet>
           </div>
