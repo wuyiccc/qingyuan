@@ -11,6 +11,8 @@ import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 function NavHeader() {
   const state = StatusDB.db()
 
+  const userEntity = StatusDB.db(state => state.userEntity)
+
   const breadList = [
     {
       title: '首页'
@@ -49,7 +51,6 @@ function NavHeader() {
         <Breadcrumb items={state.breadList} style={{ marginLeft: 10 }} />
       </div>
       <div className='right'>
-        <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
         <Dropdown menu={{ items, onClick }} trigger={['click']}>
           <span className={styles.nickName}>{state.userEntity.nickname}</span>
         </Dropdown>
