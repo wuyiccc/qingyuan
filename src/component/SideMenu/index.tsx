@@ -3,47 +3,55 @@ import { DesktopOutlined, SettingOutlined, TeamOutlined, ProfileOutlined } from 
 import styles from './index.module.less'
 import { useNavigate } from 'react-router-dom'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
-import React from 'react'
+import React, { useState } from 'react'
 
 function SideMenu() {
   const navigate = useNavigate()
   const state = StatusDB.db()
+  const [selectedKeys, setSelectedKeys] = useState<string[]>(['dashboard'])
+
   const items = [
     {
       label: '工作台',
-      key: '1',
+      key: '/dashboard',
       icon: <DesktopOutlined />
     },
     {
       label: '系统管理',
-      key: '2',
+      key: '/system',
       icon: <SettingOutlined />,
       children: [
         {
           label: '用户管理',
-          key: 3,
+          key: '/userManage',
           icon: <TeamOutlined />
         },
         {
           label: '开发文件管理',
-          key: 4,
+          key: '/devFileManage',
           icon: <ProfileOutlined />
         }
       ]
     }
   ]
 
-  const handleClick = () => {
+  const handleClickLog = () => {
+    setSelectedKeys([])
     navigate('/welcome')
+  }
+
+  const handleClickMenu = ({ key }: { key: string }) => {
+    setSelectedKeys([key])
+    navigate(key)
   }
 
   return (
     <div>
-      <div className={styles.logo} onClick={handleClick}>
+      <div className={styles.logo} onClick={handleClickLog}>
         <img src='/img/logo.png' alt='' className={styles.img} />
         {state.collapsed ? '' : <span className={styles.logoText}>Vega</span>}
       </div>
-      <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={items} />
+      <Menu selectedKeys={selectedKeys} mode='inline' theme='dark' items={items} onClick={handleClickMenu} />
     </div>
   )
 }
