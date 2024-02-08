@@ -1,9 +1,9 @@
 import { Menu } from 'antd'
 import { DesktopOutlined, SettingOutlined, TeamOutlined, ProfileOutlined } from '@ant-design/icons'
 import styles from './index.module.less'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function SideMenu() {
   const navigate = useNavigate()
@@ -44,6 +44,11 @@ function SideMenu() {
     setSelectedKeys([key])
     navigate(key)
   }
+
+  const { pathname } = useLocation()
+  useEffect(() => {
+    setSelectedKeys([pathname])
+  }, [])
 
   return (
     <div>
