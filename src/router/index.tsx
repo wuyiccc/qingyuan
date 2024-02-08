@@ -3,7 +3,7 @@ import Login from '@/view/Login/Login.tsx'
 import Welcome from '@/view/Welcome/Welcome.tsx'
 import Error404 from '@/view/404.tsx'
 import Error403 from '@/view/403.tsx'
-import Layout from '@/layout'
+import MyLayout from '@/layout'
 import DashBoard from '@/view/Dashboard'
 import UserManage from '@/view/System/UserManage'
 import React from 'react'
@@ -21,7 +21,7 @@ const router = [
     id: 'login'
   },
   {
-    element: <Layout />,
+    element: <MyLayout />,
     children: [
       {
         path: '/welcome',
