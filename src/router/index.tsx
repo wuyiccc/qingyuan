@@ -7,6 +7,7 @@ import Layout from '@/layout'
 import DashBoard from '@/view/Dashboard'
 import UserManage from '@/view/System/UserManage'
 import React from 'react'
+import DevFileManage from '@/view/System/DevFileManage'
 
 const router = [
   {
@@ -33,6 +34,10 @@ const router = [
       {
         path: '/userManage',
         element: <UserManage />
+      },
+      {
+        path: '/devFileManage',
+        element: <DevFileManage />
       }
     ]
   },

@@ -1,8 +1,9 @@
 import { Menu } from 'antd'
-import { DesktopOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons'
+import { DesktopOutlined, SettingOutlined, TeamOutlined, ProfileOutlined } from '@ant-design/icons'
 import styles from './index.module.less'
 import { useNavigate } from 'react-router-dom'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
+import React from 'react'
 
 function SideMenu() {
   const navigate = useNavigate()
@@ -22,6 +23,11 @@ function SideMenu() {
           label: '用户管理',
           key: 3,
           icon: <TeamOutlined />
+        },
+        {
+          label: '开发文件管理',
+          key: 4,
+          icon: <ProfileOutlined />
         }
       ]
     }
