@@ -8,6 +8,13 @@ const moInstance = create({
   extensions
 })
 
+// 禁用扩展
+moInstance.onBeforeLoad(() => {
+  molecule.extension.inactive(ext => {
+    return ext.id === 'TheFirstExtension'
+  })
+})
+
 const App = () => moInstance.render(<Workbench />)
 
 export default App
