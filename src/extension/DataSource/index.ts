@@ -9,7 +9,7 @@ export class DataSourceExtension implements IExtension {
   name: string = 'Data Source'
 
   activate(extensionCtx: IExtensionService): void {
-    console.log('data Source')
+    // console.log('data Source')
     this.initUI()
   }
 

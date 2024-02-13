@@ -7,13 +7,14 @@ export class TheFirstExtension implements IExtension {
   name: string = 'The First Extension'
 
   activate(extensionCtx: IExtensionService): void {
-    console.log('activate')
+    // console.log('activate')
     folderTreeController.initFolderTree()
     folderTreeController.handleSelectFolderTree()
+    folderTreeController.handleStatusBarLanguage()
   }
 
   dispose(extensionCtx: IExtensionService): void {
-    console.log('dispose')
+    // console.log('dispose')
     throw new Error('Method not implemented.')
   }
 }
