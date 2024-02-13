@@ -9,11 +9,11 @@ const moInstance = create({
 })
 
 // 禁用扩展
-moInstance.onBeforeLoad(() => {
-  molecule.extension.inactive(ext => {
-    return ext.id === 'TheFirstExtension'
-  })
-})
+// moInstance.onBeforeLoad(() => {
+//   molecule.extension.inactive(ext => {
+//     return ext.id === 'TheFirstExtension'
+//   })
+// })
 
 const App = () => moInstance.render(<Workbench />)
 
