@@ -10,7 +10,8 @@ export const Terminal = () => {
   }, [])
 
   return (
-    <div style={{ margin: '10px 18px' }}>
+    <div style={{ margin: '10px 18px', backgroundColor: 'black' }}>
+      Terminal
       {/*<XTerm*/}
       {/*  ref={xtermRef}*/}
       {/*  options={{*/}
