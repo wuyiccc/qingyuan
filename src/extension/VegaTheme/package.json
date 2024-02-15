@@ -1,0 +1,12 @@
+{
+	"contributes": {
+		"themes": [
+			{
+				"id": "VEGA_THEME",
+				"label": "Vega Theme(推荐)",
+				"uiTheme": "vs-dark",
+				"path": "./theme/VegaTheme.json"
+			}
+		]
+	}
+}
