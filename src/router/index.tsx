@@ -3,12 +3,20 @@ import Login from '@/view/Login/Login.tsx'
 import Error404 from '@/view/404.tsx'
 import Error403 from '@/view/403.tsx'
 import React from 'react'
-import { create, Workbench } from '@dtinsight/molecule'
+import molecule, { create, Workbench } from '@dtinsight/molecule'
 import extensions from '@/extension'
 import AuthLoader from '@/router/AuthLoader.ts'
 
 const moInstance = create({
   extensions
+})
+
+// 禁用扩展
+moInstance.onBeforeInit(() => {
+  // 移除内置activityBar的搜索模块
+  molecule.builtin.inactiveModule('builtInSearchActivityItem')
+  // 移除内置activityBar的文件浏览模块
+  molecule.builtin.inactiveModule('builtInExplorerActivityItem')
 })
 
 const DefaultWorkbench = () => moInstance.render(<Workbench />)

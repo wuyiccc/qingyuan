@@ -7,13 +7,6 @@ import AuxiliaryBarExtensions from '@/extension/auxiliaryBar'
 import VegaTheme from '@/extension/VegaTheme'
 import InitializeExtension from '@/extension/Initialize'
 
-const extensions: IExtension[] = [
-  VegaTheme,
-  new InitializeExtension(),
-  new TheFirstExtension(),
-  new DataSourceExtension(),
-  new TerminalExtension(),
-  new AuxiliaryBarExtensions()
-]
+const extensions: IExtension[] = [VegaTheme, new InitializeExtension(), new DataSourceExtension()]
 
 export default extensions
