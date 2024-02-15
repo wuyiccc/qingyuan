@@ -11,6 +11,8 @@ export const dataSourceActivityBar: IActivityBarItem = {
   sortIndex: 1,
   name: 'Data Source',
   title: 'Data Source Management',
+  // normal显示在左边栏的上方, global显示在左边栏的下方
+  type: 'normal',
   render: () => <div style={{ textAlign: 'center', lineHeight: '48px' }}>用户</div>
 }
 

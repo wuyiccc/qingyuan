@@ -10,13 +10,14 @@ import AuthLoader from '@/router/AuthLoader.ts'
 const moInstance = create({
   extensions
 })
-
+const { ACTIVITY_BAR_GLOBAL_SETTINGS } = molecule.builtin.getConstants()
 // 禁用扩展
 moInstance.onBeforeInit(() => {
   // 移除内置activityBar的搜索模块
   molecule.builtin.inactiveModule('builtInSearchActivityItem')
   // 移除内置activityBar的文件浏览模块
   molecule.builtin.inactiveModule('builtInExplorerActivityItem')
+  molecule.builtin.inactiveModule('activityBarData')
 })
 
 const DefaultWorkbench = () => moInstance.render(<Workbench />)
