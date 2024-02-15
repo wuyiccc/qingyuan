@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Input } from 'antd'
+import { Button, ConfigProvider, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
@@ -9,10 +9,10 @@ import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
+import { timeUnits } from 'echarts/types/src/util/time'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
-  const state = StatusDB.db()
   const onFinish = async (value: UserLoginBO) => {
     try {
       setLoading(true)
@@ -22,12 +22,8 @@ export default function Login() {
       setLoading(false)
 
       LocalDB.setString(HttpHeaderConstants.TOKEN, token)
-      message.success(NoticeMessage.LOGIN_SUCCESS_NOTICE)
 
-      // 延迟跳转, 保证token写入成功
-      setTimeout(() => {
-        RedirectUtils.toCallbackUrl()
-      })
+      RedirectUtils.toCallbackUrl()
     } catch (error) {
       setLoading(false)
     }
@@ -36,20 +32,45 @@ export default function Login() {
   return (
     <div className={styles.login}>
       <div className={styles.loginWrapper}>
-        <div className={styles.title}>系统登录</div>
-        <Form name='basic' initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
-          <Form.Item name='username' rules={[{ required: true, message: '请输入用户名' }]}>
-            <Input />
+        <div className={styles.loginImg}></div>
+        <div className={styles.title}>欢迎来到Vega</div>
+        <Form
+          name='basic'
+          requiredMark={false}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          autoComplete='off'
+          layout='vertical'
+        >
+          <Form.Item
+            label={<label style={{ color: 'white' }}>用户名</label>}
+            name='username'
+            rules={[{ required: true, message: '请输入用户名' }]}
+          >
+            <Input placeholder='请输入用户名' className={styles.input} />
           </Form.Item>
 
-          <Form.Item name='password' rules={[{ required: true, message: '请输入密码' }]}>
-            <Input.Password />
+          <Form.Item
+            label={<label style={{ color: 'white' }}>登录密码</label>}
+            name='password'
+            rules={[{ required: true, message: '请输入密码' }]}
+          >
+            <Input type='password' placeholder='请输入密码' className={styles.input} />
           </Form.Item>
 
           <Form.Item>
-            <Button type='primary' block htmlType='submit' loading={loading}>
-              登录
-            </Button>
+            <ConfigProvider
+              theme={{
+                token: {
+                  // Seed Token，影响范围大
+                  colorPrimary: '#A852FF'
+                }
+              }}
+            >
+              <Button className={styles.loginButton} type='primary' block htmlType='submit' loading={loading}>
+                确认登录
+              </Button>
+            </ConfigProvider>
           </Form.Item>
         </Form>
       </div>
