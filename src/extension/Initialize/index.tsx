@@ -86,9 +86,9 @@ class InitializeExtension implements IExtension {
 
     molecule.menuBar.onSelect(menuId => {
       if (menuId === MenuBarConstants.MENU_BAR_VEGA_GITHUB_ID) {
-        window.location.href = 'https://github.com/tianxuan-platform/vega-web'
+        window.open('https://github.com/tianxuan-platform/vega-web')
       } else if (menuId === MenuBarConstants.MENU_BAR_WUYICCC_SITE_ID) {
-        window.location.href = 'http://www.wuyiccc.com/'
+        window.open('http://www.wuyiccc.com/')
       }
     })
   }
