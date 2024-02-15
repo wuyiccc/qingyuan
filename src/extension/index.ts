@@ -13,7 +13,6 @@ const extensions: IExtension[] = [
   new TheFirstExtension(),
   new DataSourceExtension(),
   new TerminalExtension(),
-  new MenuBarExtension(),
   new AuxiliaryBarExtensions()
 ]
 

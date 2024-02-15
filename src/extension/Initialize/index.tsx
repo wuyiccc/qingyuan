@@ -1,4 +1,4 @@
-import { IExtension, IStatusBarItem } from '@dtinsight/molecule/esm/model'
+import { IExtension, IMenuBarItem, IStatusBarItem } from '@dtinsight/molecule/esm/model'
 import { IExtensionService } from '@dtinsight/molecule/esm/services'
 import molecule from '@dtinsight/molecule'
 import ThemeConstants from '@/infrastructure/constants/ThemeConstants.ts'
@@ -7,6 +7,8 @@ import React from 'react'
 import { constants } from '@dtinsight/molecule/esm/services/builtinService/const'
 import StatusBarConstants from '@/infrastructure/constants/StatusBarConstants.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
+import Logo from '@/component/Logo'
+import MenuBarConstants from '@/infrastructure/constants/MenuBarConstants.ts'
 
 /**
  * 初始化工作台
@@ -24,6 +26,7 @@ class InitializeExtension implements IExtension {
     // 3. 初始化底部栏目
     this.initializeStatusBar()
     // 4. 初始化顶部菜单
+    this.initializeMenuBar()
     // 5. 初始化用户信息
   }
 
@@ -58,6 +61,36 @@ class InitializeExtension implements IExtension {
       },
       molecule.model.Float.left
     )
+  }
+
+  initializeMenuBar() {
+    molecule.menuBar.setState({
+      logo: <Logo />
+    })
+
+    molecule.layout.setMenuBarMode('horizontal')
+
+    const vegaMenu: IMenuBarItem = {
+      id: MenuBarConstants.MENU_BAR_VEGA_GITHUB_ID,
+      name: MenuBarConstants.MENU_BAR_VEGA_GITHUB_NAME
+    }
+
+    const wuyicccMenu: IMenuBarItem = {
+      id: MenuBarConstants.MENU_BAR_WUYICCC_SITE_ID,
+      name: MenuBarConstants.MENU_BAR_WUYICCC_SITE_NAME
+    }
+
+    molecule.menuBar.setState({
+      data: [vegaMenu, wuyicccMenu]
+    })
+
+    molecule.menuBar.onSelect(menuId => {
+      if (menuId === MenuBarConstants.MENU_BAR_VEGA_GITHUB_ID) {
+        window.location.href = 'https://github.com/tianxuan-platform/vega-web'
+      } else if (menuId === MenuBarConstants.MENU_BAR_WUYICCC_SITE_ID) {
+        window.location.href = 'http://www.wuyiccc.com/'
+      }
+    })
   }
 }
 
