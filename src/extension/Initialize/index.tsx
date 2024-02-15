@@ -27,7 +27,6 @@ class InitializeExtension implements IExtension {
     this.initializeStatusBar()
     // 4. 初始化顶部菜单
     this.initializeMenuBar()
-    // 5. 初始化用户信息
   }
 
   dispose(): void {
