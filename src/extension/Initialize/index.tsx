@@ -9,6 +9,8 @@ import StatusBarConstants from '@/infrastructure/constants/StatusBarConstants.ts
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import Logo from '@/component/Logo'
 import MenuBarConstants from '@/infrastructure/constants/MenuBarConstants.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 /**
  * 初始化工作台
@@ -47,7 +49,7 @@ class InitializeExtension implements IExtension {
     molecule.statusBar.remove(constants.NOTIFICATION_MODEL_ID)
     molecule.statusBar.remove(StatusBarConstants.STATUS_BAR_STATUS_EDITOR_INFO_ID)
 
-    const userEntity = await UserApi.getCurrentUserInfo()
+    const userEntity = LocalDB.get(LocalDBConstants.USER_ENTITY_KEY)
 
     molecule.statusBar.add(
       {

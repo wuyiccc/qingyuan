@@ -10,6 +10,7 @@ import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import { timeUnits } from 'echarts/types/src/util/time'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
@@ -23,6 +24,10 @@ export default function Login() {
 
       LocalDB.setString(HttpHeaderConstants.TOKEN, token)
 
+      const userEntity = await UserApi.getCurrentUserInfo()
+
+      LocalDB.set(LocalDBConstants.USER_ENTITY_KEY, userEntity)
+
       RedirectUtils.toCallbackUrl()
     } catch (error) {
       setLoading(false)
@@ -35,7 +40,7 @@ export default function Login() {
         <div className={styles.loginImg}></div>
         <div className={styles.title}>欢迎来到Vega</div>
         <Form
-          name='basic'
+          name='loginForm'
           requiredMark={false}
           initialValues={{ remember: true }}
           onFinish={onFinish}
