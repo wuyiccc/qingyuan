@@ -7,27 +7,25 @@ import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Upload } from
 import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-
+import Icon, { CloseOutlined } from '@ant-design/icons'
+import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 function UserLoginInfo() {
   const userEntity: UserEntity = LocalDB.get(LocalDBConstants.USER_ENTITY_KEY)
 
   const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>()
-  const [userLoginInfoForm] = Form.useForm()
 
   const openShowUserInfoModal = () => {
-    userLoginInfoForm.setFieldsValue({
-      id: userEntity.id,
-      username: userEntity.username,
-      nickname: userEntity.nickname,
-      remark: userEntity.remark,
-      faceUrl: userEntity.faceUrl,
-      gmtCreate: userEntity.gmtCreate
-    })
     setShowUserInfoModal(true)
   }
 
   const closeShowUserInfoModal = () => {
     setShowUserInfoModal(false)
+  }
+
+  const logoutOnClick = () => {
+    setShowUserInfoModal(false)
+    LocalDB.clear()
+    RedirectUtils.toLoginPage()
   }
 
   const labelStyle = {
@@ -42,7 +40,15 @@ function UserLoginInfo() {
       <div className={styles.userFaceWrapper}>
         <img src={userEntity.faceUrl} alt='' className={styles.userImg} onClick={openShowUserInfoModal} />
       </div>
-      <Modal title='用户信息' width={600} open={showUserInfoModal} footer={null} onCancel={closeShowUserInfoModal}>
+      <Modal
+        title='用户信息'
+        width={600}
+        open={showUserInfoModal}
+        onCancel={closeShowUserInfoModal}
+        okText='退出登录'
+        onOk={logoutOnClick}
+        closeIcon={<CloseOutlined className={styles.closeIcon} />}
+      >
         <Descriptions column={1} labelStyle={labelStyle} contentStyle={contentStyle}>
           <Descriptions.Item label='用户头像'>
             <img className={styles.bigUserImg} src={userEntity.faceUrl} alt='' />
