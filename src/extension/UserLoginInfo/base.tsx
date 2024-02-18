@@ -1,6 +1,6 @@
 import { IActivityBarItem } from '@dtinsight/molecule/esm/model'
 import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
-import UserLoginInfo from '@/component/UserLoginInfo'
+import UserLoginInfo from '@/extension/UserLoginInfo/component'
 
 export const UserLoginInfoActivityBar: IActivityBarItem = {
   id: LeftBarConstants.LEFT_BAR_USER_LOGIN_INFO,
