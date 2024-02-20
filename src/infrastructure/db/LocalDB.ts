@@ -1,5 +1,5 @@
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 class LocalDB {
   static setString(key: string, value: string) {
@@ -28,7 +28,7 @@ class LocalDB {
   }
 
   static getToken(): string {
-    const value = localStorage.getItem(HttpHeaderConstants.TOKEN)
+    const value = localStorage.getItem(LocalDBConstants.TOKEN)
     if (!value) {
       return StringUtils.EMPTY
     }

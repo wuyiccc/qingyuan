@@ -8,11 +8,11 @@ import { RcFile, UploadChangeParam, UploadProps } from 'antd/lib/upload'
 import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import TextArea from 'antd/lib/input/TextArea'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import UserUpdateBO from '@/infrastructure/pojo/bo/UserUpdateBO.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function EditUser(props: UpdateUserModalDTO) {
   // 基础ui定义
@@ -120,7 +120,7 @@ export default function EditUser(props: UpdateUserModalDTO) {
             listType='picture-card'
             showUploadList={false}
             headers={{
-              token: LocalDB.get(HttpHeaderConstants.TOKEN)
+              token: LocalDB.get(LocalDBConstants.TOKEN)
             }}
             action={baseURL + '/file/uploadFile'}
             beforeUpload={handleBeforeUpload}

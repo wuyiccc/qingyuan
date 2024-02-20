@@ -3,10 +3,10 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Dropdown, MenuProps, Switch } from 'antd'
 import styles from './index.module.less'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 function NavHeader() {
   const state = StatusDB.db()
@@ -35,7 +35,7 @@ function NavHeader() {
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'logout') {
-      LocalDB.remove(HttpHeaderConstants.TOKEN)
+      LocalDB.remove(LocalDBConstants.TOKEN)
       RedirectUtils.toLoginPage()
     }
   }

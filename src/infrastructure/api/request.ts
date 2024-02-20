@@ -1,13 +1,11 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import axios, { AxiosError } from 'axios'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import { hideLoading, showLoading } from '@/component/loading'
 import R from '@/infrastructure/pojo/R.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import { message } from '@/component/message/AntdGlobal.tsx'
-import { configs } from '@typescript-eslint/eslint-plugin'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import StatusDB from '@/infrastructure/db/StatusDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
@@ -23,7 +21,7 @@ instance.interceptors.request.use(
       showLoading()
     }
 
-    const token = LocalDB.get(HttpHeaderConstants.TOKEN)
+    const token = LocalDB.get(LocalDBConstants.TOKEN)
     if (token) {
       config.headers.token = token
     }
@@ -46,7 +44,7 @@ instance.interceptors.response.use(
 
     if (code === ServerBizCode.ERROR_USER_NOT_LOGIN) {
       message.error(data.msg)
-      LocalDB.remove(HttpHeaderConstants.TOKEN)
+      LocalDB.remove(LocalDBConstants.TOKEN)
       RedirectUtils.toLoginPage()
     } else if (code != ServerBizCode.OK) {
       if (response.config.showError === false) {

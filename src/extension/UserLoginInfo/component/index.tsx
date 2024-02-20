@@ -2,13 +2,11 @@ import styles from './index.module.less'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
-import React, { useEffect, useState } from 'react'
-import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Upload } from 'antd'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
-import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import Icon, { CloseOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
+import { Descriptions, Modal } from 'antd'
+import { CloseOutlined } from '@ant-design/icons'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
+
 function UserLoginInfo() {
   const userEntity: UserEntity = LocalDB.get(LocalDBConstants.USER_ENTITY_KEY)
 

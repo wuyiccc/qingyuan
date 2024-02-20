@@ -1,18 +1,17 @@
 import { Form, Input, Modal, Upload, UploadFile } from 'antd'
-import React, { Factory, useImperativeHandle, useState } from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import TextArea from 'antd/lib/input/TextArea'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
 import { RcFile, UploadChangeParam, UploadProps } from 'antd/lib/upload'
 import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import { message } from '@/component/message/AntdGlobal.tsx'
-import R from '@/infrastructure/pojo/R.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import CreateUserModalDTO from '@/infrastructure/pojo/dto/CreateUserModalDTO.ts'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
   // 基础ui定义
@@ -110,7 +109,7 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
             listType='picture-card'
             showUploadList={false}
             headers={{
-              token: LocalDB.get(HttpHeaderConstants.TOKEN)
+              token: LocalDB.get(LocalDBConstants.TOKEN)
             }}
             action={baseURL + '/file/uploadFile'}
             beforeUpload={handleBeforeUpload}

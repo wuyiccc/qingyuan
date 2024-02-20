@@ -1,4 +1,4 @@
-import { IExtension } from '@dtinsight/molecule/esm/model'
+import { IExtension, IFolderTreeNodeProps } from '@dtinsight/molecule/esm/model'
 import { IExtensionService } from '@dtinsight/molecule/esm/services'
 import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
 import molecule from '@dtinsight/molecule'

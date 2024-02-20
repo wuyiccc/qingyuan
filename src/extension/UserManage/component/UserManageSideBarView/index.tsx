@@ -1,13 +1,18 @@
 import React from 'react'
 import styles from './index.module.less'
 import { Content, Header } from '@dtinsight/molecule/esm/workbench/sidebar'
-import { IActionBarItemProps } from '@dtinsight/molecule/esm/components'
+import { IActionBarItemProps, ITreeNodeItemProps } from '@dtinsight/molecule/esm/components'
 import molecule from '@dtinsight/molecule'
 import 'reflect-metadata'
 import { ICollapseItem } from '@dtinsight/molecule/esm/components/collapse'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
 import TreeDTO from '@/infrastructure/pojo/dto/TreeDTO.ts'
+import { IEditorTab } from '@dtinsight/molecule/esm/model'
+import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
+import { UserManageInfoView } from '@/extension/UserManage/component/UserManageInfoView'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 const Tree = molecule.component.TreeView
 const Toolbar = molecule.component.Toolbar
 const Collapse = molecule.component.Collapse
@@ -85,7 +90,15 @@ export class UserManageSideBarView extends React.Component {
     ]
   }
 
-  onSelectedUser() {
-    console.log('选中用户')
+  onSelectedUser(node: ITreeNodeItemProps) {
+    const tableData: IEditorTab = {
+      id: LeftBarConstants.LEFT_BAR_USER_MANAGE + node.id,
+      name: '用户-' + node.name,
+      renderPane: () => {
+        return <UserManageInfoView userId={node.id as string} />
+      }
+    }
+
+    molecule.editor.open(tableData)
   }
 }

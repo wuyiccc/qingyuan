@@ -3,13 +3,8 @@ import { Button, ConfigProvider, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
-import NoticeMessage from '@/infrastructure/message/NoticeMessage.ts'
-import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
-import StatusDB from '@/infrastructure/db/StatusDB.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import HttpHeaderConstants from '@/infrastructure/constants/HttpHeaderConstants.ts'
-import { timeUnits } from 'echarts/types/src/util/time'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function Login() {
@@ -22,7 +17,7 @@ export default function Login() {
 
       setLoading(false)
 
-      LocalDB.setString(HttpHeaderConstants.TOKEN, token)
+      LocalDB.setString(LocalDBConstants.TOKEN, token)
 
       const userEntity = await UserApi.getCurrentUserInfo()
 

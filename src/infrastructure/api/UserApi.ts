@@ -30,6 +30,10 @@ class UserApi {
   public static async removeUserList(idList: string[]): Promise<string> {
     return await request.post(UserApi.PREFIX_URL + '/removeUserList?idList=' + idList, null, null)
   }
+
+  public static async getUserById(id: string): Promise<UserEntity> {
+    return await request.get(UserApi.PREFIX_URL + '/getUserById?id=' + id, null, null)
+  }
 }
 
 export default UserApi
