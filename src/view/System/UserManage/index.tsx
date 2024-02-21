@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Select, Space, Table } from 'antd'
+import { Button, Form, Input, message, Modal, Select, Space, Table } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
@@ -10,7 +10,6 @@ import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
 import EditUser from '@/view/System/UserManage/EditUser.tsx'
 import UserApi from '@/infrastructure/api/UserApi.ts'
-import { message } from '@/component/message/AntdGlobal.tsx'
 import ArrayUtils from '@/infrastructure/util/common/ArrayUtils.ts'
 
 export default function UserManage() {

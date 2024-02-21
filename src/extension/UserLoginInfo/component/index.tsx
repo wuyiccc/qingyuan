@@ -8,7 +8,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
 function UserLoginInfo() {
-  const userEntity: UserEntity = LocalDB.get(LocalDBConstants.USER_ENTITY_KEY)
+  const userEntity: UserEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY_KEY)
 
   const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>()
 
@@ -47,7 +47,12 @@ function UserLoginInfo() {
         onOk={logoutOnClick}
         closeIcon={<CloseOutlined className={styles.closeIcon} />}
       >
-        <Descriptions column={1} labelStyle={labelStyle} contentStyle={contentStyle}>
+        <Descriptions
+          className={styles.descriptionWrapper}
+          column={1}
+          labelStyle={labelStyle}
+          contentStyle={contentStyle}
+        >
           <Descriptions.Item label='用户头像'>
             <img className={styles.bigUserImg} src={userEntity.faceUrl} alt='' />
           </Descriptions.Item>

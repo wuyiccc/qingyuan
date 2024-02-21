@@ -1,9 +1,8 @@
 import UpdateUserModalDTO from '@/infrastructure/pojo/dto/UpdateUserModalDTO.ts'
-import { Form, Input, Modal, Upload, UploadFile } from 'antd'
+import { Form, Input, message, Modal, Upload, UploadFile } from 'antd'
 import React, { useImperativeHandle, useState } from 'react'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
-import { message } from '@/component/message/AntdGlobal.tsx'
 import { RcFile, UploadChangeParam, UploadProps } from 'antd/lib/upload'
 import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
@@ -13,6 +12,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import UserUpdateBO from '@/infrastructure/pojo/bo/UserUpdateBO.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import FileApi from '@/infrastructure/api/FileApi.ts'
 
 export default function EditUser(props: UpdateUserModalDTO) {
   // 基础ui定义
@@ -122,7 +122,7 @@ export default function EditUser(props: UpdateUserModalDTO) {
             headers={{
               token: LocalDB.get(LocalDBConstants.TOKEN)
             }}
-            action={baseURL + '/file/uploadFile'}
+            action={FileApi.UPLOAD_FILE_URL}
             beforeUpload={handleBeforeUpload}
             onChange={handleChange}
           >

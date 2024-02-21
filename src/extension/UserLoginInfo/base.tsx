@@ -1,12 +1,12 @@
 import { IActivityBarItem } from '@dtinsight/molecule/esm/model'
-import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
+import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import UserLoginInfo from '@/extension/UserLoginInfo/component'
 
 export const UserLoginInfoActivityBar: IActivityBarItem = {
-  id: LeftBarConstants.LEFT_BAR_USER_LOGIN_INFO,
+  id: VegaEditorConstants.LEFT_BAR_USER_LOGIN_INFO_ID,
   sortIndex: 0,
-  name: LeftBarConstants.LEFT_BAR_USER_LOGIN_INFO,
-  title: LeftBarConstants.LEFT_BAR_USER_LOGIN_INFO,
+  name: VegaEditorConstants.LEFT_BAR_USER_LOGIN_INFO_ID,
+  title: VegaEditorConstants.LEFT_BAR_USER_LOGIN_INFO_ID,
   type: 'global',
   render: () => <UserLoginInfo />
 }

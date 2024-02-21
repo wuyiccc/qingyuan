@@ -2,7 +2,7 @@
 	"contributes": {
 		"themes": [
 			{
-				"id": "VEGA_THEME",
+				"id": "theme_vega",
 				"label": "Vega Theme(推荐)",
 				"uiTheme": "vs-dark",
 				"path": "./theme/VegaTheme.json"

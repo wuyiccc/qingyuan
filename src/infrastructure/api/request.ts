@@ -3,9 +3,9 @@ import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import { hideLoading, showLoading } from '@/component/loading'
 import R from '@/infrastructure/pojo/R.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import { message } from '@/component/message/AntdGlobal.tsx'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import { message } from 'antd'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,

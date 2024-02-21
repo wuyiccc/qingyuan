@@ -6,13 +6,11 @@ import molecule from '@dtinsight/molecule'
 import 'reflect-metadata'
 import { ICollapseItem } from '@dtinsight/molecule/esm/components/collapse'
 import UserManageApi from '@/infrastructure/api/UserManageApi.ts'
-import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryBO.ts'
 import TreeDTO from '@/infrastructure/pojo/dto/TreeDTO.ts'
 import { IEditorTab } from '@dtinsight/molecule/esm/model'
-import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
-import { UserManageInfoView } from '@/extension/UserManage/component/UserManageInfoView'
-import LocalDB from '@/infrastructure/db/LocalDB.ts'
-import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
+import { UserManageInfoEditor } from '@/extension/UserManage/component/UserManageInfoEditor'
+
 const Tree = molecule.component.TreeView
 const Toolbar = molecule.component.Toolbar
 const Collapse = molecule.component.Collapse
@@ -42,13 +40,13 @@ export class UserManageSideBarView extends React.Component {
       {
         icon: 'refresh',
         id: 'reloadUser',
-        title: 'reloadUser',
+        title: '刷新用户列表',
         onClick: () => this.reload()
       },
       {
         icon: 'add',
         id: 'addUser',
-        title: 'create user',
+        title: '新建用户',
         onClick: () => console.log('新建用户')
       }
     ]
@@ -81,7 +79,7 @@ export class UserManageSideBarView extends React.Component {
   renderCollapse(): ICollapseItem[] {
     return [
       {
-        id: 'UserList',
+        id: 'userList',
         name: '用户列表',
         renderPanel: () => {
           return <Tree data={this.state.data} onSelect={this.onSelectedUser} />
@@ -92,10 +90,10 @@ export class UserManageSideBarView extends React.Component {
 
   onSelectedUser(node: ITreeNodeItemProps) {
     const tableData: IEditorTab = {
-      id: LeftBarConstants.LEFT_BAR_USER_MANAGE + node.id,
-      name: '用户-' + node.name,
+      id: VegaEditorConstants.EDITOR_TAB_USER_MANAGE_EDITOR_ID_PREFIX + node.id,
+      name: node.name,
       renderPane: () => {
-        return <UserManageInfoView userId={node.id as string} />
+        return <UserManageInfoEditor userId={node.id as string} />
       }
     }
 

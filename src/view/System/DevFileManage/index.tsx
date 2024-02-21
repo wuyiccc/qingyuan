@@ -1,7 +1,6 @@
-import { Button, Form, Input, Modal, Select, Space, Table, TreeSelect } from 'antd'
+import { Button, Form, Input, message, Modal, Select, Space, Table, TreeSelect } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { ColumnsType } from 'antd/lib/table'
-import { message } from '@/component/message/AntdGlobal.tsx'
 import SelectEntity from '@/infrastructure/pojo/entity/SelectEntity.ts'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'

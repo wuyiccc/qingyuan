@@ -1,16 +1,13 @@
 import { IExtension, IMenuBarItem, IStatusBarItem } from '@dtinsight/molecule/esm/model'
 import { IExtensionService } from '@dtinsight/molecule/esm/services'
 import molecule from '@dtinsight/molecule'
-import ThemeConstants from '@/infrastructure/constants/ThemeConstants.ts'
 import WorkbenchEntry from '@/extension/Initialize/component/WorkbenchEntry'
 import React from 'react'
 import { constants } from '@dtinsight/molecule/esm/services/builtinService/const'
-import StatusBarConstants from '@/infrastructure/constants/StatusBarConstants.ts'
-import UserApi from '@/infrastructure/api/UserApi.ts'
 import Logo from '@/extension/Initialize/component/Logo'
-import MenuBarConstants from '@/infrastructure/constants/MenuBarConstants.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 
 /**
  * 初始化工作台
@@ -37,7 +34,7 @@ class InitializeExtension implements IExtension {
 
   initializeTheme() {
     // 默认设置vega主题色
-    molecule.colorTheme.setTheme(ThemeConstants.VEGA_THEME_ID)
+    molecule.colorTheme.setTheme(VegaEditorConstants.THEME_VEGA_ID)
   }
 
   initializeEntryPage() {
@@ -47,14 +44,14 @@ class InitializeExtension implements IExtension {
   async initializeStatusBar() {
     molecule.statusBar.remove(constants.STATUS_PROBLEMS)
     molecule.statusBar.remove(constants.NOTIFICATION_MODEL_ID)
-    molecule.statusBar.remove(StatusBarConstants.STATUS_BAR_STATUS_EDITOR_INFO_ID)
+    molecule.statusBar.remove(VegaEditorConstants.STATUS_BAR_SYSTEM_DEFAULT_EDITOR_INFO_ID)
 
-    const userEntity = LocalDB.get(LocalDBConstants.USER_ENTITY_KEY)
+    const userEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY_KEY)
 
     molecule.statusBar.add(
       {
         sortIndex: 0,
-        id: StatusBarConstants.STATUS_BAR_STATUS_EDITOR_INFO_ID,
+        id: VegaEditorConstants.STATUS_BAR_USER_NAME_ID,
         name: userEntity.nickname,
         onClick: () => {
           console.log('yes')
@@ -72,13 +69,13 @@ class InitializeExtension implements IExtension {
     molecule.layout.setMenuBarMode('horizontal')
 
     const vegaMenu: IMenuBarItem = {
-      id: MenuBarConstants.MENU_BAR_VEGA_GITHUB_ID,
-      name: MenuBarConstants.MENU_BAR_VEGA_GITHUB_NAME
+      id: VegaEditorConstants.MENU_BAR_VEGA_GITHUB_ID,
+      name: VegaEditorConstants.MENU_BAR_VEGA_GITHUB_NAME
     }
 
     const wuyicccMenu: IMenuBarItem = {
-      id: MenuBarConstants.MENU_BAR_WUYICCC_SITE_ID,
-      name: MenuBarConstants.MENU_BAR_WUYICCC_SITE_NAME
+      id: VegaEditorConstants.MENU_BAR_WUYICCC_SITE_ID,
+      name: VegaEditorConstants.MENU_BAR_WUYICCC_SITE_NAME
     }
 
     molecule.menuBar.setState({
@@ -86,9 +83,9 @@ class InitializeExtension implements IExtension {
     })
 
     molecule.menuBar.onSelect(menuId => {
-      if (menuId === MenuBarConstants.MENU_BAR_VEGA_GITHUB_ID) {
+      if (menuId === VegaEditorConstants.MENU_BAR_VEGA_GITHUB_ID) {
         window.open('https://github.com/tianxuan-platform/vega-web')
-      } else if (menuId === MenuBarConstants.MENU_BAR_WUYICCC_SITE_ID) {
+      } else if (menuId === VegaEditorConstants.MENU_BAR_WUYICCC_SITE_ID) {
         window.open('http://www.wuyiccc.com/')
       }
     })

@@ -1,13 +1,12 @@
 import { IExtension, IFolderTreeNodeProps } from '@dtinsight/molecule/esm/model'
 import { IExtensionService } from '@dtinsight/molecule/esm/services'
-import LeftBarConstants from '@/infrastructure/constants/LeftBarConstants.ts'
+import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import molecule from '@dtinsight/molecule'
-import userManageActivityBar from '@/extension/UserManage/UserManageActivityBar.tsx'
-import userManageSideBar from '@/extension/UserManage/UserManageSideBar.tsx'
+import { userManageActivityBar, userManageSideBar } from '@/extension/UserManage/base.tsx'
 
 class UserManageExtension implements IExtension {
-  id: string = LeftBarConstants.LEFT_BAR_USER_MANAGE
-  name: string = LeftBarConstants.LEFT_BAR_USER_MANAGE
+  id: string = VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID
+  name: string = VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID
 
   activate(extensionCtx: IExtensionService) {
     this.initUI()
