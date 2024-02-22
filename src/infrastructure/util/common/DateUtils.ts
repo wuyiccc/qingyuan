@@ -8,6 +8,10 @@ class DateUtils {
 
   public static DATETIME_FORMAT: string = 'yyyy-MM-dd HH:mm:ss'
 
+  public static toDateTime(date?: Date) {
+    return this.toLocalDate(date, this.DATETIME_FORMAT)
+  }
+
   public static toLocalDate(date?: Date, format?: string) {
     let curDate = new Date()
     if (ObjectUtils.nonNull(date)) {

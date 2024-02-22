@@ -9,6 +9,10 @@ class StringUtils {
 
   static readonly EQUAL: string = '='
 
+  static readonly BLANK: string = ' '
+
+  static readonly C_LF = '\n'
+
   public static equals(str1?: string, str2?: string) {
     return str1 === str2
   }

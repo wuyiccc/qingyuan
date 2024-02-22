@@ -8,7 +8,7 @@ import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
 import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
-import { message } from 'antd'
+import ConsoleOutputUtils from '@/infrastructure/util/common/ConsoleOutputUtils.ts'
 
 export class SaveActionExtension implements IExtension {
   id: string = VegaEditorConstants.EDITOR_ACTION_SAVE_ID
@@ -48,8 +48,8 @@ export class SaveActionExtension implements IExtension {
           try {
             if (data.editorDataType === EditorDataTypeEnum.USER) {
               await UserApi.updateUser(JSON.parse(data.jsonData))
-              // TODO: (wuyiccc) 修改 Static function can not consume context like dynamic theme. Please use 'App' component instead. 警告问题
-              message.success('保存成功')
+
+              ConsoleOutputUtils.printInfoMessage('更新用户信息成功')
             }
           } catch (error) {
             console.log(error)
