@@ -2,15 +2,25 @@ import styles from './index.module.less'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Descriptions, Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 
 function UserLoginInfo() {
-  const userEntity: UserEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY_KEY)
-
+  const [userEntity, setUserEntity] = useState<UserEntity>(new UserEntity())
   const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>()
+
+  useEffect(() => {
+    const fetchDataInterval = setInterval(() => {
+      const fetchedUserEntity: UserEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY)
+      console.log('更新用户信息 1min执行一次')
+      setUserEntity(fetchedUserEntity)
+    }, 60000)
+
+    // Clear interval when component is unmounted
+    return () => clearInterval(fetchDataInterval)
+  }, [])
 
   const openShowUserInfoModal = () => {
     setShowUserInfoModal(true)

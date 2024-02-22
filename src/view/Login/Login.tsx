@@ -21,7 +21,7 @@ export default function Login() {
 
       const userEntity = await UserApi.getCurrentUserInfo()
 
-      LocalDB.set(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY_KEY, userEntity)
+      LocalDB.set(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY, userEntity)
 
       RedirectUtils.toCallbackUrl()
     } catch (error) {

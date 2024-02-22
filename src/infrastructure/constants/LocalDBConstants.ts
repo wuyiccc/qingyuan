@@ -1,5 +1,5 @@
 class LocalDBConstants {
-  public static readonly CURRENT_LOGIN_USER_ENTITY_KEY = 'current_login_user_entity_key'
+  public static readonly CURRENT_LOGIN_USER_ENTITY = 'current_login_user_entity'
 
   public static readonly TOKEN: string = 'token'
 

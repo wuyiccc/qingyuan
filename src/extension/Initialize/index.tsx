@@ -8,6 +8,8 @@ import Logo from '@/extension/Initialize/component/Logo'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
+import UserApi from '@/infrastructure/api/UserApi.ts'
+import buildNicknameStatusBarFunction from '@/extension/Initialize/base.tsx'
 
 /**
  * 初始化工作台
@@ -16,7 +18,12 @@ class InitializeExtension implements IExtension {
   id: string = 'initialize'
   name: string = 'initialize'
 
+  private timer: any
+
   activate(extensionCtx: IExtensionService): void {
+    // 0. 初始化定时任务
+    this.initializeTimer()
+
     // 1. 初始化主题
     this.initializeTheme()
     // 2. 初始化入口页
@@ -29,7 +36,17 @@ class InitializeExtension implements IExtension {
   }
 
   dispose(): void {
-    throw new Error('Method not implemented.')
+    clearTimeout(this.timer)
+  }
+
+  initializeTimer() {
+    this.timer = setInterval(async () => {
+      console.log('全局初始化定时任务执行中 1min执行一次')
+      const userEntity = await UserApi.getCurrentUserInfo()
+      LocalDB.set(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY, userEntity)
+
+      molecule.statusBar.update(buildNicknameStatusBarFunction(userEntity.nickname), molecule.model.Float.left)
+    }, 60000)
   }
 
   initializeTheme() {
@@ -46,19 +63,9 @@ class InitializeExtension implements IExtension {
     molecule.statusBar.remove(constants.NOTIFICATION_MODEL_ID)
     molecule.statusBar.remove(VegaEditorConstants.STATUS_BAR_SYSTEM_DEFAULT_EDITOR_INFO_ID)
 
-    const userEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY_KEY)
+    const userEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY)
 
-    molecule.statusBar.add(
-      {
-        sortIndex: 0,
-        id: VegaEditorConstants.STATUS_BAR_USER_NAME_ID,
-        name: userEntity.nickname,
-        onClick: () => {
-          console.log('yes')
-        }
-      },
-      molecule.model.Float.left
-    )
+    molecule.statusBar.add(buildNicknameStatusBarFunction(userEntity.nickname), molecule.model.Float.left)
   }
 
   initializeMenuBar() {
