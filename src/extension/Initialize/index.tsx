@@ -78,8 +78,39 @@ class InitializeExtension implements IExtension {
       name: VegaEditorConstants.MENU_BAR_WUYICCC_SITE_NAME
     }
 
+    const state = molecule.menuBar.getState()
+    const nextData = state.data.concat()
+    nextData.splice(nextData.length - 1, 0, vegaMenu)
+    nextData.splice(nextData.length - 1, 0, wuyicccMenu)
+    console.log(nextData)
+    let deleteIndex = nextData.findIndex(menu => menu.id === 'Run')
+    if (deleteIndex > -1) {
+      nextData.splice(deleteIndex, 1)
+    }
+    deleteIndex = nextData.findIndex(menu => menu.id === 'File')
+    if (deleteIndex > -1) {
+      nextData.splice(deleteIndex, 1)
+    }
+    deleteIndex = nextData.findIndex(menu => menu.id === 'Help')
+    if (deleteIndex > -1) {
+      nextData.splice(deleteIndex, 1)
+    }
+    deleteIndex = nextData.findIndex(menu => menu.id === 'Edit')
+    if (deleteIndex > -1) {
+      nextData.splice(deleteIndex, 1)
+    }
+    deleteIndex = nextData.findIndex(menu => menu.id === 'Selection')
+    if (deleteIndex > -1) {
+      nextData.splice(deleteIndex, 1)
+    }
+    // 不能删除view菜单, 否则关闭sidebar面板的时候会报错
+    // deleteIndex = nextData.findIndex(menu => menu.id === 'View')
+    // if (deleteIndex > -1) {
+    //   nextData.splice(deleteIndex, 1)
+    // }
+
     molecule.menuBar.setState({
-      data: [vegaMenu, wuyicccMenu]
+      data: nextData
     })
 
     molecule.menuBar.onSelect(menuId => {
