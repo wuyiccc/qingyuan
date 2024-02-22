@@ -12,6 +12,9 @@ function UserLoginInfo() {
   const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>()
 
   useEffect(() => {
+    const fetchedUserEntity: UserEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY)
+    setUserEntity(fetchedUserEntity)
+
     const fetchDataInterval = setInterval(() => {
       const fetchedUserEntity: UserEntity = LocalDB.get(LocalDBConstants.CURRENT_LOGIN_USER_ENTITY)
       console.log('更新用户信息 1min执行一次')
