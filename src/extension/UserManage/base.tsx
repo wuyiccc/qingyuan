@@ -1,8 +1,8 @@
 import { IActivityBarItem, ISidebarPane } from '@dtinsight/molecule/esm/model'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import UserManageActivityBar from '@/extension/UserManage/component/UserManageActivityBar'
-import { UserManageSideBarView } from '@/extension/UserManage/component/UserManageSideBar'
 import React from 'react'
+import UserManageSideBarView from '@/extension/UserManage/component/UserManageSideBar'
 
 export const userManageActivityBar: IActivityBarItem = {
   id: VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID,
