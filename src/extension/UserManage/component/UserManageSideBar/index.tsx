@@ -20,9 +20,8 @@ import { RcFile, UploadChangeParam, UploadProps } from 'antd/lib/upload'
 import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
-import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
-import UserManage from '@/extension/UserManage'
+import ImgCrop from 'antd-img-crop'
 
 const Tree = molecule.component.TreeView
 const Toolbar = molecule.component.Toolbar
@@ -138,12 +137,10 @@ export default function UserManageSideBarView() {
     userCreateBO.nickname = values.nickname
     userCreateBO.password = values.password
 
+    await UserApi.addUser(userCreateBO)
     setShowCreateUserInfoModalFlag(false)
     createUserForm.resetFields()
     setFaceUrl(StringUtils.EMPTY)
-
-    await UserApi.addUser(userCreateBO)
-
     ConsoleOutputUtils.printInfoMessage('新建用户成功')
     reload()
     ConsoleOutputUtils.printInfoMessage('重新加载用户列表成功')
@@ -178,6 +175,7 @@ export default function UserManageSideBarView() {
     if (info.file.status === 'done') {
       if (info.file.response.code === ServerBizCode.OK) {
         setFaceUrl(info.file.response.data)
+        createUserForm.setFieldValue('faceUrl', info.fileList)
       } else {
         message.error(info.file.response.msg)
       }
@@ -221,36 +219,38 @@ export default function UserManageSideBarView() {
               getValueFromEvent={normalFile}
               rules={[{ required: true, message: '请选择用户头像' }]}
             >
-              <Upload
-                listType='picture-card'
-                showUploadList={false}
-                headers={{
-                  token: LocalDB.getToken()
-                }}
-                action={FileApi.UPLOAD_FILE_URL}
-                beforeUpload={handleBeforeUpload}
-                onChange={handleChange}
-              >
-                {StringUtils.isNotEmpty(faceUrl) ? (
-                  <img src={faceUrl} style={{ width: '100px', height: '100px', borderRadius: 5 }} alt='' />
-                ) : (
-                  <div>
-                    {uploadFaceImgLoading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
-                    <div style={{ marginTop: 5 }}>上传头像</div>
-                  </div>
-                )}
-              </Upload>
+              <ImgCrop rotationSlider>
+                <Upload
+                  listType='picture-card'
+                  showUploadList={false}
+                  headers={{
+                    token: LocalDB.getToken()
+                  }}
+                  action={FileApi.UPLOAD_FILE_URL}
+                  beforeUpload={handleBeforeUpload}
+                  onChange={handleChange}
+                >
+                  {StringUtils.isNotEmpty(faceUrl) ? (
+                    <img src={faceUrl} style={{ width: '100px', height: '100px', borderRadius: 5 }} alt='' />
+                  ) : (
+                    <div>
+                      {uploadFaceImgLoading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
+                      <div style={{ marginTop: 5 }}>上传头像</div>
+                    </div>
+                  )}
+                </Upload>
+              </ImgCrop>
             </Form.Item>
-            <Form.Item label='登录名称' name='username'>
+            <Form.Item label='登录名称' name='username' rules={[{ required: true, message: '请输入登录名称' }]}>
               <Input placeholder='请输入登录名称' />
             </Form.Item>
-            <Form.Item label='密码' name='password'>
+            <Form.Item label='密码' name='password' rules={[{ required: true, message: '请输入密码' }]}>
               <Input.Password placeholder='请输入用户密码' />
             </Form.Item>
-            <Form.Item label='用户昵称' name='nickname'>
+            <Form.Item label='用户昵称' name='nickname' rules={[{ required: true, message: '请输入用户昵称' }]}>
               <Input placeholder='请输入用户昵称' />
             </Form.Item>
-            <Form.Item label='备注' name='remark'>
+            <Form.Item label='备注' name='remark' rules={[{ required: true, message: '请输入用户备注' }]}>
               <Input.TextArea placeholder='请输入用户备注' />
             </Form.Item>
           </Form>

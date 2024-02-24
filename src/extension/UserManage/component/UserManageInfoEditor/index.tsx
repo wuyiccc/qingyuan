@@ -13,6 +13,7 @@ import FileApi from '@/infrastructure/api/FileApi.ts'
 import UserUpdateBO from '@/infrastructure/pojo/bo/UserUpdateBO.ts'
 import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
 import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
+import ImgCrop from 'antd-img-crop'
 
 export function UserManageInfoEditor({ userId = StringUtils.EMPTY }: { userId: string }) {
   useEffect(() => {
@@ -116,25 +117,27 @@ export function UserManageInfoEditor({ userId = StringUtils.EMPTY }: { userId: s
           onChange={onUserInfoEditorFormChange}
         >
           <Form.Item label='用户头像' name='faceUrl' valuePropName='fileList' getValueFromEvent={normalFile}>
-            <Upload
-              listType='picture-card'
-              showUploadList={false}
-              headers={{
-                token: LocalDB.get(LocalDBConstants.TOKEN)
-              }}
-              action={FileApi.UPLOAD_FILE_URL}
-              beforeUpload={handleBeforeUpload}
-              onChange={handleChange}
-            >
-              {StringUtils.isNotEmpty(faceUrl) ? (
-                <img src={faceUrl} style={{ width: '100%', borderRadius: 5 }} alt='' />
-              ) : (
-                <div>
-                  {uploadFaceImgLoading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
-                  <div style={{ marginTop: 5 }}>上传头像</div>
-                </div>
-              )}
-            </Upload>
+            <ImgCrop rotationSlider>
+              <Upload
+                listType='picture-card'
+                showUploadList={false}
+                headers={{
+                  token: LocalDB.get(LocalDBConstants.TOKEN)
+                }}
+                action={FileApi.UPLOAD_FILE_URL}
+                beforeUpload={handleBeforeUpload}
+                onChange={handleChange}
+              >
+                {StringUtils.isNotEmpty(faceUrl) ? (
+                  <img src={faceUrl} style={{ width: '100px', height: '100px', borderRadius: 5 }} alt='' />
+                ) : (
+                  <div>
+                    {uploadFaceImgLoading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
+                    <div style={{ marginTop: 5 }}>上传头像</div>
+                  </div>
+                )}
+              </Upload>
+            </ImgCrop>
           </Form.Item>
           <Form.Item label='用户id' name='id'>
             <Input disabled={true} />
