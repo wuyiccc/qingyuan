@@ -33,6 +33,9 @@ class InitializeExtension implements IExtension {
     this.initializeStatusBar()
     // 4. 初始化顶部菜单
     this.initializeMenuBar()
+
+    // 5. 初始化右键菜单
+    // this.initializeContextMenu()
   }
 
   dispose(): void {
@@ -127,6 +130,33 @@ class InitializeExtension implements IExtension {
         window.open('http://www.wuyiccc.com/')
       }
     })
+  }
+
+  // 初始化右键菜单
+  initializeContextMenu() {
+    // console.log('初始化右键菜单')
+    // molecule.folderTree.onRightClick((treeNode, menu) => {
+    //   console.log('右键点击')
+    //   if (!treeNode.isLeaf) {
+    //     // remove rename action
+    //     const idx = menu.findIndex(m => m.id === molecule.builtin.getConstants().RENAME_COMMAND_ID)
+    //     menu.splice(idx, 1)
+    //     // insert these menus into folder context
+    //     menu.splice(0, 1, { id: 'demo1', name: '新建任务' })
+    //     menu.splice(2, 0, {
+    //       id: 'demo2',
+    //       name: '编辑'
+    //     })
+    //   } else {
+    //     // remove rename action
+    //     const idx = menu.findIndex(m => m.id === molecule.builtin.getConstants().RENAME_COMMAND_ID)
+    //     menu.splice(idx, 1)
+    //     menu.splice(1, 0, {
+    //       id: 'demo1',
+    //       name: '编辑'
+    //     })
+    //   }
+    // })
   }
 }
 

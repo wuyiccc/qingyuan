@@ -12,7 +12,7 @@ import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.
 import { UserManageInfoEditor } from '@/extension/UserManage/component/UserManageInfoEditor'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import ConsoleOutputUtils from '@/infrastructure/util/common/ConsoleOutputUtils.ts'
-import { ConfigProvider, Form, Input, message, Modal, Upload, UploadFile } from 'antd'
+import { ConfigProvider, Dropdown, Form, Input, MenuProps, message, Modal, Upload, UploadFile } from 'antd'
 import { CloseOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import FileApi from '@/infrastructure/api/FileApi.ts'
@@ -34,6 +34,8 @@ export default function UserManageSideBarView() {
   const [createUserForm] = Form.useForm()
   const [faceUrl, setFaceUrl] = useState<string>()
   const [uploadFaceImgLoading, setUploadFaceImgLoading] = useState<boolean>()
+
+  const [blankRightMenuDisplayFlag, setBlankRightMenuDisplayFlag] = useState(false)
 
   useEffect(() => {
     reload()
@@ -91,7 +93,7 @@ export default function UserManageSideBarView() {
       id: 'userList',
       name: '用户列表',
       renderPanel: () => {
-        return <Tree data={data} onSelect={onSelectedUser} />
+        return <Tree data={data} onSelect={onSelectedUser} renderTitle={titleRender} />
       }
     }
   ]
@@ -107,6 +109,34 @@ export default function UserManageSideBarView() {
     console.log('选择用户id', node.id)
     setSelectedUserId(node.id)
     molecule.editor.open(tableData)
+  }
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <span>新增</span>
+    },
+    {
+      key: '2',
+      label: <span>删除</span>
+    },
+    {
+      key: '3',
+      label: <span>刷新</span>
+    }
+  ]
+  const titleRender = (node, index, isLeaf) => {
+    return (
+      <Dropdown menu={{ items }} trigger={['contextMenu']} onOpenChange={onMenuItemOpenChange}>
+        <div>{node.name}</div>
+      </Dropdown>
+    )
+  }
+
+  const onMenuItemOpenChange = open => {
+    if (open) {
+      setBlankRightMenuDisplayFlag(false)
+    }
   }
 
   const doRemoveUser = async (userId: string) => {
@@ -186,76 +216,94 @@ export default function UserManageSideBarView() {
     }
   }
 
-  return (
-    <div className={styles.sideBarWrapper}>
-      <Header title='用户管理' toolbar={<Toolbar data={renderHeaderToolBar} />} />
-      <Content>
-        <Collapse data={renderCollapse} />
-      </Content>
+  const onBlankRightClick = () => {
+    console.log('空白处右键')
+    setBlankRightMenuDisplayFlag(true)
+  }
 
-      <Modal
-        title='新建用户'
-        width={600}
-        open={showCreateUserInfoModalFlag}
-        onCancel={closeShowCreateUserModal}
-        okText='确认'
-        onOk={onCreateUser}
-        closeIcon={<CloseOutlined className={styles.closeIcon} />}
-      >
-        <ConfigProvider
-          theme={{
-            token: {
-              colorBgContainer: '#1E2227',
-              colorText: '#bdbdbd',
-              colorTextPlaceholder: 'grey'
-            }
-          }}
-        >
-          <Form name='createUserForm' form={createUserForm} labelCol={{ span: 4 }} labelAlign='right'>
-            <Form.Item
-              label='用户头像'
-              name='faceUrl'
-              valuePropName='fileList'
-              getValueFromEvent={normalFile}
-              rules={[{ required: true, message: '请选择用户头像' }]}
+  const onBlankLeftClick = () => {
+    console.log('空白处左键')
+    setBlankRightMenuDisplayFlag(false)
+  }
+
+  return (
+    <div className={styles.sideBarWrapper} onContextMenu={onBlankRightClick} onClick={onBlankLeftClick}>
+      <Dropdown menu={{ items }} trigger={['contextMenu']} open={blankRightMenuDisplayFlag}>
+        <div className={styles.sideBarWrapper}>
+          <Header title='用户管理' toolbar={<Toolbar data={renderHeaderToolBar} />} />
+          <Content>
+            <Collapse data={renderCollapse} />
+          </Content>
+
+          <Modal
+            title='新建用户'
+            width={600}
+            open={showCreateUserInfoModalFlag}
+            onCancel={closeShowCreateUserModal}
+            okText='确认'
+            onOk={onCreateUser}
+            closeIcon={<CloseOutlined className={styles.closeIcon} />}
+          >
+            <ConfigProvider
+              theme={{
+                token: {
+                  colorBgContainer: '#1E2227',
+                  colorText: '#bdbdbd',
+                  colorTextPlaceholder: 'grey'
+                }
+              }}
             >
-              <ImgCrop rotationSlider>
-                <Upload
-                  listType='picture-card'
-                  showUploadList={false}
-                  headers={{
-                    token: LocalDB.getToken()
-                  }}
-                  action={FileApi.UPLOAD_FILE_URL}
-                  beforeUpload={handleBeforeUpload}
-                  onChange={handleChange}
+              <Form name='createUserForm' form={createUserForm} labelCol={{ span: 4 }} labelAlign='right'>
+                <Form.Item
+                  label='用户头像'
+                  name='faceUrl'
+                  valuePropName='fileList'
+                  getValueFromEvent={normalFile}
+                  rules={[{ required: true, message: '请选择用户头像' }]}
                 >
-                  {StringUtils.isNotEmpty(faceUrl) ? (
-                    <img src={faceUrl} style={{ width: '100px', height: '100px', borderRadius: 5 }} alt='' />
-                  ) : (
-                    <div>
-                      {uploadFaceImgLoading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
-                      <div style={{ marginTop: 5 }}>上传头像</div>
-                    </div>
-                  )}
-                </Upload>
-              </ImgCrop>
-            </Form.Item>
-            <Form.Item label='登录名称' name='username' rules={[{ required: true, message: '请输入登录名称' }]}>
-              <Input placeholder='请输入登录名称' />
-            </Form.Item>
-            <Form.Item label='密码' name='password' rules={[{ required: true, message: '请输入密码' }]}>
-              <Input.Password placeholder='请输入用户密码' />
-            </Form.Item>
-            <Form.Item label='用户昵称' name='nickname' rules={[{ required: true, message: '请输入用户昵称' }]}>
-              <Input placeholder='请输入用户昵称' />
-            </Form.Item>
-            <Form.Item label='备注' name='remark' rules={[{ required: true, message: '请输入用户备注' }]}>
-              <Input.TextArea placeholder='请输入用户备注' />
-            </Form.Item>
-          </Form>
-        </ConfigProvider>
-      </Modal>
+                  <ImgCrop rotationSlider>
+                    <Upload
+                      listType='picture-card'
+                      showUploadList={false}
+                      headers={{
+                        token: LocalDB.getToken()
+                      }}
+                      action={FileApi.UPLOAD_FILE_URL}
+                      beforeUpload={handleBeforeUpload}
+                      onChange={handleChange}
+                    >
+                      {StringUtils.isNotEmpty(faceUrl) ? (
+                        <img src={faceUrl} style={{ width: '100px', height: '100px', borderRadius: 5 }} alt='' />
+                      ) : (
+                        <div>
+                          {uploadFaceImgLoading ? (
+                            <LoadingOutlined rev={undefined} />
+                          ) : (
+                            <PlusOutlined rev={undefined} />
+                          )}
+                          <div style={{ marginTop: 5 }}>上传头像</div>
+                        </div>
+                      )}
+                    </Upload>
+                  </ImgCrop>
+                </Form.Item>
+                <Form.Item label='登录名称' name='username' rules={[{ required: true, message: '请输入登录名称' }]}>
+                  <Input placeholder='请输入登录名称' />
+                </Form.Item>
+                <Form.Item label='密码' name='password' rules={[{ required: true, message: '请输入密码' }]}>
+                  <Input.Password placeholder='请输入用户密码' />
+                </Form.Item>
+                <Form.Item label='用户昵称' name='nickname' rules={[{ required: true, message: '请输入用户昵称' }]}>
+                  <Input placeholder='请输入用户昵称' />
+                </Form.Item>
+                <Form.Item label='备注' name='remark' rules={[{ required: true, message: '请输入用户备注' }]}>
+                  <Input.TextArea placeholder='请输入用户备注' />
+                </Form.Item>
+              </Form>
+            </ConfigProvider>
+          </Modal>
+        </div>
+      </Dropdown>
     </div>
   )
 }

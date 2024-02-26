@@ -6,6 +6,8 @@ class VegaEditorConstants {
 
   public static readonly LEFT_BAR_USER_MANAGE_ID: string = 'left_bar_user_manage'
 
+  public static readonly LEFT_BAR_FILE_MANAGE_ID: string = 'left_bar_file_manage'
+
   /**
    * status bar
    */
