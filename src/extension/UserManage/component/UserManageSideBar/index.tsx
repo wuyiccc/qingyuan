@@ -22,6 +22,7 @@ import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
 import ImgCrop from 'antd-img-crop'
+import ObjectUtils from '@/infrastructure/util/common/ObjectUtils.ts'
 
 const Tree = molecule.component.TreeView
 const Toolbar = molecule.component.Toolbar
@@ -111,23 +112,55 @@ export default function UserManageSideBarView() {
     molecule.editor.open(tableData)
   }
 
-  const items: MenuProps['items'] = [
+  const blankItems: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className={styles.rightMenuItem}>新增</div>
-    },
-    {
-      key: '2',
-      label: <div className={styles.rightMenuItem}>删除</div>
+      label: (
+        <div className={styles.rightMenuItem} onClick={() => setShowCreateUserInfoModalFlag(true)}>
+          新增
+        </div>
+      )
     },
     {
       key: '3',
-      label: <div className={styles.rightMenuItem}>刷新</div>
+      label: (
+        <div className={styles.rightMenuItem} onClick={reload}>
+          刷新
+        </div>
+      )
     }
   ]
+
+  const selectedItems: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <div className={styles.rightMenuItem} onClick={() => setShowCreateUserInfoModalFlag(true)}>
+          新增
+        </div>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <div className={styles.rightMenuItem} onClick={() => doRemoveUser(selectedUserId)}>
+          删除
+        </div>
+      )
+    },
+    {
+      key: '3',
+      label: (
+        <div className={styles.rightMenuItem} onClick={reload}>
+          刷新
+        </div>
+      )
+    }
+  ]
+
   const titleRender = (node, index, isLeaf) => {
     return (
-      <Dropdown menu={{ items }} trigger={['contextMenu']} onOpenChange={onMenuItemOpenChange}>
+      <Dropdown menu={{ items: selectedItems }} trigger={['contextMenu']} onOpenChange={onMenuItemOpenChange}>
         <div>{node.name}</div>
       </Dropdown>
     )
@@ -140,6 +173,11 @@ export default function UserManageSideBarView() {
   }
 
   const doRemoveUser = async (userId: string) => {
+    if (StringUtils.isEmpty(userId)) {
+      message.error('请选中用户再删除')
+      return
+    }
+
     await UserApi.removeUser(userId)
     ConsoleOutputUtils.printInfoMessage('删除用户id: ' + userId + ' 成功')
     const groupId = molecule.editor.getGroupIdByTab(
@@ -243,7 +281,7 @@ export default function UserManageSideBarView() {
       }}
     >
       <div className={styles.sideBarWrapper} onContextMenu={onBlankRightClick} onClick={onBlankLeftClick}>
-        <Dropdown menu={{ items }} trigger={['contextMenu']} open={blankRightMenuDisplayFlag}>
+        <Dropdown menu={{ items: blankItems }} trigger={['contextMenu']} open={blankRightMenuDisplayFlag}>
           <div className={styles.sideBarWrapper}>
             <Header title='用户管理' toolbar={<Toolbar data={renderHeaderToolBar} />} />
             <Content>
