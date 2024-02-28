@@ -6,7 +6,7 @@ import UserManageSideBarView from '@/extension/UserManage/component/UserManageSi
 
 export const userManageActivityBar: IActivityBarItem = {
   id: VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID,
-  sortIndex: 1,
+  sortIndex: 2,
   name: VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID,
   title: VegaEditorConstants.LEFT_BAR_USER_MANAGE_ID,
   type: 'normal',

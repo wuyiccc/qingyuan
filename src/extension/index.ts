@@ -4,7 +4,7 @@ import InitializeExtension from '@/extension/Initialize'
 import { UserLoginInfoExtension } from '@/extension/UserLoginInfo'
 import UserManageExtension from '@/extension/UserManage'
 import { SaveActionExtension } from '@/extension/SaveAction'
-import FileManageExtension from '@/extension/FileManage'
+import DevFileManageExtension from '@/extension/DevFileManage'
 
 const extensions: IExtension[] = [
   VegaTheme,
@@ -12,7 +12,7 @@ const extensions: IExtension[] = [
   new UserLoginInfoExtension(),
   new UserManageExtension(),
   new SaveActionExtension(),
-  new FileManageExtension()
+  new DevFileManageExtension()
 ]
 
 export default extensions
