@@ -6,11 +6,13 @@ import molecule from '@dtinsight/molecule'
 import 'reflect-metadata'
 import { ICollapseItem } from '@dtinsight/molecule/esm/components/collapse'
 import TreeDTO from '@/infrastructure/pojo/dto/TreeDTO.ts'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, Tree, TreeDataNode } from 'antd'
 import { FileOutlined, CloudServerOutlined, FolderOutlined } from '@ant-design/icons'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
-
-const Tree = molecule.component.TreeView
+import IconFont from '@/component/icon/IconFont.tsx'
+import { DirectoryTreeProps } from 'antd/lib/tree'
+import AntdTreeDTO from '@/infrastructure/pojo/dto/AntdTreeDTO.tsx'
+const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
 const Collapse = molecule.component.Collapse
 export default function DevFileManageSideBarView() {
@@ -30,40 +32,30 @@ export default function DevFileManageSideBarView() {
   const fetchData = async () => {
     const devFileTreeList = await DevFileApi.getDevFileTree('')
 
-    const treeList = TreeDTO.parseDevFileTree(devFileTreeList)
+    const treeList = AntdTreeDTO.parseDevFileTree(devFileTreeList)
 
     setData(treeList)
   }
 
-  const renderCollapse: ICollapseItem[] = [
+  const onSelect: DirectoryTreeProps['onSelect'] = (keys, info) => {
+    console.log('Trigger Select', keys, info)
+  }
+
+  const treeData: TreeDataNode[] = [
     {
-      id: 'devFileList',
-      name: '开发文件列表',
-      renderPanel: () => {
-        return <Tree data={data} onSelect={onSelectedUser} renderTitle={titleRender} />
-      }
+      title: 'parent 0',
+      key: '0-0',
+      children: []
+    },
+    {
+      title: 'parent 1',
+      key: '0-1',
+      children: [
+        { title: 'leaf 1-0', key: '0-1-0', isLeaf: true },
+        { title: 'leaf 1-1', key: '0-1-1', isLeaf: true }
+      ]
     }
   ]
-
-  const onSelectedUser = (node: ITreeNodeItemProps) => {
-    console.log('选中用户')
-  }
-
-  const titleRender = (node, index, isLeaf) => {
-    console.log(node)
-    return (
-      <div className={styles.treeItem}>
-        {node.fileType === '1' ? (
-          <FolderOutlined />
-        ) : node.fileType === '3' ? (
-          <CloudServerOutlined />
-        ) : (
-          <FileOutlined />
-        )}
-        <span>{node.name}</span>
-      </div>
-    )
-  }
 
   return (
     <ConfigProvider
@@ -84,7 +76,20 @@ export default function DevFileManageSideBarView() {
       <div className={styles.sideBarWrapper}>
         <Header title='开发文件管理' toolbar={<Toolbar data={renderHeaderToolBar} />} />
         <Content>
-          <Collapse data={renderCollapse} />
+          <ConfigProvider
+            theme={{
+              token: {
+                colorBgContainer: '#1e2227'
+              },
+              components: {
+                Tree: {
+                  directoryNodeSelectedBg: '#3e4452'
+                }
+              }
+            }}
+          >
+            <DirectoryTree treeData={data} onSelect={onSelect} />
+          </ConfigProvider>
         </Content>
       </div>
     </ConfigProvider>
