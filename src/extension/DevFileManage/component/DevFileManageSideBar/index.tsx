@@ -6,29 +6,30 @@ import molecule from '@dtinsight/molecule'
 import 'reflect-metadata'
 import { ICollapseItem } from '@dtinsight/molecule/esm/components/collapse'
 import TreeDTO from '@/infrastructure/pojo/dto/TreeDTO.ts'
-import { ConfigProvider, Tree, TreeDataNode } from 'antd'
+import { ConfigProvider, Dropdown, MenuProps, Tree, TreeDataNode } from 'antd'
 import { FileOutlined, CloudServerOutlined, FolderOutlined } from '@ant-design/icons'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
 import IconFont from '@/component/icon/IconFont.tsx'
 import { DirectoryTreeProps } from 'antd/lib/tree'
 import AntdTreeDTO from '@/infrastructure/pojo/dto/AntdTreeDTO.tsx'
+import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
+import DateUtils from '@/infrastructure/util/common/DateUtils.ts'
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
 const Collapse = molecule.component.Collapse
 export default function DevFileManageSideBarView() {
   const [data, setData] = useState<any[]>()
-  const [selectedUserId, setSelectedUserId] = useState(undefined)
+  const [showRightContextMenu, setShowRightContextMenu] = useState<boolean>(false)
 
   useEffect(() => {
     reload()
   }, [])
 
   const reload = () => {
+    console.log('刷新数据')
+    setShowRightContextMenu(false)
     fetchData()
   }
-
-  const renderHeaderToolBar: IActionBarItemProps[] = []
-
   const fetchData = async () => {
     const devFileTreeList = await DevFileApi.getDevFileTree('')
 
@@ -41,19 +42,42 @@ export default function DevFileManageSideBarView() {
     console.log('Trigger Select', keys, info)
   }
 
-  const treeData: TreeDataNode[] = [
+  const onMenuRightClick = () => {
+    setShowRightContextMenu(!showRightContextMenu)
+  }
+
+  const onMenuClick = () => {
+    setShowRightContextMenu(false)
+  }
+
+  const onAddRootDevFile = async () => {
+    const devFile = new DevFileCreateBO()
+    devFile.fileType = 1
+    devFile.filename = DateUtils.toDateTime(new Date())
+    devFile.parentId = '0'
+    await DevFileApi.addDevFile(devFile)
+  }
+
+  const renderHeaderToolBar: IActionBarItemProps[] = [
     {
-      title: 'parent 0',
-      key: '0-0',
-      children: []
+      icon: 'refresh',
+      id: 'reloadDevTree',
+      title: '刷新',
+      onClick: () => reload()
     },
     {
-      title: 'parent 1',
-      key: '0-1',
-      children: [
-        { title: 'leaf 1-0', key: '0-1-0', isLeaf: true },
-        { title: 'leaf 1-1', key: '0-1-1', isLeaf: true }
-      ]
+      icon: 'add',
+      id: 'addDevFile',
+      title: '新增',
+      onClick: () => onAddRootDevFile()
+    }
+  ]
+
+  const items: MenuProps['items'] = [
+    {
+      label: <div onClick={reload}>刷新</div>,
+
+      key: '1'
     }
   ]
 
@@ -75,22 +99,26 @@ export default function DevFileManageSideBarView() {
     >
       <div className={styles.sideBarWrapper}>
         <Header title='开发文件管理' toolbar={<Toolbar data={renderHeaderToolBar} />} />
-        <Content>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorBgContainer: '#1e2227'
-              },
-              components: {
-                Tree: {
-                  directoryNodeSelectedBg: '#3e4452'
-                }
-              }
-            }}
-          >
-            <DirectoryTree treeData={data} onSelect={onSelect} />
-          </ConfigProvider>
-        </Content>
+        <Dropdown menu={{ items }} trigger={['contextMenu']} open={showRightContextMenu}>
+          <div onContextMenu={onMenuRightClick} onClick={onMenuClick}>
+            <Content>
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorBgContainer: '#1e2227'
+                  },
+                  components: {
+                    Tree: {
+                      directoryNodeSelectedBg: '#3e4452'
+                    }
+                  }
+                }}
+              >
+                <DirectoryTree treeData={data} onSelect={onSelect} />
+              </ConfigProvider>
+            </Content>
+          </div>
+        </Dropdown>
       </div>
     </ConfigProvider>
   )
