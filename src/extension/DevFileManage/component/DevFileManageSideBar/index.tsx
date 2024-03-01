@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.less'
 import { Content, Header } from '@dtinsight/molecule/esm/workbench/sidebar'
-import { IActionBarItemProps, ITreeNodeItemProps } from '@dtinsight/molecule/esm/components'
+import { IActionBarItemProps } from '@dtinsight/molecule/esm/components'
 import molecule from '@dtinsight/molecule'
 import 'reflect-metadata'
-import { ICollapseItem } from '@dtinsight/molecule/esm/components/collapse'
-import TreeDTO from '@/infrastructure/pojo/dto/TreeDTO.ts'
-import { ConfigProvider, Dropdown, MenuProps, Tree, TreeDataNode } from 'antd'
-import { FileOutlined, CloudServerOutlined, FolderOutlined } from '@ant-design/icons'
+import { ConfigProvider, Dropdown, MenuProps, Tree } from 'antd'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
-import IconFont from '@/component/icon/IconFont.tsx'
 import { DirectoryTreeProps } from 'antd/lib/tree'
 import AntdTreeDTO from '@/infrastructure/pojo/dto/AntdTreeDTO.tsx'
-import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
-import DateUtils from '@/infrastructure/util/common/DateUtils.ts'
+import { IEditorTab } from '@dtinsight/molecule/esm/model'
+import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
+import DevFileManageCreate from '@/extension/DevFileManage/component/DevFileManageCreate'
+
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
 const Collapse = molecule.component.Collapse
 export default function DevFileManageSideBarView() {
   const [data, setData] = useState<any[]>()
   const [showRightContextMenu, setShowRightContextMenu] = useState<boolean>(false)
+  const [selectedTreeNode, setSelectedTreeNode] = useState<any>()
 
   useEffect(() => {
     reload()
   }, [])
 
   const reload = () => {
-    console.log('刷新数据')
     setShowRightContextMenu(false)
     fetchData()
   }
@@ -39,7 +37,7 @@ export default function DevFileManageSideBarView() {
   }
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys, info) => {
-    console.log('Trigger Select', keys, info)
+    setSelectedTreeNode(info.node)
   }
 
   const onMenuRightClick = () => {
@@ -50,12 +48,27 @@ export default function DevFileManageSideBarView() {
     setShowRightContextMenu(false)
   }
 
-  const onAddRootDevFile = async () => {
-    const devFile = new DevFileCreateBO()
-    devFile.fileType = 1
-    devFile.filename = DateUtils.toDateTime(new Date())
-    devFile.parentId = '0'
-    await DevFileApi.addDevFile(devFile)
+  const openAddDevFilePage = () => {
+    setShowRightContextMenu(false)
+
+    const groupId = molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID)
+    molecule.editor.closeTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID, groupId)
+
+    const tableData: IEditorTab = {
+      id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID,
+      name: '新建文件',
+      renderPane: () => {
+        return (
+          <DevFileManageCreate
+            parentId={selectedTreeNode.key}
+            parentDevFileName={selectedTreeNode.title}
+            onCreateDevFileCallback={fetchData}
+          />
+        )
+      }
+    }
+
+    molecule.editor.open(tableData)
   }
 
   const renderHeaderToolBar: IActionBarItemProps[] = [
@@ -64,20 +77,17 @@ export default function DevFileManageSideBarView() {
       id: 'reloadDevTree',
       title: '刷新',
       onClick: () => reload()
-    },
-    {
-      icon: 'add',
-      id: 'addDevFile',
-      title: '新增',
-      onClick: () => onAddRootDevFile()
     }
   ]
 
   const items: MenuProps['items'] = [
     {
       label: <div onClick={reload}>刷新</div>,
-
       key: '1'
+    },
+    {
+      label: <div onClick={openAddDevFilePage}>新建</div>,
+      key: '2'
     }
   ]
 

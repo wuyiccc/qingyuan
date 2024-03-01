@@ -31,6 +31,8 @@ class VegaEditorConstants {
    */
   public static readonly EDITOR_TAB_USER_MANAGE_EDITOR_ID_PREFIX: string = 'editor_tab_user_manage_editor_id:'
 
+  public static readonly EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID: string = 'editor_tab_dev_file_manage_editor_id'
+
   /**
    * editor action
    */
