@@ -17,6 +17,8 @@ import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO
 import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import DevFileTypeConstants from '@/infrastructure/constants/DevFileTypeConstants.ts'
+import DevFileRemoteServerEditor from '@/extension/DevFileManage/component/DevFileRemoteServerEditor'
 
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
@@ -54,7 +56,7 @@ export default function DevFileManageSideBarView() {
     const tableData: IEditorTab = {
       id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + info.node.key,
       name: info.node.title as string,
-      renderPane: () => <VegaEditor />
+      renderPane: doRenderEditorPane(selectedData.type, selectedData.key)
     }
 
     molecule.editor.open(tableData)
@@ -63,6 +65,12 @@ export default function DevFileManageSideBarView() {
     currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
     currentEditorDataDTO.jsonData = JSON.stringify(info)
     LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
+  }
+
+  const doRenderEditorPane = (type, id) => {
+    if (type === DevFileTypeConstants.REMOTE_SERVER.type) return () => <DevFileRemoteServerEditor id={id} />
+
+    return () => <VegaEditor />
   }
 
   const onMenuRightClick = () => {
