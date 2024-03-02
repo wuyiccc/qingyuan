@@ -77,8 +77,8 @@ export default function DevFileManageCreate({
           components: {
             Select: {
               // selectorBg: 'grey'
-              optionActiveBg: '#17181f',
-              optionSelectedBg: '#17181f'
+              optionActiveBg: '#1d1f28',
+              optionSelectedBg: '#1d1f28'
             }
           }
         }}

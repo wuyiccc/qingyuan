@@ -71,13 +71,18 @@ export default function DevFileManageUpdate({
             colorBgContainerDisabled: '#282A36',
             colorBgContainer: '#282A36',
             colorTextDisabled: '#bdbdbd',
-            colorText: '#bdbdbd'
+            colorText: '#bdbdbd',
+            colorBgElevated: '#282A36'
           },
           components: {
             Select: {
               // selectorBg: 'grey'
-              optionActiveBg: '#17181f',
-              optionSelectedBg: '#17181f'
+              optionActiveBg: '#1d1f28',
+              optionSelectedBg: '#1d1f28'
+            },
+            TreeSelect: {
+              nodeHoverBg: '#1d1f28',
+              nodeSelectedBg: '#1d1f28'
             }
           }
         }}
@@ -104,6 +109,7 @@ export default function DevFileManageUpdate({
               allowClear
               treeDefaultExpandAll
               treeData={fileTreeSelect}
+              className={styles.treeSelect}
               fieldNames={{ label: 'filename', value: 'id', children: 'children' }}
             />
           </Form.Item>
