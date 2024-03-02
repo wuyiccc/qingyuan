@@ -38,6 +38,22 @@ export default function DevFileManageSideBarView() {
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys, info) => {
     setSelectedTreeNode(info.node)
+
+    // 如果选中的是目录, 则不打开页面
+    const selectedData = AntdTreeDTO.findAntdTreeDTOByKey(data, info.node.key as string)
+    if (selectedData.type === 1) {
+      return
+    }
+
+    const tableData: IEditorTab = {
+      id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + info.node.key,
+      name: info.node.title as string,
+      renderPane: () => {
+        return <div>{info.node.title as string}</div>
+      }
+    }
+
+    molecule.editor.open(tableData)
   }
 
   const onMenuRightClick = () => {

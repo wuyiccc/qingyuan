@@ -5,6 +5,14 @@ class ObjectUtils {
     }
     return false
   }
+
+  public static isNull(obj: object | undefined): boolean {
+    if (obj === undefined || obj === null) {
+      return true
+    }
+
+    return false
+  }
 }
 
 export default ObjectUtils
