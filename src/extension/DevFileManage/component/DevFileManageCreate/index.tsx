@@ -48,12 +48,12 @@ export default function DevFileManageCreate({
     devFileCreateBO.filename = values.filename
     devFileCreateBO.fileType = values.fileType
     await DevFileApi.addDevFile(devFileCreateBO)
-    // const groupId = molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID)
-    // molecule.editor.closeTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID, groupId)
     if (onCreateDevFileCallback) {
       console.log('执行callback方法')
       onCreateDevFileCallback()
     }
+    const groupId = molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID)
+    molecule.editor.closeTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_CREATE_ID, groupId)
   }
 
   return (
