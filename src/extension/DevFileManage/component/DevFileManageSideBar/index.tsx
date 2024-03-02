@@ -13,6 +13,10 @@ import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.
 import DevFileManageCreate from '@/extension/DevFileManage/component/DevFileManageCreate'
 import DevFileManageUpdate from '@/extension/DevFileManage/component/DevFileManageUpdate'
 import VegaEditor from '@/extension/DevFileManage/component/VegaEditor.tsx'
+import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
+import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
@@ -54,6 +58,11 @@ export default function DevFileManageSideBarView() {
     }
 
     molecule.editor.open(tableData)
+
+    const currentEditorDataDTO = new CurrentEditorDataDTO()
+    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
+    currentEditorDataDTO.jsonData = JSON.stringify(info)
+    LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }
 
   const onMenuRightClick = () => {

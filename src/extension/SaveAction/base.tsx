@@ -4,7 +4,7 @@ import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.
 export const EDITOR_ACTION_SAVE: IEditorActionsProps = {
   id: VegaEditorConstants.EDITOR_ACTION_SAVE_ID,
   name: 'Save',
-  icon: 'play',
+  icon: 'save',
   place: 'outer',
   disabled: false,
   title: '保存'
