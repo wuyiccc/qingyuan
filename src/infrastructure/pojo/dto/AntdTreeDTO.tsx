@@ -17,6 +17,8 @@ class AntdTreeDTO {
 
   public type?: number
 
+  public parentId?: string
+
   public static parseDevFileTree(devFileEntityList: DevFileTreeEntity[]): AntdTreeDTO[] {
     if (devFileEntityList === null || devFileEntityList.length === 0) {
       return []
@@ -36,6 +38,7 @@ class AntdTreeDTO {
         isLeaf: devFileTree.fileType === 2 || devFileTree.fileType === 4,
         children: [],
         type: devFileTree.fileType,
+        parentId: devFileTree.parentId,
         icon:
           devFileTree.fileType === 1 ? null : devFileTree.fileType === 2 ? (
             <IconFont type='icon-wuyicccCONF' />

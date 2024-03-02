@@ -8,9 +8,10 @@ import { ConfigProvider, Dropdown, MenuProps, Tree } from 'antd'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
 import { DirectoryTreeProps } from 'antd/lib/tree'
 import AntdTreeDTO from '@/infrastructure/pojo/dto/AntdTreeDTO.tsx'
-import { IEditorTab } from '@dtinsight/molecule/esm/model'
+import { BuiltInEditorTabDataType, IEditorTab } from '@dtinsight/molecule/esm/model'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import DevFileManageCreate from '@/extension/DevFileManage/component/DevFileManageCreate'
+import DevFileManageUpdate from '@/extension/DevFileManage/component/DevFileManageUpdate'
 
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
@@ -87,6 +88,73 @@ export default function DevFileManageSideBarView() {
     molecule.editor.open(tableData)
   }
 
+  const doRemoveDevFile = async () => {
+    setShowRightContextMenu(false)
+
+    await DevFileApi.removeDevFile(selectedTreeNode.key)
+
+    const groupId = molecule.editor.getGroupIdByTab(
+      VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + selectedTreeNode.key
+    )
+    molecule.editor.closeTab(
+      VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + selectedTreeNode.key,
+      groupId
+    )
+
+    fetchData()
+  }
+
+  const openUpdateDevFilePage = () => {
+    setShowRightContextMenu(false)
+
+    const groupId = molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_UPDATE_ID)
+    molecule.editor.closeTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_UPDATE_ID, groupId)
+
+    const tableData: IEditorTab = {
+      id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_UPDATE_ID,
+      name: '更新文件',
+      renderPane: () => {
+        return (
+          <DevFileManageUpdate
+            id={selectedTreeNode.key}
+            parentId={selectedTreeNode.parentId}
+            filename={selectedTreeNode.title}
+            onUpdateDevFileCallback={(id, filename) => openUpdateDevFilePageCallback(id, filename)}
+          />
+        )
+      }
+    }
+
+    molecule.editor.open(tableData)
+  }
+
+  const openUpdateDevFilePageCallback = (id, filename) => {
+    molecule.editor.closeTab(
+      VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_UPDATE_ID,
+      molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_UPDATE_ID)
+    )
+    fetchData()
+
+    // 更新tab名称
+    const groupId = molecule.editor.getGroupIdByTab(VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + id)
+    const isValidGroupId = !!groupId || groupId === 0
+    if (isValidGroupId) {
+      const prevTab = molecule.editor.getTabById<BuiltInEditorTabDataType>(
+        VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + id,
+        groupId
+      )
+      const newTab: IEditorTab = {
+        id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + id,
+        name: filename
+      }
+      // const prevTabData = prevTab?.data
+      // if (prevTabData && prevTabData.path) {
+      //   newTab.data = { ...prevTabData }
+      // }
+      molecule.editor.updateTab(newTab)
+    }
+  }
+
   const renderHeaderToolBar: IActionBarItemProps[] = [
     {
       icon: 'refresh',
@@ -98,12 +166,20 @@ export default function DevFileManageSideBarView() {
 
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={reload}>刷新</div>,
+      label: <div onClick={openAddDevFilePage}>新建</div>,
       key: '1'
     },
     {
-      label: <div onClick={openAddDevFilePage}>新建</div>,
+      label: <div onClick={openUpdateDevFilePage}>修改</div>,
       key: '2'
+    },
+    {
+      label: <div onClick={doRemoveDevFile}>删除</div>,
+      key: '4'
+    },
+    {
+      label: <div onClick={reload}>刷新</div>,
+      key: '5'
     }
   ]
 
