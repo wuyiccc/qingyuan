@@ -63,7 +63,7 @@ export default function VegaEditor() {
         width='100%'
         height='100%'
         language='sql'
-        theme='vs-dark'
+        theme='VegaMonacoTheme'
         value={code}
         options={options}
         onChange={onChange}
