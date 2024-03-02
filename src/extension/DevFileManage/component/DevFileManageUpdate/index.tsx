@@ -7,7 +7,6 @@ import molecule from '@dtinsight/molecule'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import DevFileUpdateBO from '@/infrastructure/pojo/bo/DevFileUpdateBO.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
-import DbConstants from '@/infrastructure/constants/DbConstants.ts'
 
 export default function DevFileManageUpdate({
   id = StringUtils.EMPTY,
