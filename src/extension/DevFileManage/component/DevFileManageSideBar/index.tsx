@@ -12,6 +12,7 @@ import { BuiltInEditorTabDataType, IEditorTab } from '@dtinsight/molecule/esm/mo
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import DevFileManageCreate from '@/extension/DevFileManage/component/DevFileManageCreate'
 import DevFileManageUpdate from '@/extension/DevFileManage/component/DevFileManageUpdate'
+import VegaEditor from '@/extension/DevFileManage/component/VegaEditor.tsx'
 
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
@@ -49,9 +50,7 @@ export default function DevFileManageSideBarView() {
     const tableData: IEditorTab = {
       id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + info.node.key,
       name: info.node.title as string,
-      renderPane: () => {
-        return <div>{info.node.title as string}</div>
-      }
+      renderPane: () => <VegaEditor />
     }
 
     molecule.editor.open(tableData)
