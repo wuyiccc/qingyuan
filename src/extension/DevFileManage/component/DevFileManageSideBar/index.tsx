@@ -19,6 +19,7 @@ import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import DevFileTypeConstants from '@/infrastructure/constants/DevFileTypeConstants.ts'
 import DevFileRemoteServerEditor from '@/extension/DevFileManage/component/DevFileRemoteServerEditor'
+import DevFileNginxServiceEditor from '@/extension/DevFileManage/component/DevFileNginxServiceEditor'
 
 const { DirectoryTree } = Tree
 const Toolbar = molecule.component.Toolbar
@@ -56,19 +57,16 @@ export default function DevFileManageSideBarView() {
     const tableData: IEditorTab = {
       id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + info.node.key,
       name: info.node.title as string,
-      renderPane: doRenderEditorPane(selectedData.type, selectedData.key)
+      renderPane: doRenderEditorPane(selectedData.type, selectedData.key, selectedData.parentId)
     }
 
     molecule.editor.open(tableData)
-
-    const currentEditorDataDTO = new CurrentEditorDataDTO()
-    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
-    currentEditorDataDTO.jsonData = JSON.stringify(info)
-    LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }
 
-  const doRenderEditorPane = (type, id) => {
+  const doRenderEditorPane = (type, id, parentId) => {
     if (type === DevFileTypeConstants.REMOTE_SERVER.type) return () => <DevFileRemoteServerEditor id={id} />
+    if (type === DevFileTypeConstants.NGINX_SERVICE.type)
+      return () => <DevFileNginxServiceEditor id={id} parentId={parentId} />
 
     return () => <VegaEditor />
   }

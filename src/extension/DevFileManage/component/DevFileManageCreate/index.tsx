@@ -13,6 +13,8 @@ import { FormItem } from '@/component/formItem'
 import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
 import molecule from '@dtinsight/molecule'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
+import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
+import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
 
 export default function DevFileManageCreate({
   parentId = StringUtils.EMPTY,
@@ -33,6 +35,12 @@ export default function DevFileManageCreate({
       filename: '',
       fileType: null
     })
+    console.log('重新加载新建文件页面')
+
+    const currentEditorDataDTO = new CurrentEditorDataDTO()
+    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
+    currentEditorDataDTO.jsonData = JSON.stringify(StringUtils.EMPTY)
+    LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }, [parentId])
 
   const doGetFileTypeList = async () => {

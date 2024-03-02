@@ -1,25 +1,28 @@
 import styles from './index.module.less'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
-import { Button, ConfigProvider, Form, Input, TreeSelect } from 'antd'
-import React, { useEffect, useState } from 'react'
-import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
-import molecule from '@dtinsight/molecule'
-import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
-import DevFileUpdateBO from '@/infrastructure/pojo/bo/DevFileUpdateBO.ts'
-import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
-import DbConstants from '@/infrastructure/constants/DbConstants.ts'
+import { Button, ConfigProvider, Form, Input } from 'antd'
+import React, { useEffect } from 'react'
 import RemoteServerApi from '@/infrastructure/api/RemoteServerApi.ts'
 import RemoteServerUpdateBO from '@/infrastructure/pojo/bo/RemoteServerUpdateBO.ts'
-import { Text } from 'echarts/types/src/util/graphic'
 import ConsoleOutputUtils from '@/infrastructure/util/common/ConsoleOutputUtils.ts'
 import RemoteServerTestConnectBO from '@/infrastructure/pojo/bo/RemoteServerTestConnectBO.ts'
 import ArrayUtils from '@/infrastructure/util/common/ArrayUtils.ts'
+import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
+import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function DevFileRemoteServerEditor({ id = StringUtils.EMPTY }: { id: string }) {
   const [updateRemoteServerForm] = Form.useForm()
 
   useEffect(() => {
     doGetRemoteServerDetail()
+
+    console.log('重新加载远程服务编辑页面')
+    const currentEditorDataDTO = new CurrentEditorDataDTO()
+    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
+    currentEditorDataDTO.jsonData = JSON.stringify(StringUtils.EMPTY)
+    LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }, [id])
 
   const doGetRemoteServerDetail = async () => {
@@ -51,6 +54,8 @@ export default function DevFileRemoteServerEditor({ id = StringUtils.EMPTY }: { 
 
     await RemoteServerApi.updateRemoteServer(updateBO)
     ConsoleOutputUtils.printInfoMessage('更新成功')
+
+    doGetRemoteServerDetail()
   }
 
   const doTestRemoteServerConnect = async () => {

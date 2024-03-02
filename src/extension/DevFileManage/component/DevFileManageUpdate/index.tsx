@@ -7,6 +7,10 @@ import molecule from '@dtinsight/molecule'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import DevFileUpdateBO from '@/infrastructure/pojo/bo/DevFileUpdateBO.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
+import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
+import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
+import LocalDB from '@/infrastructure/db/LocalDB.ts'
+import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 
 export default function DevFileManageUpdate({
   id = StringUtils.EMPTY,
@@ -29,6 +33,12 @@ export default function DevFileManageUpdate({
       filename: filename
     })
     doQueryFileTree()
+
+    console.log('重新加载更新文件页面')
+    const currentEditorDataDTO = new CurrentEditorDataDTO()
+    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
+    currentEditorDataDTO.jsonData = JSON.stringify(StringUtils.EMPTY)
+    LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }, [id])
 
   const doUpdateDevFile = async () => {
