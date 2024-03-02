@@ -12,7 +12,7 @@ import { BuiltInEditorTabDataType, IEditorTab } from '@dtinsight/molecule/esm/mo
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import DevFileManageCreate from '@/extension/DevFileManage/component/DevFileManageCreate'
 import DevFileManageUpdate from '@/extension/DevFileManage/component/DevFileManageUpdate'
-import VegaEditor from '@/extension/DevFileManage/component/VegaEditor.tsx'
+import DevFileManageNginxConfFileEditor from '@/extension/DevFileManage/component/DevFileManageNginxConfFileEditor'
 import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
 import EditorDataTypeEnum from '@/infrastructure/pojo/enumeration/EditorDataTypeEnum.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
@@ -57,6 +57,9 @@ export default function DevFileManageSideBarView() {
     const tableData: IEditorTab = {
       id: VegaEditorConstants.EDITOR_TAB_DEV_FILE_MANAGE_EDIT_ID_PREFIX + info.node.key,
       name: info.node.title as string,
+      breadcrumb: info.node.title
+        ? (info.node.title as string).split('/').map((local: string) => ({ id: local, name: local }))
+        : [],
       renderPane: doRenderEditorPane(selectedData.type, selectedData.key, selectedData.parentId)
     }
 
@@ -68,7 +71,11 @@ export default function DevFileManageSideBarView() {
     if (type === DevFileTypeConstants.NGINX_SERVICE.type)
       return () => <DevFileNginxServiceEditor id={id} parentId={parentId} />
 
-    return () => <VegaEditor />
+    if (type === DevFileTypeConstants.NGINX_CONFIG_FILE.type) {
+      return () => <DevFileManageNginxConfFileEditor id={id} />
+    }
+
+    return <div>空页面</div>
   }
 
   const onMenuRightClick = () => {
