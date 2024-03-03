@@ -21,6 +21,14 @@ export default class NginxConfFileApi {
   }
 
   /**
+   * 查询版本列表
+   * @param id 文件id
+   */
+  public static async getNginxConfFileHistoryList(id: string): Promise<NginxConfFileHistorySimpleEntity[]> {
+    return await request.get(NginxConfFileApi.PREFIX_URL + '/getNginxConfFileHistoryList?id=' + id, null)
+  }
+
+  /**
    * 查询版本历史文件内容
    * @param historyFileId 历史文件id
    */
@@ -30,14 +38,6 @@ export default class NginxConfFileApi {
       null,
       null
     )
-  }
-
-  /**
-   * 查询版本列表
-   * @param id 文件id
-   */
-  public static async getNginxConfFileHistoryList(id: string): Promise<NginxConfFileHistorySimpleEntity[]> {
-    return await request.get(NginxConfFileApi.PREFIX_URL + '/getNginxConfFileHistoryList?id=' + id, null)
   }
 
   /**

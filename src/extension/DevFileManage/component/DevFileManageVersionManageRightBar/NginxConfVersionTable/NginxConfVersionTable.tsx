@@ -1,12 +1,14 @@
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import styles from './index.module.less'
 import React, { useEffect, useState } from 'react'
-import { Button, ConfigProvider, Space, Table } from 'antd'
+import { Button, ConfigProvider, Input, Popover, Space, Table } from 'antd'
 import NginxConfFileApi from '@/infrastructure/api/NginxConfFileApi.ts'
 import NginxConfFileHistorySimpleEntity from '@/infrastructure/pojo/entity/NginxConfFileHistorySimpleEntity.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
+import HistoryVersionContentView from '@/extension/DevFileManage/component/DevFileManageVersionManageRightBar/NginxConfVersionTable/HistoryVersionContentView.tsx'
 export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: string }) {
   const [historyList, setHistoryList] = useState<any>()
+  const [historyVersionContent, setHistoryVersionContent] = useState<string>()
 
   useEffect(() => {
     console.log('useEffect')
@@ -38,6 +40,11 @@ export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: 
     setHistoryList(versionTableList)
   }
 
+  const onClickDetail = async historyFileId => {
+    const detailEntity = await NginxConfFileApi.getNginxHistoryConfFileDetail(historyFileId)
+    setHistoryVersionContent(detailEntity.fileContent)
+  }
+
   const columns = [
     {
       title: '文件编码',
@@ -65,25 +72,50 @@ export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: 
       key: 'action',
       render(_, record: DevFileTreeEntity) {
         return (
-          <Space>
-            <Button
-              type='text'
-              // onClick={() => {
-              //   openEditFileModal(record)
-              // }}
-            >
-              编辑
-            </Button>
-            <Button
-              type='text'
-              danger
-              // onClick={() => {
-              //   handleFileDel(record)
-              // }}
-            >
-              删除
-            </Button>
-          </Space>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorBgContainerDisabled: '#282A36',
+                colorBgContainer: '#282A36',
+                colorTextDisabled: '#bdbdbd',
+                colorText: '#bdbdbd',
+                colorBgElevated: '#282A36'
+              },
+              components: {
+                Select: {
+                  // selectorBg: 'grey'
+                  optionActiveBg: '#17181f',
+                  optionSelectedBg: '#17181f'
+                },
+                Table: {
+                  cellFontSize: 12,
+                  cellFontSizeMD: 12,
+                  cellFontSizeSM: 12
+                }
+              }
+            }}
+          >
+            <Space>
+              <Popover
+                content={<HistoryVersionContentView fileContent={historyVersionContent} />}
+                title='文件内容'
+                trigger='click'
+                placement={'left'}
+                style={{ padding: 0 }}
+              >
+                <Button onClick={() => onClickDetail(record.id)}>查看</Button>
+              </Popover>
+              <Button
+                type='text'
+                danger
+                // onClick={() => {
+                //   handleFileDel(record)
+                // }}
+              >
+                删除
+              </Button>
+            </Space>
+          </ConfigProvider>
         )
       }
     }
