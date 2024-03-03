@@ -20,7 +20,7 @@ export default function DevFileManageNginxConfFileEditor({ id = StringUtils.EMPT
     doGetNginxConfFileDetail()
     console.log('重新加载远程服务编辑页面')
     const currentEditorDataDTO = new CurrentEditorDataDTO()
-    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_MANAGE
+    currentEditorDataDTO.editorDataType = EditorDataTypeEnum.DEV_FILE_NGINX_CONF
     currentEditorDataDTO.jsonData = JSON.stringify(StringUtils.EMPTY)
     LocalDB.set(LocalDBConstants.CURRENT_EDIT_FILE_DATA, currentEditorDataDTO)
   }, [id])

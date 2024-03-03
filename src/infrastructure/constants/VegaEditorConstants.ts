@@ -9,6 +9,11 @@ class VegaEditorConstants {
   public static readonly LEFT_BAR_DEV_FILE_MANAGE_ID: string = 'left_bar_dev_file_manage'
 
   /**
+   * right bar
+   */
+  public static readonly RIGHT_BAR_DEV_FILE_VERSION_MANAGE: string = 'right_bar_dev_file_version_manage'
+
+  /**
    * status bar
    */
   public static readonly STATUS_BAR_SYSTEM_DEFAULT_EDITOR_INFO_ID: string = 'MoEditorInfo'

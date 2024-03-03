@@ -13,6 +13,8 @@ class StringUtils {
 
   static readonly C_LF = '\n'
 
+  static readonly COLON = ':'
+
   public static equals(str1?: string, str2?: string) {
     return str1 === str2
   }

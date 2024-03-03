@@ -43,6 +43,8 @@ export default function DevFileManageSideBarView() {
     const treeList = AntdTreeDTO.parseDevFileTree(devFileTreeList)
 
     setData(treeList)
+
+    LocalDB.set(LocalDBConstants.DEV_FILE_MANAGE_ANTD_TREE, treeList)
   }
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys, info) => {
