@@ -16,6 +16,7 @@ import NginxServiceUpdateBO from '@/infrastructure/pojo/bo/NginxServiceUpdateBO.
 import NginxServiceBindHistoryEntity from '@/infrastructure/pojo/entity/NginxServiceBindHistoryEntity.ts'
 import NginxServiceTestConnectBO from '@/infrastructure/pojo/bo/NginxServiceTestConnectBO.ts'
 import StatusFlagConstants from '@/infrastructure/constants/StatusFlagConstants.ts'
+import NginxServiceDetailTableDTO from '@/infrastructure/pojo/dto/NginxServiceDetailTableDTO.ts'
 
 export default function DevFileNginxServiceEditor({
   id = StringUtils.EMPTY,
@@ -25,7 +26,7 @@ export default function DevFileNginxServiceEditor({
   parentId: string
 }) {
   const [updateNginxServiceForm] = Form.useForm()
-  const [tableData, setTableData] = useState<any[]>()
+  const [tableData, setTableData] = useState<NginxServiceDetailTableDTO[]>()
 
   useEffect(() => {
     doGetNginxServiceDetail()
@@ -52,7 +53,22 @@ export default function DevFileNginxServiceEditor({
 
     const historyList = nginxServiceDetailEntity.bindConfHistoryVOList
 
-    setTableData(historyList)
+    const myTableData = []
+    for (let i = 0; i < historyList.length; i++) {
+      const entity = historyList[i]
+      const dto = new NginxServiceDetailTableDTO()
+      dto.key = entity.id
+      dto.id = entity.id
+      dto.nginxServiceId = entity.nginxServiceId
+      dto.nginxConfHistoryFileId = entity.nginxConfHistoryFileId
+      dto.nginxConfFilename = entity.nginxConfFilename
+      dto.bindTime = entity.bindTime
+      dto.statusFlag = entity.statusFlag
+      dto.statusFlagDesc = entity.statusFlagDesc
+      myTableData.push(dto)
+    }
+
+    setTableData(myTableData)
   }
 
   const doUpdateRemoteServer = async () => {

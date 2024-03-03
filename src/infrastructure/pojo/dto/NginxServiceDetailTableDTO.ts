@@ -1,4 +1,6 @@
-export default class NginxServiceBindHistoryEntity {
+export default class NginxServiceDetailTableDTO {
+  public key?: string
+
   public id?: string
 
   public nginxServiceId?: string
