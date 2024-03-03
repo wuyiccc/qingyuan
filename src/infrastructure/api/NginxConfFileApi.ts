@@ -4,6 +4,8 @@ import NginxConfFileDetailEntity from '@/infrastructure/pojo/entity/NginxConfFil
 import NginxConfFileUpdateBO from '@/infrastructure/pojo/bo/NginxConfFileUpdateBO.ts'
 import NginxConfFilePublishBO from '@/infrastructure/pojo/bo/NginxConfFilePublishBO.ts'
 import NginxConfFileHistorySimpleEntity from '@/infrastructure/pojo/entity/NginxConfFileHistorySimpleEntity.ts'
+import NginxConfFileBindNginxServiceEntity from '@/infrastructure/pojo/entity/NginxConfFileBindNginxServiceEntity.ts'
+import SshCmdExecResultEntity from '@/infrastructure/pojo/entity/SshCmdExecResultEntity.ts'
 
 export default class NginxConfFileApi {
   public static PREFIX_URL: string = '/nginxConfFile'
@@ -44,7 +46,9 @@ export default class NginxConfFileApi {
    * 查询nginx配置文件绑定的nginx服务列表
    * @param historyFileId 历史文件id
    */
-  public static async getNginxConfFileBindNginxServiceList(historyFileId: string): Promise<NginxConfFileDetailEntity> {
+  public static async getNginxConfFileBindNginxServiceList(
+    historyFileId: string
+  ): Promise<NginxConfFileBindNginxServiceEntity[]> {
     return await request.get(
       NginxConfFileApi.PREFIX_URL + '/getNginxConfFileBindNginxServiceList?historyFileId=' + historyFileId,
       null,
@@ -56,7 +60,7 @@ export default class NginxConfFileApi {
    * 发布文件
    * @param param 发布文件参数
    */
-  public static async publish(param: NginxConfFilePublishBO): Promise<string> {
+  public static async publish(param: NginxConfFilePublishBO): Promise<SshCmdExecResultEntity> {
     return await request.post(NginxConfFileApi.PREFIX_URL + '/publish', param, null)
   }
 }

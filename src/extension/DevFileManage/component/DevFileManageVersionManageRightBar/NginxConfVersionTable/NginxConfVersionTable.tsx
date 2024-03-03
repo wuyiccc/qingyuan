@@ -6,9 +6,16 @@ import NginxConfFileApi from '@/infrastructure/api/NginxConfFileApi.ts'
 import NginxConfFileHistorySimpleEntity from '@/infrastructure/pojo/entity/NginxConfFileHistorySimpleEntity.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
 import HistoryVersionContentView from '@/extension/DevFileManage/component/DevFileManageVersionManageRightBar/NginxConfVersionTable/HistoryVersionContentView.tsx'
+import PublishedNginxServiceTableView from '@/extension/DevFileManage/component/DevFileManageVersionManageRightBar/NginxConfVersionTable/PublishedNginxServiceTableView.tsx'
+import DateUtils from '@/infrastructure/util/common/DateUtils.ts'
 export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: string }) {
   const [historyList, setHistoryList] = useState<any>()
   const [historyVersionContent, setHistoryVersionContent] = useState<string>()
+  const [reloadKey, setReloadKey] = useState(0)
+  const addReloadKey = () => {
+    // 点击按钮时更新状态，从而重新渲染 PublishedNginxServiceTableView 组件
+    setReloadKey(prevKey => prevKey + 1)
+  }
 
   useEffect(() => {
     console.log('useEffect')
@@ -101,21 +108,21 @@ export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: 
                 title='文件内容'
                 trigger='click'
                 placement={'left'}
-                style={{ padding: 0 }}
               >
-                <Button type={'text'} size={'small'} onClick={() => onClickDetail(record.id)}>
+                <Button size={'small'} onClick={() => onClickDetail(record.id)}>
                   查看
                 </Button>
               </Popover>
-              <Button
-                type='text'
-                danger
-                // onClick={() => {
-                //   handleFileDel(record)
-                // }}
+
+              <Popover
+                content={<PublishedNginxServiceTableView historyFileId={record.id} reloadCount={reloadKey} />}
+                trigger='click'
+                placement={'left'}
               >
-                删除
-              </Button>
+                <Button size={'small'} onClick={addReloadKey}>
+                  Nginx服务列表
+                </Button>
+              </Popover>
             </Space>
           </ConfigProvider>
         )
