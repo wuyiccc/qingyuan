@@ -30,50 +30,70 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.login}>
-      <div className={styles.loginWrapper}>
-        <div className={styles.loginImg}></div>
-        <div className={styles.title}>欢迎来到Vega</div>
-        <Form
-          name='loginForm'
-          requiredMark={false}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          autoComplete='off'
-          layout='vertical'
-        >
-          <Form.Item
-            label={<label style={{ color: 'white' }}>用户名</label>}
-            name='username'
-            rules={[{ required: true, message: '请输入用户名' }]}
+    <ConfigProvider
+      theme={{
+        token: {
+          colorBgContainerDisabled: '#110E14',
+          colorBgContainer: '#110E14',
+          colorTextDisabled: '#bdbdbd',
+          colorText: '#bdbdbd',
+          colorBorder: 'black'
+        }
+      }}
+    >
+      <div className={styles.login}>
+        <div className={styles.loginWrapper}>
+          <div className={styles.loginImg}></div>
+          <div className={styles.title}>欢迎来到Vega</div>
+          <Form
+            name='loginForm'
+            requiredMark={false}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            autoComplete='off'
+            layout='vertical'
           >
-            <Input placeholder='请输入用户名' className={styles.input} />
-          </Form.Item>
+            <Form.Item
+              label={<label style={{ color: 'white' }}>用户名</label>}
+              name='username'
+              rules={[{ required: true, message: '请输入用户名' }]}
+            >
+              <Input placeholder='请输入用户名' className={styles.input} />
+            </Form.Item>
 
-          <Form.Item
-            label={<label style={{ color: 'white' }}>登录密码</label>}
-            name='password'
-            rules={[{ required: true, message: '请输入密码' }]}
-          >
-            <Input type='password' placeholder='请输入密码' className={styles.input} />
-          </Form.Item>
+            <Form.Item
+              label={<label style={{ color: 'white' }}>登录密码</label>}
+              name='password'
+              rules={[{ required: true, message: '请输入密码' }]}
+            >
+              <Input type='password' placeholder='请输入密码' className={styles.input} />
+            </Form.Item>
 
-          <Form.Item>
             <ConfigProvider
               theme={{
                 token: {
                   // Seed Token，影响范围大
                   colorPrimary: '#A852FF'
+                },
+                components: {
+                  Button: {
+                    defaultBorderColor: '#A852FF',
+                    defaultBg: '#A852FF',
+                    defaultHoverBg: '#A852FF',
+                    defaultActiveColor: 'white',
+                    defaultColor: 'white',
+                    defaultHoverColor: '#d7d7d7'
+                  }
                 }
               }}
             >
-              <Button className={styles.loginButton} type='primary' block htmlType='submit' loading={loading}>
+              <Button className={styles.loginButton} block htmlType='submit' loading={loading}>
                 确认登录
               </Button>
             </ConfigProvider>
-          </Form.Item>
-        </Form>
+          </Form>
+        </div>
       </div>
-    </div>
+    </ConfigProvider>
   )
 }
