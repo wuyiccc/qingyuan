@@ -103,7 +103,9 @@ export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: 
                 placement={'left'}
                 style={{ padding: 0 }}
               >
-                <Button onClick={() => onClickDetail(record.id)}>查看</Button>
+                <Button type={'text'} size={'small'} onClick={() => onClickDetail(record.id)}>
+                  查看
+                </Button>
               </Popover>
               <Button
                 type='text'
@@ -146,7 +148,7 @@ export default function NginxConfVersionTable({ id = StringUtils.EMPTY }: { id: 
     >
       <div className={styles.blankContentWrapper}>
         <div className={styles.buttonWrapper}>
-          <Button className={styles.refreshButton} onClick={reload}>
+          <Button className={styles.refreshButton} onClick={reload} size={'small'}>
             刷新
           </Button>
         </div>

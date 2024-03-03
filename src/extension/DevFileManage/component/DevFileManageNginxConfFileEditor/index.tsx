@@ -137,13 +137,14 @@ export default function DevFileManageNginxConfFileEditor({ id = StringUtils.EMPT
               placeholder='请输入文件编码'
               value={fileCode}
               onChange={onFileCodeChange}
+              size={'small'}
             ></Input>
           </div>
           <div className={styles.contentHeaderRight}>
-            <Button className={styles.saveBtn} onClick={onSave}>
+            <Button className={styles.saveBtn} onClick={onSave} size={'small'}>
               保存
             </Button>
-            <Button className={styles.saveVersionBtn} onClick={onSaveToVersion}>
+            <Button className={styles.saveVersionBtn} onClick={onSaveToVersion} size={'small'}>
               保存为版本
             </Button>
           </div>
