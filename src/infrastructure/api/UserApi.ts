@@ -1,7 +1,7 @@
 import request from '@/infrastructure/api/request.ts'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
 import UserEntity from '@/infrastructure/pojo/entity/UserEntity.ts'
-import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserAddBO from '@/infrastructure/pojo/bo/UserAddBO.ts'
 import UserUpdateBO from '@/infrastructure/pojo/bo/UserUpdateBO.ts'
 
 class UserApi {
@@ -15,7 +15,7 @@ class UserApi {
     return await request.get(UserApi.PREFIX_URL + '/getCurrentUserInfo', null, null)
   }
 
-  public static async addUser(userCreateBO: UserCreateBO): Promise<string> {
+  public static async addUser(userCreateBO: UserAddBO): Promise<string> {
     return await request.post(UserApi.PREFIX_URL + '/addUser', userCreateBO, null)
   }
 

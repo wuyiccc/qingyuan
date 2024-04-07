@@ -7,13 +7,13 @@ import UserManagePageQueryBO from '@/infrastructure/pojo/bo/UserManagePageQueryB
 import PageEntity from '@/infrastructure/pojo/entity/PageEntity.ts'
 import styles from './index.module.less'
 import CreateUser from '@/view/System/UserManage/CreateUser.tsx'
-import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserAddBO from '@/infrastructure/pojo/bo/UserAddBO.ts'
 import EditUser from '@/view/System/UserManage/EditUser.tsx'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import ArrayUtils from '@/infrastructure/util/common/ArrayUtils.ts'
 
 export default function UserManage() {
-  const createUserRef = useRef<{ open: (data?: UserCreateBO) => void }>()
+  const createUserRef = useRef<{ open: (data?: UserAddBO) => void }>()
   const editUserRef = useRef<{ open: (data: UserEntity) => void }>()
 
   const columns: ColumnsType<UserEntity> = [

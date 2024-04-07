@@ -1,7 +1,7 @@
 import RemoteServerFlowMonitorEntity from '@/infrastructure/pojo/entity/RemoteServerFlowMonitorEntity.ts'
 import request from '@/infrastructure/api/request.ts'
 import SelectEntity from '@/infrastructure/pojo/entity/SelectEntity.ts'
-import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
+import DevFileAddBO from '@/infrastructure/pojo/bo/DevFileAddBO.ts'
 import DevFileUpdateBO from '@/infrastructure/pojo/bo/DevFileUpdateBO.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
 import DevFileDetailEntity from '@/infrastructure/pojo/entity/DevFileDetailEntity.ts'
@@ -13,7 +13,7 @@ class DevFileApi {
     return await request.get(DevFileApi.PREFIX_URL + '/getDevFileTypeList', null, null)
   }
 
-  public static async addDevFile(param: DevFileCreateBO): Promise<string> {
+  public static async addDevFile(param: DevFileAddBO): Promise<string> {
     return await request.post(DevFileApi.PREFIX_URL + '/addDevFile', param, null)
   }
 

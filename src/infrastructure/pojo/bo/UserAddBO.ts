@@ -1,4 +1,4 @@
-class UserCreateBO {
+class UserAddBO {
   public username?: string
 
   public password?: string
@@ -10,4 +10,4 @@ class UserCreateBO {
   public faceUrl?: string
 }
 
-export default UserCreateBO
+export default UserAddBO

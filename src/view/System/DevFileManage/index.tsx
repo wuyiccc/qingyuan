@@ -5,7 +5,7 @@ import SelectEntity from '@/infrastructure/pojo/entity/SelectEntity.ts'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import DevFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
-import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
+import DevFileAddBO from '@/infrastructure/pojo/bo/DevFileAddBO.ts'
 import DevFileUpdateBO from '@/infrastructure/pojo/bo/DevFileUpdateBO.ts'
 import DbConstants from '@/infrastructure/constants/DbConstants.ts'
 import devFileTreeEntity from '@/infrastructure/pojo/entity/DevFileTreeEntity.ts'
@@ -150,7 +150,7 @@ export default function DevFileManage() {
   const handleSubmitCreateFile = async () => {
     await createFileForm.validateFields()
 
-    const devFileCreateBO = new DevFileCreateBO()
+    const devFileCreateBO = new DevFileAddBO()
     const values = createFileForm.getFieldsValue()
     devFileCreateBO.parentId = values.parentId
     devFileCreateBO.filename = values.filename

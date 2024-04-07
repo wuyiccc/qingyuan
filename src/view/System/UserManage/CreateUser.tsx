@@ -8,12 +8,12 @@ import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
 import CreateUserModalDTO from '@/infrastructure/pojo/dto/CreateUserModalDTO.ts'
-import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserAddBO from '@/infrastructure/pojo/bo/UserAddBO.ts'
 import UserApi from '@/infrastructure/api/UserApi.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import FileApi from '@/infrastructure/api/FileApi.ts'
 
-export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
+export default function CreateUser(props: CreateUserModalDTO<UserAddBO>) {
   // 基础ui定义
   const [createUserForm] = Form.useForm()
 
@@ -27,7 +27,7 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
   const handleSubmit = async () => {
     await createUserForm.validateFields()
 
-    const userCreateBO = new UserCreateBO()
+    const userCreateBO = new UserAddBO()
     userCreateBO.username = createUserForm.getFieldsValue().username // 回调处理
     userCreateBO.password = createUserForm.getFieldsValue().password
     userCreateBO.nickname = createUserForm.getFieldsValue().nickname
@@ -89,7 +89,7 @@ export default function CreateUser(props: CreateUserModalDTO<UserCreateBO>) {
   })
 
   // 定义open函数
-  const open = (data?: UserCreateBO) => {
+  const open = (data?: UserAddBO) => {
     setVisible(true)
   }
 

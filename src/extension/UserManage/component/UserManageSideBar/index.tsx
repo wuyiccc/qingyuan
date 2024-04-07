@@ -20,7 +20,7 @@ import { RcFile, UploadChangeParam, UploadProps } from 'antd/lib/upload'
 import FileUtils from '@/infrastructure/util/common/FileUtils.ts'
 import ServerBizCode from '@/infrastructure/constants/ServerBizCode.ts'
 import StringUtils from '@/infrastructure/util/common/StringUtils.ts'
-import UserCreateBO from '@/infrastructure/pojo/bo/UserCreateBO.ts'
+import UserAddBO from '@/infrastructure/pojo/bo/UserAddBO.ts'
 import ImgCrop from 'antd-img-crop'
 import { DeleteOutlined } from '@ant-design/icons'
 
@@ -144,7 +144,7 @@ export default function UserManageSideBarView() {
   const onCreateUser = async () => {
     await createUserForm.validateFields()
 
-    const userCreateBO = new UserCreateBO()
+    const userCreateBO = new UserAddBO()
     const values = createUserForm.getFieldsValue()
     userCreateBO.faceUrl = faceUrl
     userCreateBO.remark = values.remark

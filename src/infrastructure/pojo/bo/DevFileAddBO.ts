@@ -1,7 +1,7 @@
-class DevFileCreateBO {
+class DevFileAddBO {
   public parentId: string
   public filename: string
   public fileType: number
 }
 
-export default DevFileCreateBO
+export default DevFileAddBO

@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import SelectEntity from '@/infrastructure/pojo/entity/SelectEntity.ts'
 import DevFileApi from '@/infrastructure/api/DevFileApi.ts'
 import { FormItem } from '@/component/formItem'
-import DevFileCreateBO from '@/infrastructure/pojo/bo/DevFileCreateBO.ts'
+import DevFileAddBO from '@/infrastructure/pojo/bo/DevFileAddBO.ts'
 import molecule from '@dtinsight/molecule'
 import VegaEditorConstants from '@/infrastructure/constants/VegaEditorConstants.ts'
 import CurrentEditorDataDTO from '@/infrastructure/pojo/dto/CurrentEditorDataDTO.ts'
@@ -51,7 +51,7 @@ export default function DevFileManageCreate({
   const doCreateDevFile = async () => {
     const values = createDevFileForm.getFieldsValue()
 
-    const devFileCreateBO = new DevFileCreateBO()
+    const devFileCreateBO = new DevFileAddBO()
     devFileCreateBO.parentId = parentId
     devFileCreateBO.filename = values.filename
     devFileCreateBO.fileType = values.fileType
