@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ConfigProvider, Form, Input } from 'antd'
 import styles from './index.module.less'
 import UserLoginBO from '@/infrastructure/pojo/bo/UserLoginBO.ts'
@@ -7,9 +7,13 @@ import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
 import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
+import SseTestMsgEntity from '@/infrastructure/pojo/entity/SseTestMsgEntity.ts'
+import TextArea from 'antd/lib/input/TextArea'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
+  const [sseMsg, setSseMsg] = useState<string>('')
+
   const onFinish = async (value: UserLoginBO) => {
     try {
       setLoading(true)
@@ -31,18 +35,21 @@ export default function Login() {
   }
 
   const sseTest = () => {
-    fetchEventSource('http://localhost:83/chatSse/chat', {
+    fetchEventSource('http://localhost:8080/dev/app/api/ai/chatSse/chat', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
       // 这里要JSON.stringify一下,不能直接丢JSON对象。后端正常用@RequestBody接收就行。
       body: JSON.stringify({
-        chatId: 'xxx ',
-        requestMessage: '测试问题'
+        chatId: '322cba0a-a181-11ef-b7ef-0242ac120003',
+        requestMessage: '如何参加活动'
       }),
-      onmessage(event) {
-        console.log(event.data)
+      onmessage(event: any) {
+        const msgJson = event.data
+        const mseEntity = JSON.parse(msgJson) as SseTestMsgEntity
+        console.log(mseEntity.content)
+        setSseMsg(preMsg => preMsg + mseEntity.content)
       },
       onclose() {
         console.log('close=>')
@@ -53,6 +60,7 @@ export default function Login() {
       },
       async onopen(response) {
         if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
+          setSseMsg('')
           return // everything's good
         } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
           // client-side errors are usually non-retriable:
@@ -128,6 +136,7 @@ export default function Login() {
               <Button className={styles.loginButton} onClick={sseTest}>
                 sse测试
               </Button>
+              <TextArea value={sseMsg}></TextArea>
             </ConfigProvider>
           </Form>
         </div>
