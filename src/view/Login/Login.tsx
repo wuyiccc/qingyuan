@@ -6,6 +6,7 @@ import UserApi from '@/infrastructure/api/UserApi.ts'
 import RedirectUtils from '@/infrastructure/util/common/RedirectUtils.ts'
 import LocalDB from '@/infrastructure/db/LocalDB.ts'
 import LocalDBConstants from '@/infrastructure/constants/LocalDBConstants.ts'
+import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
@@ -27,6 +28,40 @@ export default function Login() {
     } catch (error) {
       setLoading(false)
     }
+  }
+
+  const sseTest = () => {
+    fetchEventSource('http://localhost:83/chatSse/chat', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // 这里要JSON.stringify一下,不能直接丢JSON对象。后端正常用@RequestBody接收就行。
+      body: JSON.stringify({
+        chatId: 'xxx ',
+        requestMessage: '测试问题'
+      }),
+      onmessage(event) {
+        console.log(event.data)
+      },
+      onclose() {
+        console.log('close=>')
+      },
+      onerror(event) {
+        console.log('error=>', event)
+        throw new Error('中断重试功能')
+      },
+      async onopen(response) {
+        if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
+          return // everything's good
+        } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+          // client-side errors are usually non-retriable:
+          console.log('status error:', response.status)
+        } else {
+          console.log('other status error:', response.status)
+        }
+      }
+    })
   }
 
   return (
@@ -89,6 +124,9 @@ export default function Login() {
             >
               <Button className={styles.loginButton} block htmlType='submit' loading={loading}>
                 确认登录
+              </Button>
+              <Button className={styles.loginButton} onClick={sseTest}>
+                sse测试
               </Button>
             </ConfigProvider>
           </Form>
