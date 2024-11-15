@@ -36,6 +36,7 @@ export default function Login() {
 
   const sseTest = () => {
     fetchEventSource('http://localhost:8080/dev/app/api/ai/chatSse/chat', {
+      // test
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
