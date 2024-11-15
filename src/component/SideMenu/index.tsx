@@ -35,7 +35,7 @@ function SideMenu() {
     <div>
       <div className={styles.logo} onClick={handleClickLog}>
         <img src='/img/logo.png' alt='' className={styles.img} />
-        {state.collapsed ? '' : <span className={styles.logoText}>Vega</span>}
+        {state.collapsed ? '' : <span className={styles.logoText}>qingyuan</span>}
       </div>
       <Menu selectedKeys={selectedKeys} mode='inline' theme='dark' items={MenuUtils.items} onClick={handleClickMenu} />
     </div>

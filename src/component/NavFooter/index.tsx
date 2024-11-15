@@ -15,7 +15,7 @@ function NavFooter() {
           个人主页
         </a>
       </div>
-      <div>Copyright @2024 Vega All Rights Reserved</div>
+      <div>Copyright @2024 qingyuan All Rights Reserved</div>
     </div>
   )
 }

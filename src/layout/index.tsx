@@ -35,7 +35,7 @@ const MyLayout: React.FC = () => {
   }
 
   return (
-    <Watermark content='vega'>
+    <Watermark content='qingyuan'>
       <Layout>
         <Sider collapsed={state.collapsed}>
           <SideMenu />

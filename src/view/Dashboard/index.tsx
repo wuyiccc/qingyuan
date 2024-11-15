@@ -65,7 +65,7 @@ export default function DashBoard() {
     <div className={styles.dashboard}>
       <div className={styles.userInfo}>
         <img src={userEntity.faceUrl} alt='' className={styles.userImg} />
-        <Descriptions title='欢迎使用Vega'>
+        <Descriptions title='欢迎使用qingyuan'>
           <Descriptions.Item label='用户ID'>{userEntity.id}</Descriptions.Item>
           <Descriptions.Item label='登录名称'>{userEntity.username}</Descriptions.Item>
           <Descriptions.Item label='用户昵称'>{userEntity.nickname}</Descriptions.Item>
